@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/api-commons/api-commons.iml" filepath="$PROJECT_DIR$/api-commons/api-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth8001/auth8001.iml" filepath="$PROJECT_DIR$/auth8001/auth8001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server7001/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server7001/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/getway-getway9527/getway-getway9527.iml" filepath="$PROJECT_DIR$/getway-getway9527/getway-getway9527.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sharedRentSystem.iml" filepath="$PROJECT_DIR$/sharedRentSystem.iml" />
+    </modules>
+  </component>
+</project>
