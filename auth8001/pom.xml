@@ -17,6 +17,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <!-- 导入自定义commons工具包-->
+        <dependency>
+            <groupId>com.xtt</groupId>
+            <artifactId>api-commons</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!--一般基础配置类-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

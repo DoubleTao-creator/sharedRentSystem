@@ -2,6 +2,7 @@ package entity;
 /**
  * @author xtt
  * @date 2021/1/14
+ * 返回结果类封装
  */
 import lombok.AllArgsConstructor;
 import lombok.Data;
