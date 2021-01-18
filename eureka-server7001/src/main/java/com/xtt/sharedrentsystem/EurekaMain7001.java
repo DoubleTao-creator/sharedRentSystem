@@ -1,4 +1,4 @@
-package com.xtt.sharedRentSystem;
+package com.xtt.sharedrentsystem;
 /**
  * @author xtt
  * @date 2021/1/13

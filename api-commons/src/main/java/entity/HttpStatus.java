@@ -2,6 +2,7 @@ package entity;
 /**
  * @author xtt
  * @date 2021/1/14
+ * 状态码信息
  */
 
 import lombok.AllArgsConstructor;
