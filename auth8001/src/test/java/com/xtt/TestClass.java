@@ -3,6 +3,7 @@ package com.xtt;
 import entity.FTPConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import sun.net.ftp.FtpClient;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
@@ -28,5 +29,11 @@ public class TestClass {
         String s2=MD5Utils.encode("123456");
         System.out.println("第二次加密："+s2);
         System.out.println(s1.equals(s2));
+    }
+    @Test
+    public void testDeleteFile(){
+        FTPConstants ftpConstants=new FTPConstants();
+        ftpConstants.setFilename("1.txt");
+        PhotoUtils.deleteFile(ftpConstants);
     }
 }

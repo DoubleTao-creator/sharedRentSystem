@@ -24,9 +24,13 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         BeanUtils.copyProperties(userDTO, user);
         user.setPassword(encodedPassword);
+        //设置余额
         user.setBalance(0);
+        //设置信誉积分
         user.setCredit(100);
+        //设置头像为初始默认头像
         user.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
+        //设置用户角色
         user.setRole("ROLE_USER");
         Integer num=userMapper.userLogin(user);
         return num;

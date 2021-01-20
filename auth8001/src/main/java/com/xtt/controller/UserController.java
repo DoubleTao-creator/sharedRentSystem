@@ -9,16 +9,24 @@ import com.xtt.service.UserService;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import utils.ValidDataUtil;
 
 @RestController
+@Validated
 public class UserController {
     @Autowired
     public UserService userService;
     @PostMapping("/user/login")
-    public CommonResult userLogin(@RequestBody UserDTO userDTO){
+    public CommonResult userLogin(@Validated @RequestBody UserDTO userDTO, BindingResult result){
+        //参数传入有误
+        if(ValidDataUtil.validData(result)!=null){
+            return CommonResultVO.error(ValidDataUtil.validData(result));
+        }
         Integer num=userService.userLogin(userDTO);
         if(num>0){
             //注册成功

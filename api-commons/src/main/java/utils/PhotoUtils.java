@@ -6,11 +6,14 @@ package utils;
 /**
  * 文件的上传
  */
+import com.sun.jndi.toolkit.url.Uri;
 import entity.FTPConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import java.io.IOException;
+import java.util.stream.Stream;
+
 @Slf4j
 public class PhotoUtils {
     public static final String BASE_HEAD_PHOTO_URL ="http://120.78.182.170:8080/photo/default_avatar.png";
@@ -63,4 +66,43 @@ public class PhotoUtils {
         return true;
     }
 
+    /**
+     * 删除文件
+     *设置FTPConstants传入文件名即可
+     * @param ftpConstants
+     * @return
+     * @throws IOException
+     */
+    public static Boolean deleteFile(FTPConstants  ftpConstants) throws IOException {
+        FTPClient ftpClient=new FTPClient();
+        ftpClient.enterLocalPassiveMode();
+        System.out.println("连接FTP服务器");
+        try {
+            ftpClient.connect(ftpConstants.getHost(), ftpConstants.getPort());
+            System.out.println("登录");
+            ftpClient.login(ftpConstants.getUsername(), ftpConstants.getPassword());
+            int reply = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply)) {
+                ftpClient.disconnect();
+                return false;
+            }
+            System.out.println("切换目录");
+            ftpClient.changeWorkingDirectory(ftpConstants.getFilepath());
+            System.out.println("删除文件");
+            //根据传入的文件名进行删除
+            if(ftpClient.deleteFile(ftpConstants.getFilename())){
+                ftpClient.logout();
+                System.out.println("文件上传成功");
+                return true;
+            } else{
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            ftpClient.logout();
+        }
+        return false;
+    }
 }
+

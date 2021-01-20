@@ -187,5 +187,7 @@
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:unknown" level="project" />
   </component>
 </module>
