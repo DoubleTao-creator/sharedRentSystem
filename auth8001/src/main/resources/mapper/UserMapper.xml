@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xtt.mapper.UserMapper">
+    <resultMap id="BaseResultMapper" type="com.xtt.entity.User" autoMapping="true">
+
+    </resultMap>
+    <insert id="userLogin" parameterType="com.xtt.entity.User">
+        INSERT INTO USER (name,password,tel,email,pic,credit,balance,role)
+        VALUES (#{name},#{password},#{tel},#{email},#{pic},#{credit},#{balance},#{role});
+    </insert>
+</mapper>

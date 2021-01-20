@@ -1,4 +1,4 @@
-package entity;
+package enums;
 /**
  * @author xtt
  * @date 2021/1/14
@@ -6,6 +6,7 @@ package entity;
  */
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,15 +18,18 @@ public enum HttpStatus {
     /**
      * 操作失败
      */
-    ERROR(201,"失败"),
+    ERROR(201,"失败");
     /**
      * 资源不存在
      */
-    NOT_FOUND(404,"未找到该资源"),
-    /**
-     * 服务器内部错误
-     */
-    INTERNAL_ERROR(500,"服务器内部错误");
-    private int code;
+    private Integer code;
     private String message;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

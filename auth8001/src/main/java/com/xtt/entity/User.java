@@ -6,8 +6,11 @@ package com.xtt.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class User implements Serializable{
     private Integer id;
@@ -16,7 +19,7 @@ public class User implements Serializable{
     private String  tel;
     private String email;
     private String pic;
-    private String credit;
-    private String balance;
+    private Integer credit;
+    private Integer balance;
     private String role;
 }

@@ -6,7 +6,6 @@ package utils;
 /**
  * 文件的上传
  */
-
 import entity.FTPConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
@@ -14,6 +13,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import java.io.IOException;
 @Slf4j
 public class PhotoUtils {
+    public static final String BASE_HEAD_PHOTO_URL ="http://120.78.182.170:8080/photo/default_avatar.png";
     public static boolean uploadFile(FTPConstants ftpConstants) throws IOException {
         FTPClient ftpClient=new FTPClient();
         try {

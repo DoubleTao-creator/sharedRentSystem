@@ -1,5 +1,9 @@
 package com.xtt.service;
 
+import com.xtt.dto.UserDTO;
+import com.xtt.entity.User;
+import entity.CommonResult;
+import entity.CommonResultVO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,5 +12,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-
+    /**
+     * 用户注册service
+     * @param userDTO
+     * @return
+     */
+    Integer userLogin(UserDTO userDTO);
 }

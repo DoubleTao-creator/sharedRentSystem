@@ -1,8 +1,33 @@
 package com.xtt.controller;
+/**
+ * @Author xtt
+ * @date 2021/1/20
+ */
 
-import org.springframework.stereotype.Controller;
+import com.xtt.dto.UserDTO;
+import com.xtt.service.UserService;
+import entity.CommonResult;
+import entity.CommonResultVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class UserController {
-
+    @Autowired
+    public UserService userService;
+    @PostMapping("/user/login")
+    public CommonResult userLogin(@RequestBody UserDTO userDTO){
+        Integer num=userService.userLogin(userDTO);
+        if(num>0){
+            //注册成功
+            System.out.println("用户: "+userDTO.getName()+"注册成功");
+            return  CommonResultVO.success(null);
+        }else{
+            System.out.println("用户: "+userDTO.getName()+"注册失败");
+            //注册失败
+            return CommonResultVO.error("注册失败");
+        }
+    }
 }
