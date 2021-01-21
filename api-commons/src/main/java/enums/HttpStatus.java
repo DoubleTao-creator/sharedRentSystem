@@ -19,9 +19,6 @@ public enum HttpStatus {
      * 操作失败
      */
     ERROR(201,"失败");
-    /**
-     * 资源不存在
-     */
     private Integer code;
     private String message;
 

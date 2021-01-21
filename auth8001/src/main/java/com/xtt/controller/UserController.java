@@ -21,6 +21,13 @@ import utils.ValidDataUtil;
 public class UserController {
     @Autowired
     public UserService userService;
+
+    /**
+     * 用户注册
+     * @param userDTO
+     * @param result
+     * @return
+     */
     @PostMapping("/user/login")
     public CommonResult userLogin(@Validated @RequestBody UserDTO userDTO, BindingResult result){
         //参数传入有误

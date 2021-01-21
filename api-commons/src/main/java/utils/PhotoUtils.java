@@ -6,13 +6,11 @@ package utils;
 /**
  * 文件的上传
  */
-import com.sun.jndi.toolkit.url.Uri;
 import entity.FTPConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import java.io.IOException;
-import java.util.stream.Stream;
 
 @Slf4j
 public class PhotoUtils {

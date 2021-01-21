@@ -13,6 +13,10 @@ import java.io.IOException;
 
 @SpringBootTest
 public class TestClass {
+    /**
+     * 测试上传文件
+     * @throws IOException
+     */
     @Test
     public void test() throws IOException {
         FTPConstants ftpConstants=new FTPConstants();
@@ -22,6 +26,10 @@ public class TestClass {
         Boolean result=PhotoUtils.uploadFile(ftpConstants);
         System.out.println(result);
     }
+
+    /**
+     * 测试MD5加密
+     */
     @Test
     public void testMD5(){
         String s1= MD5Utils.encode("123456");
@@ -30,8 +38,13 @@ public class TestClass {
         System.out.println("第二次加密："+s2);
         System.out.println(s1.equals(s2));
     }
+
+    /**
+     * 测试文件删除
+     * @throws IOException
+     */
     @Test
-    public void testDeleteFile(){
+    public void testDeleteFile() throws IOException {
         FTPConstants ftpConstants=new FTPConstants();
         ftpConstants.setFilename("1.txt");
         PhotoUtils.deleteFile(ftpConstants);

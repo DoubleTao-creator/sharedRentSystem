@@ -1,6 +1,7 @@
 package entity;
 /**
  * @author  xtt
+ * 封装返回结果的两种
  */
 
 import enums.HttpStatus;
