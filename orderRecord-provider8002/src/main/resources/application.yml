@@ -1,0 +1,25 @@
+server:
+  port: 8002
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #驼峰命名
+    map-underscore-to-camel-case: true
+
+
+spring:
+  application:
+    name: orderRecordProvider
+  datasource:
+    username: root
+    password: 20001017
+    url: jdbc:mysql://localhost:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka/

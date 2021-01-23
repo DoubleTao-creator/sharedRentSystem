@@ -1,23 +1,17 @@
-package com.xyc.pojo;
+package com.xyc.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRecord implements Serializable {
+public class OrderRecordDTO {
 
-    private Integer id;
     private Integer goodsId;
     private Integer userId;
     private Integer modleId;
     private Double cost;
-    private Date paytime;
-
 
 }
