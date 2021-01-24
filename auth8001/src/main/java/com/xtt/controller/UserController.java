@@ -8,7 +8,6 @@ import com.xtt.dto.UserDTO;
 import com.xtt.service.UserService;
 import entity.CommonResult;
 import entity.CommonResultVO;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +18,6 @@ import utils.ValidDataUtil;
 
 @RestController
 @Validated
-@Api(value = "user-provider",description = "用户注册登录接口")
 public class UserController {
     @Autowired
     public UserService userService;

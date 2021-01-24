@@ -1,8 +1,11 @@
 package com.xtt;
 
+import com.xtt.util.MailUtils;
 import entity.FTPConstants;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
 import sun.net.ftp.FtpClient;
 import utils.MD5Utils;
 import utils.PhotoUtils;
@@ -13,6 +16,10 @@ import java.io.IOException;
 
 @SpringBootTest
 public class TestClass {
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Autowired
+    private MailUtils mailUtils;
     /**
      * 测试上传文件
      * @throws IOException
@@ -48,5 +55,9 @@ public class TestClass {
         FTPConstants ftpConstants=new FTPConstants();
         ftpConstants.setFilename("1.txt");
         PhotoUtils.deleteFile(ftpConstants);
+    }
+    @Test
+    public void testMailSender(){
+        System.out.println(mailUtils.sendEmail("2045519528@qq.com"));
     }
 }
