@@ -4,8 +4,14 @@
     <resultMap id="BaseResultMapper" type="com.xtt.entity.User" autoMapping="true">
 
     </resultMap>
-    <insert id="userLogin" parameterType="com.xtt.entity.User">
+    <insert id="userRegister" parameterType="com.xtt.entity.User">
         INSERT INTO USER (name,password,tel,email,pic,credit,balance,role)
         VALUES (#{name},#{password},#{tel},#{email},#{pic},#{credit},#{balance},#{role});
     </insert>
+    <select id="findIdByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT id FROM USER WHERE username=#{username};
+    </select>
+    <select id="userLogin" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT username FROM USER WHERE username=#{username} and password=#{passsword};
+    </select>
 </mapper>

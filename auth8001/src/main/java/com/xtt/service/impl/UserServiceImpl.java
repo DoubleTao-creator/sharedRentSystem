@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserMapper userMapper;
     @Override
-    public Integer userLogin(UserDTO userDTO) {
+    public Integer userRegister(UserDTO userDTO) {
         //对密码进行加密
         String  encodedPassword= MD5Utils.encode(userDTO.getPassword());
         User user=new User();
@@ -32,7 +32,16 @@ public class UserServiceImpl implements UserService {
         user.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         //设置用户角色
         user.setRole("ROLE_USER");
-        Integer num=userMapper.userLogin(user);
+        Integer num=userMapper.userRegister(user);
         return num;
+    }
+    @Override
+    public Integer findIdByUsername(String username) {
+        return userMapper.findIdByUsername(username);
+    }
+    @Override
+    public String userLogin(String username, String password) {
+        String name=userMapper.userLogin(username, MD5Utils.encode(password));
+        return name;
     }
 }

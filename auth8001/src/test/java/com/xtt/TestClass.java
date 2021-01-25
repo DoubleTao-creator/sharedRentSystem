@@ -17,8 +17,6 @@ import java.io.IOException;
 @SpringBootTest
 public class TestClass {
     @Autowired
-    private JavaMailSender javaMailSender;
-    @Autowired
     private MailUtils mailUtils;
     /**
      * 测试上传文件
@@ -56,6 +54,10 @@ public class TestClass {
         ftpConstants.setFilename("1.txt");
         PhotoUtils.deleteFile(ftpConstants);
     }
+
+    /**
+     * 测试发送邮件
+     */
     @Test
     public void testMailSender(){
         System.out.println(mailUtils.sendEmail("2045519528@qq.com"));

@@ -16,5 +16,20 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    Integer userLogin(User user);
+    Integer userRegister(User user);
+
+    /**
+    * 根据用户名查询用户id
+     * @param username
+     * @return
+     */
+    Integer findIdByUsername(String username);
+
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
+    String userLogin(String username,String password);
 }

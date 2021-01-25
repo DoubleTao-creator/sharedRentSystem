@@ -17,5 +17,12 @@ public interface UserService {
      * @param userDTO
      * @return
      */
-    Integer userLogin(UserDTO userDTO);
+    Integer userRegister(UserDTO userDTO);
+    /**
+     * 根据用户名查询用户ID
+     * @param username
+     * @return
+     */
+    Integer findIdByUsername(String username);
+    String userLogin(String username,String password);
 }
