@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xyc.mapper.SellerMapper">
+
+    <insert id="register" parameterType="com.xyc.pojo.Seller">
+        insert into seller(name,password,tel,email,pic,balance,license,status)
+        values(#{name},#{password},#{tel},#{email},#{pic},#{balance},#{license},#{status})
+    </insert>
+
+    <select id="login" parameterType="com.xyc.dto.SellerLoginDTO" resultType="com.xyc.pojo.Seller">
+        select * from seller
+        where name = #{name}
+    </select>
+
+
+
+</mapper>
