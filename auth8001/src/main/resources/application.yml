@@ -12,6 +12,11 @@ spring:
   devtools:
     restart:
       enabled: true
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 2045519528@qq.com
+    password: smhizwiimftffdab
 eureka:
   client:
     register-with-eureka: true
@@ -29,6 +34,7 @@ mybatis:
     map-underscore-to-camel-case: true
 #    mapper包映射
   mapper-locations: classpath:mapper/*.xml
+
 
 
 

@@ -47,7 +47,7 @@ public class SellerController {
     }
 
     @PostMapping("/login")
-    public CommonResult login(@Validated SellerLoginDTO sellerLD, BindingResult result, HttpSession session){
+    public CommonResult login(@Validated SellerLoginDTO sellerLD,BindingResult result){
         if (ValidDataUtil.validData(result)!=null){
             return CommonResultVO.error(ValidDataUtil.validData(result));
         }
@@ -55,7 +55,6 @@ public class SellerController {
         if (seller==null){
             return CommonResultVO.error("用户名或密码错误");
         }else {
-            session.setAttribute("seller",seller);
             return CommonResultVO.success(seller);
         }
     }

@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/eureka-server7001/eureka-server7001.iml" filepath="$PROJECT_DIR$/eureka-server7001/eureka-server7001.iml" />
       <module fileurl="file://$PROJECT_DIR$/getway-getway9527/getway-getway9527.iml" filepath="$PROJECT_DIR$/getway-getway9527/getway-getway9527.iml" />
       <module fileurl="file://$PROJECT_DIR$/orderRecord-provider8002/orderRecord-provider8002.iml" filepath="$PROJECT_DIR$/orderRecord-provider8002/orderRecord-provider8002.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seller-provider8007/seller-provider8007.iml" filepath="$PROJECT_DIR$/seller-provider8007/seller-provider8007.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharedRentSystem.iml" filepath="$PROJECT_DIR$/sharedRentSystem.iml" />
     </modules>
   </component>
