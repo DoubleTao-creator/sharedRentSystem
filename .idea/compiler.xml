@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="auth8001" />
-        <module name="orderRecord-provider8002" />
         <module name="api-commons" />
+        <module name="auth8001" />
         <module name="eureka-server7001" />
-        <module name="getway-getway9527" />
         <module name="eurekaserver" />
+        <module name="getway-getway9527" />
+        <module name="orderRecord-provider8002" />
+        <module name="seller-provider8007" />
       </profile>
       <profile name="Annotation profile for sharedRentSystem" enabled="true">
         <sourceOutputDir name="../apicommons/target/generated-sources/annotations" />
@@ -30,6 +31,7 @@
       <module name="eurekaserver" target="1.8" />
       <module name="getway-getway9527" target="1.8" />
       <module name="orderRecord-provider8002" target="1.8" />
+      <module name="seller-provider8007" target="1.8" />
       <module name="sharedRentSystem" target="1.8" />
     </bytecodeTargetLevel>
   </component>

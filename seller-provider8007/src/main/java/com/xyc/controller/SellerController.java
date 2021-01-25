@@ -9,11 +9,11 @@ import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import utils.ValidDataUtil;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @RestController
@@ -23,7 +23,6 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
-
     @PostMapping("/login")
     public CommonResult login(@Validated SellerLoginDTO sellerLD,BindingResult result){
         if (ValidDataUtil.validData(result)!=null){
@@ -52,5 +51,4 @@ public class SellerController {
         }
 
     }
-
 }

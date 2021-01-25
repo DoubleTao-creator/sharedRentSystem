@@ -4,15 +4,20 @@ package com.xtt.service.impl;
  * @date
  */
 
+import com.xtt.dto.ModifyUserDTO;
 import com.xtt.dto.UserDTO;
 import com.xtt.entity.User;
 import com.xtt.mapper.UserMapper;
 import com.xtt.service.UserService;
+import entity.FTPConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.MD5Utils;
 import utils.PhotoUtils;
+
+import java.io.FileInputStream;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -40,8 +45,44 @@ public class UserServiceImpl implements UserService {
         return userMapper.findIdByUsername(username);
     }
     @Override
-    public String userLogin(String username, String password) {
-        String name=userMapper.userLogin(username, MD5Utils.encode(password));
-        return name;
+    public User userLogin(String username, String password) {
+        User user=userMapper.userLogin(username, MD5Utils.encode(password));
+        return user;
+    }
+
+    @Override
+    public User modifyUser(ModifyUserDTO modifyUserDTO) {
+        User modifiedUser;
+        try{
+            FTPConstants ftpConstants=new FTPConstants();
+            ftpConstants.setFilename("headuser"+modifyUserDTO.getId()+".png");
+            ftpConstants.setInput(new FileInputStream(PhotoUtils.transferToFile(modifyUserDTO.getFile())));
+            //删除原来的头像
+            PhotoUtils.deleteFile(ftpConstants);
+            //上传新的头像
+            PhotoUtils.uploadFile(ftpConstants);
+            User user=new User();
+            user.setId(modifyUserDTO.getId());
+            user.setName(modifyUserDTO.getName());
+            user.setPassword(modifyUserDTO.getPassword());
+            user.setEmail(modifyUserDTO.getEmail());
+            user.setTel(modifyUserDTO.getTel());
+            user.setPic(PhotoUtils.USER_PREFIX+modifyUserDTO
+            .getId()+PhotoUtils.SUFFIX);
+            //更改用户信息
+            userMapper.modifyUser(user);
+            //查询更改后的用户信息
+            modifiedUser=userMapper.findUserById(modifyUserDTO.getId());
+        }catch (Exception e){
+            return null;
+        }
+        //返回更改后的用户信息
+        return modifiedUser;
+    }
+
+
+    @Override
+    public User findUserById(Integer id) {
+        return userMapper.findUserById(id);
     }
 }

@@ -10,11 +10,18 @@ import entity.FTPConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.IOException;
 
 @Slf4j
 public class PhotoUtils {
     public static final String BASE_HEAD_PHOTO_URL ="http://120.78.182.170:8080/photo/default_avatar.png";
+    public static final String USER_PREFIX="head_user";
+    public static final String SELLER_PREFIX="head_seller";
+    public static final String LICENSE_PREFIX="license_seller";
+    public static final String SUFFIX=".png";
     public static boolean uploadFile(FTPConstants ftpConstants) throws IOException {
         FTPClient ftpClient=new FTPClient();
         try {
@@ -90,7 +97,7 @@ public class PhotoUtils {
             //根据传入的文件名进行删除
             if(ftpClient.deleteFile(ftpConstants.getFilename())){
                 ftpClient.logout();
-                System.out.println("文件上传成功");
+                System.out.println("文件删除成功");
                 return true;
             } else{
                 return false;
@@ -102,5 +109,25 @@ public class PhotoUtils {
         }
         return false;
     }
+
+    /**
+     * multipartfile转为file
+     * @param multipartFile
+     * @return
+     */
+    public static File transferToFile(MultipartFile multipartFile) {
+        File file = null;
+        try {
+            String originalFilename = multipartFile.getOriginalFilename();
+            String[] filename = originalFilename.split(".");
+            file= File.createTempFile(filename[0], filename[1]);
+            multipartFile.transferTo(file);
+            file.deleteOnExit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
 }
 

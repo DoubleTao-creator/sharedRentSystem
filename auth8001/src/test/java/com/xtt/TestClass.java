@@ -26,7 +26,7 @@ public class TestClass {
     public void test() throws IOException {
         FTPConstants ftpConstants=new FTPConstants();
         ftpConstants.setInput(new FileInputStream(new File("D:\\images\\default_avatar.png")));
-        ftpConstants.setFilename("default_avatar.png");
+        ftpConstants.setFilename("1.png");
         System.out.println(ftpConstants.toString());
         Boolean result=PhotoUtils.uploadFile(ftpConstants);
         System.out.println(result);

@@ -1,5 +1,6 @@
 package com.xtt.service;
 
+import com.xtt.dto.ModifyUserDTO;
 import com.xtt.dto.UserDTO;
 import com.xtt.entity.User;
 import entity.CommonResult;
@@ -24,5 +25,25 @@ public interface UserService {
      * @return
      */
     Integer findIdByUsername(String username);
-    String userLogin(String username,String password);
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
+    User userLogin(String username,String password);
+
+    /**
+     * 更改用户信息
+     * @param modifyUserDTO
+     * @return
+     */
+    User modifyUser(ModifyUserDTO modifyUserDTO);
+
+    /**
+     * 根据ID查询用户
+     * @param id
+     * @return
+     */
+    User findUserById(Integer id);
 }
