@@ -44,4 +44,9 @@ public class SellerServiceImp implements SellerService {
 
         return null;
     }
+
+    @Override
+    public int update(Seller seller) {
+        return sellerMapper.update(seller);
+    }
 }

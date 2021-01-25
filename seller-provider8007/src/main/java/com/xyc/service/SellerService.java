@@ -12,5 +12,7 @@ public interface SellerService {
 
     public Seller login(SellerLoginDTO seller);
 
+    public int update(Seller seller);
+
 
 }

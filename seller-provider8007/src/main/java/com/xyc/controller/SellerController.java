@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import utils.ValidDataUtil;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -24,8 +25,29 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
 
+    @PostMapping("getInfo/")
+    public CommonResult getInfo(HttpSession session){
+        Seller seller = (Seller)session.getAttribute("seller");
+        System.out.println(seller);
+        if (seller==null){
+            return CommonResultVO.error("请重新登录");
+        }else{
+            return CommonResultVO.success("个人消息已得到");
+        }
+    }
+
+    @PostMapping("/update")
+    public CommonResult update(Seller seller){
+        int i = sellerService.update(seller);
+        if (i>0){
+            return CommonResultVO.success("信息更新成功");
+        }else {
+            return CommonResultVO.error("信息更新失败");
+        }
+    }
+
     @PostMapping("/login")
-    public CommonResult login(@Validated SellerLoginDTO sellerLD,BindingResult result){
+    public CommonResult login(@Validated SellerLoginDTO sellerLD, BindingResult result, HttpSession session){
         if (ValidDataUtil.validData(result)!=null){
             return CommonResultVO.error(ValidDataUtil.validData(result));
         }
@@ -33,6 +55,7 @@ public class SellerController {
         if (seller==null){
             return CommonResultVO.error("用户名或密码错误");
         }else {
+            session.setAttribute("seller",seller);
             return CommonResultVO.success(seller);
         }
     }

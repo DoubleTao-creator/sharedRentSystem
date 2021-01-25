@@ -13,4 +13,6 @@ public interface SellerMapper {
     public int register(Seller seller);
 
     public Seller login(SellerLoginDTO sellerLD);
+
+    public int update(Seller seller);
 }

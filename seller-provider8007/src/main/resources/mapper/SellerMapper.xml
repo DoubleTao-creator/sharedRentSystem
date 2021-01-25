@@ -15,6 +15,12 @@
         where name = #{name}
     </select>
 
+    <update id="update" parameterType="com.xyc.pojo.Seller">
+        update seller set name=#{name},password=#{password},tel=#{tel},
+            email=#{email},pic=#{pic}
+        where id = #{id}
+    </update>
+
 
 
 </mapper>
