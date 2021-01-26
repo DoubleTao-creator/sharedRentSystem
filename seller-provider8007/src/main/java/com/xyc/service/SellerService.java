@@ -1,9 +1,12 @@
 package com.xyc.service;
 
 import com.xyc.dto.SellerLoginDTO;
+import com.xyc.dto.SellerModifyDTO;
 import com.xyc.dto.SellerRegisterDTO;
 import com.xyc.pojo.Seller;
 import org.springframework.stereotype.Service;
+
+import java.io.FileNotFoundException;
 
 
 public interface SellerService {
@@ -12,7 +15,9 @@ public interface SellerService {
 
     public Seller login(SellerLoginDTO seller);
 
-    public int update(Seller seller);
+    public Seller modifySeller(SellerModifyDTO sellerMD) throws FileNotFoundException;
+
+    public Seller queryById(int id);
 
 
 }

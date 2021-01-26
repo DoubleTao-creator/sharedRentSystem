@@ -1,6 +1,7 @@
 package com.xyc.controller;
 
 import com.xyc.dto.SellerLoginDTO;
+import com.xyc.dto.SellerModifyDTO;
 import com.xyc.dto.SellerRegisterDTO;
 import com.xyc.pojo.Seller;
 import com.xyc.service.SellerService;
@@ -9,6 +10,7 @@ import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,11 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
 
-    @PostMapping("getInfo/")
-    public CommonResult getInfo(HttpSession session){
-        Seller seller = (Seller)session.getAttribute("seller");
+
+
+    @PostMapping("getInfo/{id}")
+    public CommonResult getInfo(@PathVariable("id") int id){
+        Seller seller = sellerService.queryById(id);
         System.out.println(seller);
         if (seller==null){
             return CommonResultVO.error("请重新登录");
@@ -36,11 +40,11 @@ public class SellerController {
         }
     }
 
-    @PostMapping("/update")
-    public CommonResult update(Seller seller){
-        int i = sellerService.update(seller);
-        if (i>0){
-            return CommonResultVO.success("信息更新成功");
+    @PostMapping("/modify")
+    public CommonResult modifySeller(SellerModifyDTO sellerMD){
+        Seller seller = sellerService.modifySeller(sellerMD);
+        if (seller!=null){
+            return CommonResultVO.success(seller);
         }else {
             return CommonResultVO.error("信息更新失败");
         }

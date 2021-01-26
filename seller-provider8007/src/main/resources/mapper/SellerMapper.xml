@@ -11,11 +11,10 @@
     </insert>
 
     <select id="login" parameterType="com.xyc.dto.SellerLoginDTO" resultType="com.xyc.pojo.Seller">
-        select * from seller
-        where name = #{name}
+        select * from seller where name = #{name}
     </select>
 
-    <update id="update" parameterType="com.xyc.pojo.Seller">
+    <update id="update" parameterType="com.xyc.dto.SellerModifyDTO">
         update seller set name=#{name},password=#{password},tel=#{tel},
             email=#{email},pic=#{pic}
         where id = #{id}
