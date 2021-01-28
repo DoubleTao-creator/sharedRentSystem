@@ -22,6 +22,7 @@ public class PhotoUtils {
     public static final String USER_PREFIX="head_user";
     public static final String SELLER_PREFIX="head_seller";
     public static final String LICENSE_PREFIX="license_seller";
+    public static final String GOODS_PREFIX="head_goods";
     public static final String SUFFIX=".png";
     public static boolean uploadFile(FTPConstants ftpConstants) throws IOException {
         FTPClient ftpClient=new FTPClient();

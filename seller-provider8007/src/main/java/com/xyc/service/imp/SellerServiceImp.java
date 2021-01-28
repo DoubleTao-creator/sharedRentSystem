@@ -72,6 +72,12 @@ public class SellerServiceImp implements SellerService {
     }
 
     @Override
+    public int updateBalance(int income,int sellerId) {
+        sellerMapper.updateBalance(income,sellerId);
+        return 0;
+    }
+
+    @Override
     public Seller modifySeller(SellerModifyDTO sellerMD) {
         Seller newSeller = new Seller();
         try {

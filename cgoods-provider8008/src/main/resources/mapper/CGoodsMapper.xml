@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xyc.mapper.CGoodsMapper">
+
+    <insert id="add" parameterType="com.xyc.pojo.CGoods">
+        insert into cgoods(sellerId,name,typeId,pic,repertory,info,sellModel,price,rental,deposit,status)
+        values (#{sellerId},#{name},#{typeId},#{pic},#{repertory},#{info},#{sellModel},#{price},#{rental},#{deposit},#{status})
+    </insert>
+
+    <select id="queryAll" resultType="com.xyc.pojo.CGoods">
+        select * from cgoods
+    </select>
+
+    <select id="queryBySellerId" resultType="com.xyc.pojo.CGoods">
+        select * from cgoods where sellerId=#{sellerId}
+    </select>
+
+    <select id="queryByInfo" resultType="com.xyc.pojo.CGoods">
+        select c.* from cgoods c,seller s
+        <where>
+            <if test="info!=null">
+                c.name like "%"#{info}"%" or
+                c.info like "%"#{info}"%" or
+                c.sellerId in(
+                    select s.id from seller
+                        where s.name like "%"#{info}"%"
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByTypeId" resultType="com.xyc.pojo.CGoods">
+        select * from cgoods where typeId=#{typeId}
+    </select>
+
+    <update id="modify" parameterType="com.xyc.pojo.CGoods">
+        update cgoods set name=#{name},typeId=#{typeId},
+            pic=#{pic},repertory=#{repertory},info=#{info},
+            sellModel=#{sellModel},price=#{price},rental={rental},
+            deposit=#{deposit},status=#{status}
+    </update>
+
+    <select id="getSellModel" resultType="int">
+        select id from sellmodle where flag=#{flag}
+    </select>
+
+
+
+</mapper>

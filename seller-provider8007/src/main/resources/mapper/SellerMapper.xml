@@ -20,6 +20,10 @@
         where id = #{id}
     </update>
 
+    <update id="updateBalance">
+        update seller set balance = #{income}+balance
+        where id = #{sellerId}
+    </update>
 
 
 </mapper>
