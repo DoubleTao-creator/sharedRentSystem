@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper
 public interface CGoodsMapper {
 
+    public CGoods queryById(@Param("id") int id);
+
     public int add(CGoods cGoods);
 
     public List<CGoods> queryAll();

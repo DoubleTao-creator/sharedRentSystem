@@ -79,27 +79,30 @@ public class SellerServiceImp implements SellerService {
 
     @Override
     public Seller modifySeller(SellerModifyDTO sellerMD) {
-        Seller newSeller = new Seller();
+        Seller seller = sellerMapper.queryById(sellerMD.getId());
         try {
             FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+sellerMD.getId()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(sellerMD.getPic())));
+
+            fc.setFilename(PhotoUtils.SELLER_PREFIX+seller.getName()+PhotoUtils.SUFFIX);
             PhotoUtils.deleteFile(fc);
+
+            fc.setFilename(PhotoUtils.SELLER_PREFIX+sellerMD.getName()+PhotoUtils.SUFFIX);
+            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(sellerMD.getPic())));
             PhotoUtils.uploadFile(fc);
 
-            newSeller.setId(sellerMD.getId());
-            newSeller.setName(sellerMD.getName());
-            newSeller.setPassword(sellerMD.getPassword());
-            newSeller.setTel(sellerMD.getTel());
-            newSeller.setEmail(sellerMD.getEmail());
-            newSeller.setPic(PhotoUtils.SELLER_PREFIX+sellerMD.getId()+PhotoUtils.SUFFIX);
+            seller.setId(sellerMD.getId());
+            seller.setName(sellerMD.getName());
+            seller.setPassword(sellerMD.getPassword());
+            seller.setTel(sellerMD.getTel());
+            seller.setEmail(sellerMD.getEmail());
+            seller.setPic(PhotoUtils.SELLER_PREFIX+sellerMD.getName()+PhotoUtils.SUFFIX);
 
-            sellerMapper.update(newSeller);
-            newSeller = sellerMapper.queryById(sellerMD.getId());
+            sellerMapper.update(seller);
+            seller = sellerMapper.queryById(sellerMD.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return newSeller;
+        return seller;
     }
 }

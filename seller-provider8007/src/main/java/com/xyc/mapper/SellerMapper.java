@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SellerMapper {
 
-    public Seller queryById(int id);
+    public Seller queryById(@Param("id") int id);
 
     public int register(Seller seller);
 

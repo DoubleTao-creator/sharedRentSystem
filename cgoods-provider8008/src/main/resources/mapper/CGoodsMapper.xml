@@ -5,6 +5,10 @@
 
 <mapper namespace="com.xyc.mapper.CGoodsMapper">
 
+    <select id="queryById" resultType="com.xyc.pojo.CGoods">
+        select * from cgoods where id=#{id}
+    </select>
+
     <insert id="add" parameterType="com.xyc.pojo.CGoods">
         insert into cgoods(sellerId,name,typeId,pic,repertory,info,sellModel,price,rental,deposit,status)
         values (#{sellerId},#{name},#{typeId},#{pic},#{repertory},#{info},#{sellModel},#{price},#{rental},#{deposit},#{status})
