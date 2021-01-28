@@ -19,5 +19,6 @@ public interface SellerService {
 
     public Seller queryById(int id);
 
+    public int updateBalance(int income,int sellerId);
 
 }

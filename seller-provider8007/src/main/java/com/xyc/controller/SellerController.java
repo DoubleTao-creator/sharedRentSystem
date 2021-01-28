@@ -10,14 +10,12 @@ import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import utils.ValidDataUtil;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 
 @RestController
 @Validated
@@ -27,7 +25,16 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
 
-
+    @PostMapping("/modifyBalance/{sellerId}/{income}")
+    public CommonResult modifyBalance(@PathVariable("income") int income,
+                                      @PathVariable("sellerId") int sellerId){
+        int i = sellerService.updateBalance(income,sellerId);
+        if (i>0){
+            return CommonResultVO.success("已到账金额"+income);
+        }else{
+            return CommonResultVO.error("收钱失败");
+        }
+    }
 
     @PostMapping("getInfo/{id}")
     public CommonResult getInfo(@PathVariable("id") int id){
@@ -41,7 +48,7 @@ public class SellerController {
     }
 
     @PostMapping("/modify")
-    public CommonResult modifySeller(SellerModifyDTO sellerMD){
+    public CommonResult modifySeller(SellerModifyDTO sellerMD) throws FileNotFoundException {
         Seller seller = sellerService.modifySeller(sellerMD);
         if (seller!=null){
             return CommonResultVO.success(seller);

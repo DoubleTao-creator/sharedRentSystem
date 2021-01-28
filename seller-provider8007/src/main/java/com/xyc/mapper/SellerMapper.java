@@ -5,6 +5,7 @@ import com.xyc.dto.SellerModifyDTO;
 import com.xyc.dto.SellerRegisterDTO;
 import com.xyc.pojo.Seller;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Mapper
@@ -18,4 +19,6 @@ public interface SellerMapper {
     public Seller login(SellerLoginDTO sellerLD);
 
     public int update(Seller seller);
+
+    public int updateBalance(int income,@Param("sellerId") int sellerId);
 }
