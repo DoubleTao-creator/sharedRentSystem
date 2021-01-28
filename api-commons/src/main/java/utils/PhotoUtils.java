@@ -18,6 +18,7 @@ import java.io.IOException;
 @Slf4j
 public class PhotoUtils {
     public static final String BASE_HEAD_PHOTO_URL ="http://120.78.182.170:8080/photo/default_avatar.png";
+    public static final String BASE_PREFIX="http://120.78.182.170:8080/photo/";
     public static final String USER_PREFIX="head_user";
     public static final String SELLER_PREFIX="head_seller";
     public static final String LICENSE_PREFIX="license_seller";

@@ -18,6 +18,7 @@ import utils.ValidDataUtil;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 
 @RestController
 @Validated
@@ -41,7 +42,7 @@ public class SellerController {
     }
 
     @PostMapping("/modify")
-    public CommonResult modifySeller(SellerModifyDTO sellerMD){
+    public CommonResult modifySeller(SellerModifyDTO sellerMD) throws FileNotFoundException {
         Seller seller = sellerService.modifySeller(sellerMD);
         if (seller!=null){
             return CommonResultVO.success(seller);

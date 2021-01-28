@@ -12,6 +12,8 @@
         <module name="eureka-server7001" />
         <module name="eurekaserver" />
         <module name="getway-getway9527" />
+        <module name="goods-provider8003" />
+        <module name="goodsprovider8003" />
         <module name="orderRecord-provider8002" />
         <module name="seller-provider8007" />
       </profile>
@@ -30,6 +32,8 @@
       <module name="eureka-server7001" target="1.8" />
       <module name="eurekaserver" target="1.8" />
       <module name="getway-getway9527" target="1.8" />
+      <module name="goods-provider8003" target="1.8" />
+      <module name="goodsprovider8003" target="1.8" />
       <module name="orderRecord-provider8002" target="1.8" />
       <module name="seller-provider8007" target="1.8" />
       <module name="sharedRentSystem" target="1.8" />

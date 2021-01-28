@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         User modifiedUser;
         try{
             FTPConstants ftpConstants=new FTPConstants();
-            ftpConstants.setFilename("headuser"+modifyUserDTO.getId()+".png");
+            ftpConstants.setFilename(PhotoUtils.USER_PREFIX+modifyUserDTO.getId()+PhotoUtils.SUFFIX);
             ftpConstants.setInput(new FileInputStream(PhotoUtils.transferToFile(modifyUserDTO.getFile())));
             //删除原来的头像
             PhotoUtils.deleteFile(ftpConstants);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(modifyUserDTO.getPassword());
             user.setEmail(modifyUserDTO.getEmail());
             user.setTel(modifyUserDTO.getTel());
-            user.setPic(PhotoUtils.USER_PREFIX+modifyUserDTO
+            user.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.USER_PREFIX+modifyUserDTO
             .getId()+PhotoUtils.SUFFIX);
             //更改用户信息
             userMapper.modifyUser(user);
@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
         //返回更改后的用户信息
         return modifiedUser;
     }
-
 
     @Override
     public User findUserById(Integer id) {

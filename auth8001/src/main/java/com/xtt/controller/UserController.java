@@ -101,6 +101,12 @@ public class UserController {
             return CommonResultVO.error("用户信息更改失败");
         }
     }
+
+    /**
+     * 根据id查询用户信息
+     * @param id
+     * @return
+     */
     @GetMapping("/user/getUserInfo")
     public CommonResult getUserInfo(Integer id){
         User user=userService.findUserById(id);

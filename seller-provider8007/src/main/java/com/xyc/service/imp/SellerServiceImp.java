@@ -31,10 +31,10 @@ public class SellerServiceImp implements SellerService {
         seller.setPassword(MD5Utils.encode(sellerRD.getPassword()));
         seller.setEmail(sellerRD.getEmail());
         seller.setTel(sellerRD.getTel());
-        seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
+        seller.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
         seller.setStatus("审核中");
-        seller.setLicense(PhotoUtils.LICENSE_PREFIX+sellerRD.getName()+PhotoUtils.SUFFIX);
+        seller.setLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX+sellerRD.getName()+PhotoUtils.SUFFIX);
 
         try {
             FTPConstants fc = new FTPConstants();

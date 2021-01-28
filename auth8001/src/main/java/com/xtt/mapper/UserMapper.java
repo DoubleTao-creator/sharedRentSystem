@@ -1,7 +1,7 @@
 package com.xtt.mapper;
-import com.xtt.dto.ModifyUserDTO;
 import com.xtt.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,7 +33,6 @@ public interface UserMapper {
      * @return
      */
     User userLogin(String username,String password);
-    //User modifyUser(ModifyUserDTO modifyUserDTO);
 
     /**
      * 根据id查询用户
@@ -47,4 +46,12 @@ public interface UserMapper {
      * @param user
      */
     void modifyUser(User user);
+
+    /**
+     * 增加用户余额
+     * @param userId
+     * @param balance
+     * @return
+     */
+    Integer addUserBalance(@Param("userId") Integer userId,@Param("balance") Double balance);
 }
