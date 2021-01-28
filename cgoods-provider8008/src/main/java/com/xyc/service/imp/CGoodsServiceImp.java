@@ -33,24 +33,14 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setDeposit(cGoodsAD.getDeposit());
         cGoods.setStatus("待审核");
         //上传商品照片到服务器
-        uploadFile(cGoodsAD);
+        uploadPic(cGoodsAD);
 
+        Integer sellModelId = judgeSellModels(cGoodsAD.getSellModels());
+        cGoods.setSellModel(sellModelId);
+
+        cGoodsMapper.add(cGoods);
 
         return 0;
-    }
-
-    private void uploadFile(CGoodsAddDTO cGoodsAD){
-        try {
-            FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsAD.getPic())));
-            PhotoUtils.uploadFile(fc);
-            System.out.println("商品类照片已上传");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private Integer judgeSellModels(String[] sellModels){
@@ -73,4 +63,19 @@ public class CGoodsServiceImp implements CGoodsService {
         sellModel = cGoodsMapper.getSellModel(ss);
         return sellModel;
     }
+
+    private void uploadPic(CGoodsAddDTO cGoodsAD){
+        try {
+            FTPConstants fc = new FTPConstants();
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
+            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsAD.getPic())));
+            PhotoUtils.uploadFile(fc);
+            System.out.println("商品类照片已上传");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
