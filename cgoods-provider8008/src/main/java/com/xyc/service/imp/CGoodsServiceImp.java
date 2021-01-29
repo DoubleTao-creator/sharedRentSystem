@@ -1,23 +1,58 @@
 package com.xyc.service.imp;
 
 import com.xyc.dto.CGoodsAddDTO;
+import com.xyc.dto.CGoodsModifyDTO;
 import com.xyc.mapper.CGoodsMapper;
 import com.xyc.pojo.CGoods;
 import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import utils.PhotoUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class CGoodsServiceImp implements CGoodsService {
 
     @Autowired
     private CGoodsMapper cGoodsMapper;
+
+    @Override
+    public int updateInfo(CGoodsModifyDTO cGoodsMD) {
+        CGoods cGoods = cGoodsMapper.queryById(cGoodsMD.getId());
+        try {
+            FTPConstants fc = new FTPConstants();
+            //删除原来的照片
+            fc.setFilename(PhotoUtils.SELLER_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
+            PhotoUtils.deleteFile(fc);
+            //上传照片
+            fc.setFilename(PhotoUtils.SELLER_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
+            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsMD.getPic())));
+            PhotoUtils.uploadFile(fc);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        cGoods.setName(cGoodsMD.getName());
+        cGoods.setTypeId(cGoodsMD.getTypeId());
+        cGoods.setRepertory(cGoodsMD.getRepertory());
+        cGoods.setPic(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
+        cGoods.setInfo(cGoodsMD.getInfo());
+        cGoods.setSellModel(judgeSellModels(cGoodsMD.getSellModels()));
+        cGoods.setPrice(cGoodsMD.getPrice());
+        cGoods.setRental(cGoodsMD.getRental());
+        cGoods.setDeposit(cGoodsMD.getDeposit());
+        cGoods.setStatus(cGoodsMD.getStatus());
+
+        return cGoodsMapper.modify(cGoods);
+    }
 
     @Override
     public int add(CGoodsAddDTO cGoodsAD) {
@@ -33,7 +68,17 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setDeposit(cGoodsAD.getDeposit());
         cGoods.setStatus("待审核");
         //上传商品照片到服务器
-        uploadPic(cGoodsAD);
+        try {
+            FTPConstants fc = new FTPConstants();
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
+            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsAD.getPic())));
+            PhotoUtils.uploadFile(fc);
+            System.out.println("商品类照片已上传");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Integer sellModelId = judgeSellModels(cGoodsAD.getSellModels());
         cGoods.setSellModel(sellModelId);
@@ -64,18 +109,30 @@ public class CGoodsServiceImp implements CGoodsService {
         return sellModel;
     }
 
-    private void uploadPic(CGoodsAddDTO cGoodsAD){
-        try {
-            FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsAD.getPic())));
-            PhotoUtils.uploadFile(fc);
-            System.out.println("商品类照片已上传");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public List<CGoods> getAll() {
+        List<CGoods> list = cGoodsMapper.queryAll();
+        return list;
     }
+
+    @Override
+    public List<CGoods> searchBySellerId(Integer sellerId) {
+        List<CGoods> list = cGoodsMapper.queryBySellerId(sellerId);
+        return list;
+    }
+
+    @Override
+    public List<CGoods> fuzzySearch(String info) {
+        List<CGoods> list = cGoodsMapper.queryByInfo(info);
+        return list;
+    }
+
+    @Override
+    public List<CGoods> searchByTypeId(Integer typeId) {
+        List<CGoods> list = cGoodsMapper.queryByTypeId(typeId);
+        return list;
+    }
+
+
 
 }
