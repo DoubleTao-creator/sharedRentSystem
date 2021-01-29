@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-commons" />
         <module name="auth8001" />
+        <module name="cgoods-provider8008" />
         <module name="eureka-server7001" />
         <module name="eurekaserver" />
         <module name="getway-getway9527" />
@@ -28,6 +29,7 @@
       <module name="api-commons" target="1.8" />
       <module name="apicommons" target="1.8" />
       <module name="auth8001" target="1.8" />
+      <module name="cgoods-provider8008" target="1.8" />
       <module name="eureka-server" target="1.8" />
       <module name="eureka-server7001" target="1.8" />
       <module name="eurekaserver" target="1.8" />

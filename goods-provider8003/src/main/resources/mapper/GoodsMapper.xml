@@ -6,4 +6,7 @@
     <select id="findOwnedGoods" parameterType="java.lang.Integer" resultMap="GoodsMapper">
         SELECT id,cgoods_id,user_id FROM goods WHERE user_id=#{userId} and status='已购买';
     </select>
+    <insert id="createInstallmentOrder" parameterType="java.util.Date">
+
+    </insert>
 </mapper>

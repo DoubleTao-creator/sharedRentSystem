@@ -46,7 +46,4 @@
     <select id="getSellModel" resultType="int">
         select id from sellmodle where flag=#{flag}
     </select>
-
-
-
 </mapper>

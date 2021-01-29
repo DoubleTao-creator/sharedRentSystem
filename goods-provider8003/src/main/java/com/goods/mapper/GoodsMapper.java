@@ -4,6 +4,7 @@ import com.goods.entity.Goods;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -15,4 +16,11 @@ public interface GoodsMapper {
      * @return
      */
     List<Goods> findOwnedGoods(Integer userId);
+
+    /**
+     * 创建以租代售订单
+     * @param goodsId
+     * @param date
+     */
+    void createInstallmentOrder(Integer goodsId,Date date);
 }
