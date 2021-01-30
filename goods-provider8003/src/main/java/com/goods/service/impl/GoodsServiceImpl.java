@@ -14,6 +14,7 @@ import com.xtt.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author xtt
@@ -28,6 +29,8 @@ public class GoodsServiceImpl implements GoodsService{
     CGoodsMapper cGoodsMapper;
     @Autowired
     SellerMapper sellerMapper;
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer ExperienceGoods(UserExperienceDTO userExperienceDTO) {
         String sellModel=userExperienceDTO.getSellModel();
@@ -40,15 +43,16 @@ public class GoodsServiceImpl implements GoodsService{
         if("以租代售".equals(sellModel)){
             //余额不足已支付本月月租
             if(user.getBalance()<cgoods.getRental()){
+                System.out.println("用户"+user.getName()+"余额不足,返回");
                 return 0;
             }
             //向商品表和以租代售记录表加数据
             Installment installment=new Installment();
             goodsMapper.addInstallmentRecode(installment);
-            Integer sell_id=installment.getId();
-            installment.setId(sell_id);
+            Integer sellId=installment.getId();
+            installment.setId(sellId);
             Goods goods=new Goods();
-            goods.setSellId(sell_id);
+            goods.setSellId(sellId);
             BeanUtils.copyProperties(userExperienceDTO, goods);
             goodsMapper.createInstallmentOrder(goods);
             Integer goodsId=goods.getId();
@@ -61,7 +65,8 @@ public class GoodsServiceImpl implements GoodsService{
             //商品类库存减1
             cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
             //生成订单记录->订单模块
-
+            System.out.println("用户id: "+user.getId()+"商家id: "+sellId+"成功交易"+cgoods.getRental()+"元");
+            System.out.println("用户id: "+user.getId()+"成功以租代售订单,商品类id: "+CgoodsId);
 
 
             return 1;
@@ -69,6 +74,7 @@ public class GoodsServiceImpl implements GoodsService{
             //处理先租后买订单
             //余额不足支付体验期订单
             if(user.getBalance()<cgoods.getRental()*rentTime){
+                System.out.println("用户"+user.getName()+"余额不足，返回");
                 return 0;
             }
             RentToBuy rentToBuy=new RentToBuy();
@@ -90,6 +96,8 @@ public class GoodsServiceImpl implements GoodsService{
             //商品类库存减1
             cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
             //生成订单记录->订单模块
+            System.out.println("用户id: "+user.getId()+"商家id: "+sellId+"成功交易"+cgoods.getRental()*rentTime+"元");
+            System.out.println("用户id: "+user.getId()+"成功先租后买订单,商品类id: "+CgoodsId+"体验期"+rentTime+"个月");
 
 
             return 1;

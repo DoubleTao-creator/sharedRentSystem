@@ -24,6 +24,6 @@
         INSERT INTO renttobuy(start_time,rent_time) VALUES (NOW(),#{rentTime});
     </insert>
     <update id="updateRentToBuyRecode" parameterType="com.goods.entity.RentToBuy">
-        update renttobuy SET goods_id=#{goods_id} where id=#{id};
+        update renttobuy SET goods_id=#{goodsId} where id=#{id};
     </update>
 </mapper>

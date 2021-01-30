@@ -35,4 +35,13 @@ public class TestGoods {
     public  void test3(){
         userMapper.changeUserbalance(2, -100.0);
     }
+    @Test
+    public void test4(){
+        UserExperienceDTO userExperienceDTO=new UserExperienceDTO();
+        userExperienceDTO.setCgoodsId(1);
+        userExperienceDTO.setSellModel("先租后买");
+        userExperienceDTO.setUserId(2);
+        userExperienceDTO.setRentTime(2);
+        goodsService.ExperienceGoods(userExperienceDTO);
+    }
 }
