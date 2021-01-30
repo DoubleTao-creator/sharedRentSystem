@@ -11,5 +11,5 @@ public class UserExperienceDTO {
     private Integer userId;
     private Integer cgoodsId;
     private String  sellModel;
-    private Integer rent_time;
+    private Integer rentTime;
 }

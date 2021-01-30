@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goods.mapper.UserMapper">
+    <resultMap id="UserMapper" type="com.xtt.entity.User" autoMapping="true"></resultMap>
+    <select id="findUserById" parameterType="java.lang.Integer" resultMap="UserMapper">
+        SELECT * FROM USER WHERE id=#{userId};
+    </select>
+    <update id="changeUserbalance">
+        UPDATE user SET balance=balance+#{balanceToChange} where id=#{userId};
+    </update>
+</mapper>

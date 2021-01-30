@@ -6,7 +6,24 @@
     <select id="findOwnedGoods" parameterType="java.lang.Integer" resultMap="GoodsMapper">
         SELECT id,cgoods_id,user_id FROM goods WHERE user_id=#{userId} and status='已购买';
     </select>
-    <insert id="createInstallmentOrder" parameterType="java.util.Date">
-
+    <insert id="createInstallmentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
+        VALUES (#{cgoodsId},#{userId},'体验中',1,#{sellId});
     </insert>
+    <insert id="addInstallmentRecode" useGeneratedKeys="true" keyProperty="id" parameterType="com.goods.entity.Installment">
+        INSERT INTO installment(start_time) VALUES (NOW());
+    </insert>
+    <update id="updateInstallmentRecode" parameterType="com.goods.entity.Installment" >
+        UPDATE installment SET goods_id=#{goodsId} where id=#{id};
+    </update>
+    <insert id="createRentToBuyOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
+          VALUES (#{cgoodsId},#{userId},'体验中',2,#{sellId});
+    </insert>
+    <insert id="addRentToBuyRecode" parameterType="com.goods.entity.RentToBuy" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO renttobuy(start_time,rent_time) VALUES (NOW(),#{rentTime});
+    </insert>
+    <update id="updateRentToBuyRecode" parameterType="com.goods.entity.RentToBuy">
+        update renttobuy SET goods_id=#{goods_id} where id=#{id};
+    </update>
 </mapper>

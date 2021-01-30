@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goods.mapper.SellerMapper">
+    <resultMap id="SellerMap" type="entity.Seller" autoMapping="true">
+    </resultMap>
+    <update id="changeUserbalance" >
+        update seller SET balance=balance+#{balanceToChange} where id=#{sellerId};
+    </update>
+</mapper>

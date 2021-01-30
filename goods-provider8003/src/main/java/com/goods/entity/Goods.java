@@ -13,16 +13,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Goods {
-    //商品ID
+    /**
+     * 商品ID
+     */
     private Integer id;
-    //所属商品类ID
+    /**
+     * 所属商品类ID
+     */
     private Integer cgoodsId;
-    //用户id
+    /**
+     * 用户id
+     */
     private Integer userId;
-    //商品状态
+    /**
+     * 商品状态
+     */
     private String status;
-    //出售模式
-    private String sellModel;
-    //当前出售模式记录
-    private String sellId;
+    /**
+     * 出售模式
+     */
+    private Integer sellModel;
+    /**
+     * 当前出售模式记录
+     */
+    private Integer sellId;
 }

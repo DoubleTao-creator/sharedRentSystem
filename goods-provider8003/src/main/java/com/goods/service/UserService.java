@@ -1,8 +1,8 @@
 package com.goods.service;
 
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Service;
 
-@Mapper
+@Service
 public interface UserService {
     
 }

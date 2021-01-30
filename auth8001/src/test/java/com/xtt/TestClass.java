@@ -1,5 +1,6 @@
 package com.xtt;
 
+import com.xtt.mapper.UserMapper;
 import com.xtt.util.MailUtils;
 import entity.FTPConstants;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import java.io.IOException;
 public class TestClass {
     @Autowired
     private MailUtils mailUtils;
+    @Autowired
+    private UserMapper userMapper;
     /**
      * 测试上传文件
      * @throws IOException
@@ -61,5 +64,9 @@ public class TestClass {
     @Test
     public void testMailSender(){
         System.out.println(mailUtils.sendEmail("2045519528@qq.com"));
+    }
+    @Test
+    public void test2(){
+        System.out.println(userMapper);
     }
 }

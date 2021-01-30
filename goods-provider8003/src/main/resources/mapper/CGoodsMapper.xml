@@ -7,4 +7,7 @@
     <select id="getCgoodsById" resultMap="CGoodsMapper" parameterType="java.lang.Integer">
         SELECT * FROM cgoods WHERE id=#{cgoodsId};
     </select>
+    <update id="changeCGoodsRepertory" >
+        UPDATE cgoods SET repertory=repertoory+#{repertory} where id=#{cGoodsId};
+    </update>
 </mapper>
