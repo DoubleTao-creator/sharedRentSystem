@@ -1,10 +1,7 @@
 package com.goods.service.impl;
 
 import com.goods.dto.UserExperienceDTO;
-import com.goods.entity.Cgoods;
-import com.goods.entity.Goods;
-import com.goods.entity.Installment;
-import com.goods.entity.RentToBuy;
+import com.goods.entity.*;
 import com.goods.mapper.CGoodsMapper;
 import com.goods.mapper.GoodsMapper;
 import com.goods.mapper.SellerMapper;
@@ -103,8 +100,37 @@ public class GoodsServiceImpl implements GoodsService{
             return 1;
         }else if("共享租赁".equals(sellModel)){
             //处理共享租赁订单
+            ShareRent shareRent=new ShareRent();
+            //当前押金
+            Double currentDeposit=cgoods.getDeposit();
+            shareRent.setDeposit(currentDeposit);
+
+            goodsMapper.addShareRentRecode(shareRent);
+            Integer sellId=shareRent.getId();
+            Goods goods=new Goods();
+            BeanUtils.copyProperties(userExperienceDTO, goods);
+            goods.setSellId(sellId);
+            goodsMapper.createShareRentOrder(goods);
+            Integer goodsId=goods.getId();
+            shareRent.setId(sellId);
+            goodsMapper.updateShareRentRecode(shareRent);
+
+            //用户余额减少押金(商家不增加押金)
+            userMapper.changeUserbalance(userId, -currentDeposit);
+            //商品类库存减1
+            cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
+            //生成订单记录->订单模块
+            System.out.println("用户id: "+user.getId()+"成功共享租赁订单,商品类id: "+CgoodsId);
+            //订单记录-->订单模块
+
             return 1;
         }
         return -1;
+    }
+
+    @Override
+    public Integer purchaseGoods(Integer cgoodsId, Integer userId) {
+
+        return null;
     }
 }

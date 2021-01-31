@@ -15,4 +15,5 @@ public interface GoodsService {
      * @return
      */
     Integer ExperienceGoods(UserExperienceDTO userExperienceDTO);
+    Integer purchaseGoods(Integer cgoodsId,Integer userId);
 }

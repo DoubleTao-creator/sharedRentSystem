@@ -26,4 +26,15 @@
     <update id="updateRentToBuyRecode" parameterType="com.goods.entity.RentToBuy">
         update renttobuy SET goods_id=#{goodsId} where id=#{id};
     </update>
+    <insert id="addShareRentRecode" keyProperty="id" useGeneratedKeys="true" parameterType="com.goods.entity.ShareRent">
+        INSERT INTO sharerent(deposit,start_time)
+          VALUES (#{deposit},NOW());
+    </insert>
+    <update id="updateShareRentRecode" parameterType="com.goods.entity.ShareRent">
+        UPDATE sharerent SET goods_id=#{goodsId} where if=#{id};
+    </update>
+    <insert id="createShareRentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
+          VALUES (#{cgoodsId},#{userId},'未结算',3,#{sellId});
+    </insert>
 </mapper>
