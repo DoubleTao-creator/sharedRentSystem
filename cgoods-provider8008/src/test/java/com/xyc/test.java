@@ -43,4 +43,5 @@ public class test {
         String ss = new String(s);
         System.out.println(cGoodsMapper.getSellModel(ss));
     }
+
 }

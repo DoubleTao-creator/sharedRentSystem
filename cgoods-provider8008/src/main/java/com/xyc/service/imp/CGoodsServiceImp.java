@@ -87,14 +87,16 @@ public class CGoodsServiceImp implements CGoodsService {
             fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
             System.out.println("商品类照片已上传");
+            //删除本地临时文件 C:\UserData\AppData\Local\Temp目录下
+            PhotoUtils.deleteTempFile(file);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-//        return cGoodsMapper.add(cGoods);
-        return 0;
+        return cGoodsMapper.add(cGoods);
     }
 
     private Integer judgeSellModels(String[] sellModels){
