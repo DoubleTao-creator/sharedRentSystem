@@ -23,7 +23,7 @@
     </select>
 
     <select id="queryByInfo" resultType="com.xyc.pojo.CGoods">
-        select c.* from cgoods c,seller s
+        select distinct c.* from cgoods c,seller s
         <where>
             <if test="info!=null">
                 c.name like "%"#{info}"%" or
