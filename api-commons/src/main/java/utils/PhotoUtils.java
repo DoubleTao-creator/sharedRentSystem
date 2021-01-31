@@ -121,7 +121,13 @@ public class PhotoUtils {
         File file = null;
         try {
             String originalFilename = multipartFile.getOriginalFilename();
+            System.out.println(originalFilename);
             String[] filename = originalFilename.split(".");
+            for (String s : filename) {
+                System.out.println(s);
+            }
+            //这里有点问题 一直说filename数组越界
+            // 然后filename数组打印确实也打印不出东西
             file= File.createTempFile(filename[0], filename[1]);
             multipartFile.transferTo(file);
             file.deleteOnExit();
@@ -131,5 +137,21 @@ public class PhotoUtils {
         return file;
     }
 
+    public static File MultipartFileToFile(MultipartFile multiFile) {
+        // 获取文件名
+        String fileName = multiFile.getOriginalFilename();
+        // 获取文件后缀
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        System.out.println(prefix);
+        try {
+            File file = File.createTempFile(fileName, prefix);
+            multiFile.transferTo(file);
+            file.deleteOnExit();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 

@@ -1,6 +1,8 @@
 package com.xyc;
 
 import com.xyc.mapper.CGoodsMapper;
+import com.xyc.mapper.TypeMapper;
+import com.xyc.pojo.Type;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -10,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -21,6 +25,17 @@ public class test {
 
     @Autowired
     private CGoodsMapper cGoodsMapper;
+
+    @Autowired
+    private TypeMapper typeMapper;
+
+    @Test
+    public void test0131(){
+        List<Type> list = typeMapper.getAllType();
+        for (Type type : list) {
+            System.out.println(type);
+        }
+    }
 
     @Test
     public void test0128(){
