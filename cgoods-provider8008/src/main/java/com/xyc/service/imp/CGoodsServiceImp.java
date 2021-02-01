@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import utils.PhotoUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -69,25 +70,33 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setRental(cGoodsAD.getRental());
         cGoods.setDeposit(cGoodsAD.getDeposit());
         cGoods.setStatus("待审核");
-        //上传商品照片到服务器
+
+        for (String sellModel : cGoodsAD.getSellModels()) {
+            System.out.println(sellModel);
+        }
+        Integer sellModelId = judgeSellModels(cGoodsAD.getSellModels());
+        cGoods.setSellModel(sellModelId);
+
+        System.out.println(cGoods);
+
+//        上传商品照片到服务器
         try {
             FTPConstants fc = new FTPConstants();
             fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsAD.getPic())));
+            File file = PhotoUtils.MultipartFileToFile(cGoodsAD.getPic());
+            fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
             System.out.println("商品类照片已上传");
+            //删除本地临时文件 C:\UserData\AppData\Local\Temp目录下
+            PhotoUtils.deleteTempFile(file);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Integer sellModelId = judgeSellModels(cGoodsAD.getSellModels());
-        cGoods.setSellModel(sellModelId);
-
-        cGoodsMapper.add(cGoods);
-
-        return 0;
+        return cGoodsMapper.add(cGoods);
     }
 
     private Integer judgeSellModels(String[] sellModels){
