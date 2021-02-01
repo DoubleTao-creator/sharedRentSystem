@@ -17,4 +17,5 @@ public class Installment {
     private Integer id;
     private Integer goodsId;
     private Timestamp startTime;
+    private Timestamp deadTime;
 }

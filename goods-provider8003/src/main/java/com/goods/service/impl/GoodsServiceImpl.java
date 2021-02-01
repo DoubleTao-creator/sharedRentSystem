@@ -8,6 +8,7 @@ import com.goods.mapper.SellerMapper;
 import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.xtt.entity.User;
+import org.apache.naming.factory.ResourceLinkFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,7 +131,59 @@ public class GoodsServiceImpl implements GoodsService{
 
     @Override
     public Integer purchaseGoods(Integer cgoodsId, Integer userId) {
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(cgoodsId);
+        Double price=cgoods.getPrice();
+        Double balance=userMapper.findUserById(userId).getBalance();
+        if(balance<price){
+            //余额不足
+            return  0;
+        }
+        Integer result=goodsMapper.purchaseGoods(cgoodsId, userId);
+        //用户余额减少
+        userMapper.changeUserbalance(userId, -price);
+        //商家余额增加
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), price);
+        //商品库存减少
+        cGoodsMapper.changeCGoodsRepertory(cgoodsId, -1);
+        if(result>=0){
+            return 1;
+        }else {
+            return -1;
+        }
+    }
 
-        return null;
+    @Override
+    public Integer rerentGoods(Integer goodsId, Integer userId) {
+        Double balance=userMapper.findUserById(userId).getBalance();
+        Integer cGoodsId=goodsMapper.findGoodsById(goodsId).getCgoodsId();
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(cGoodsId);
+        Double rent=cgoods.getRental();
+        //用户已支付的月数
+        Integer differMonth=goodsMapper.selectDifferMonth(goodsId);
+        Double rentMonth1=Math.floor(cgoods.getPrice()/cgoods.getRental());
+        //商品需要支付的月数
+        Integer rentMonth=rentMonth1.intValue();
+        if(differMonth>=rentMonth){
+            //商品不用再续租
+            return 2;
+        }
+        Installment installment=goodsMapper.findInstallmentByGoodsId(goodsId);
+        if(balance<rent){
+            //余额不足
+            return 0;
+        }
+        //续租，订单下次交租时间加30天
+        Integer result=goodsMapper.rerentGoods(goodsId);
+        //用户余额减少
+        userMapper.changeUserbalance(userId, -rent);
+        //商家余额增加
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), rent);
+        if(result>0){
+            //续租成功
+            return 1;
+        }else {
+            //续租失败
+            return -1;
+        }
     }
 }
