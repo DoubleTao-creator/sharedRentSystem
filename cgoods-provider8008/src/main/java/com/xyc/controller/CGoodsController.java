@@ -56,8 +56,8 @@ public class CGoodsController {
     public CommonResult<List> getSellerOwnCGoods(@PathVariable("sellerId") Integer sellerId){
         List<CGoodsShowDTO> list = cGoodsService.searchBySellerId(sellerId);
 
-        if (list==null){
-            return CommonResultVO.error("您还没有上传任何商品");
+        if (list.size()==0){
+            return CommonResultVO.success("您还没有上传任何商品");
         }else {
             return CommonResultVO.success(list);
         }
@@ -67,8 +67,8 @@ public class CGoodsController {
     public CommonResult<List> getEachGoodsByCGoodId(
             @PathVariable("cGoodsId") Integer cGoodsId){
         List<GoodsShowDTO> list = cGoodsService.getEachGoodsByCGoodId(cGoodsId);
-        if (list==null){
-            return CommonResultVO.error("当前商品类还没有任何人租用");
+        if (list.size() == 0){
+            return CommonResultVO.success("当前商品类还没有任何人租用");
         }else {
             return CommonResultVO.success(list);
         }
