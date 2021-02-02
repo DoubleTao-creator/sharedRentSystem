@@ -1,6 +1,8 @@
 package com.xyc;
 
+import com.xyc.dto.GoodsShowDTO;
 import com.xyc.mapper.CGoodsMapper;
+import com.xyc.mapper.GoodsMapper;
 import com.xyc.mapper.TypeMapper;
 import com.xyc.pojo.Type;
 import org.junit.Test;
@@ -28,6 +30,17 @@ public class test {
 
     @Autowired
     private TypeMapper typeMapper;
+
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @Test
+    public void test0202(){
+        List<GoodsShowDTO> list = goodsMapper.getGoodsByCGoodsId(5);
+        for (GoodsShowDTO goodsShowDTO : list) {
+            System.out.println(goodsShowDTO);
+        }
+    }
 
     @Test
     public void test0131(){

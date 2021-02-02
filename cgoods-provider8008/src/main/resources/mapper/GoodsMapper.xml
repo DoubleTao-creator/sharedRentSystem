@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xyc.mapper.GoodsMapper">
+
+    <select id="getGoodsByCGoodsId" resultMap="CGoodsSD">
+        SELECT g.id id,g.cgoods_id cgoodsId,u.name userName,g.status status,s.info sellModel,g.sell_id sellId
+        from user u,goods g,sellmodle s
+        where g.cgoods_id = #{cGoodsId}
+        and g.user_id = u.id
+        and g.sell_modle = s.id
+    </select>
+    <resultMap id="CGoodsSD" type="com.xyc.dto.GoodsShowDTO">
+
+    </resultMap>
+
+</mapper>
