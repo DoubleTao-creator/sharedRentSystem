@@ -15,4 +15,20 @@ public interface GoodsService {
      * @return
      */
     Integer ExperienceGoods(UserExperienceDTO userExperienceDTO);
+
+    /**
+     * 用户购买商品（未体验）
+     * @param cgoodsId
+     * @param userId
+     * @return
+     */
+    Integer purchaseGoods(Integer cgoodsId,Integer userId);
+
+    /**
+     * 续租以租代售订单
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    Integer rerentGoods(Integer goodsId,Integer userId);
 }

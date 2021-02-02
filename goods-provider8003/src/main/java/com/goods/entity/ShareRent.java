@@ -8,14 +8,13 @@ import java.sql.Timestamp;
 
 /**
  * @author xtt
- * @date 2021/1/30
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Installment {
+public class ShareRent {
     private Integer id;
+    private Double deposit;
     private Integer goodsId;
-    private Timestamp startTime;
-    private Timestamp deadTime;
+    private Timestamp timestamp;
 }

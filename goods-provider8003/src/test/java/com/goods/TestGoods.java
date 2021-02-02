@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
+
 @SpringBootTest
 public class TestGoods {
     @Autowired
@@ -43,5 +45,20 @@ public class TestGoods {
         userExperienceDTO.setUserId(2);
         userExperienceDTO.setRentTime(2);
         goodsService.ExperienceGoods(userExperienceDTO);
+    }
+    @Test
+    public void test5(){
+        //goodsMapper.rerentGoods(1);
+        Installment installment=goodsMapper.findInstallmentByGoodsId(1);
+        Timestamp timestamp=installment.getStartTime();
+        Timestamp timestamp1=installment.getDeadTime();
+        System.out.println(timestamp);
+        System.out.println(timestamp1);
+        System.out.println(timestamp1.getNanos());
+    }
+    @Test
+    public void test6(){
+        Integer differMonth=goodsMapper.selectDifferMonth(1);
+        System.out.println(differMonth);
     }
 }

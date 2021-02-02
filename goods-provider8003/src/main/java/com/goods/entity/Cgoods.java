@@ -50,6 +50,10 @@ public class Cgoods {
      */
     private Double rental;
     /**
+     * 押金
+     */
+    private Double deposit;
+    /**
      * 状态
      */
     private String status;

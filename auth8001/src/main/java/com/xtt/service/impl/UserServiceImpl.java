@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDTO, user);
         user.setPassword(encodedPassword);
         //设置余额
-        user.setBalance(0);
+        user.setBalance(0.0);
         //设置信誉积分
         user.setCredit(100);
         //设置头像为初始默认头像

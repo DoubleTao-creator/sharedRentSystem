@@ -1,16 +1,14 @@
 package com.goods.service.impl;
 
 import com.goods.dto.UserExperienceDTO;
-import com.goods.entity.Cgoods;
-import com.goods.entity.Goods;
-import com.goods.entity.Installment;
-import com.goods.entity.RentToBuy;
+import com.goods.entity.*;
 import com.goods.mapper.CGoodsMapper;
 import com.goods.mapper.GoodsMapper;
 import com.goods.mapper.SellerMapper;
 import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.xtt.entity.User;
+import org.apache.naming.factory.ResourceLinkFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,8 +101,89 @@ public class GoodsServiceImpl implements GoodsService{
             return 1;
         }else if("共享租赁".equals(sellModel)){
             //处理共享租赁订单
+            ShareRent shareRent=new ShareRent();
+            //当前押金
+            Double currentDeposit=cgoods.getDeposit();
+            shareRent.setDeposit(currentDeposit);
+
+            goodsMapper.addShareRentRecode(shareRent);
+            Integer sellId=shareRent.getId();
+            Goods goods=new Goods();
+            BeanUtils.copyProperties(userExperienceDTO, goods);
+            goods.setSellId(sellId);
+            goodsMapper.createShareRentOrder(goods);
+            Integer goodsId=goods.getId();
+            shareRent.setId(sellId);
+            goodsMapper.updateShareRentRecode(shareRent);
+
+            //用户余额减少押金(商家不增加押金)
+            userMapper.changeUserbalance(userId, -currentDeposit);
+            //商品类库存减1
+            cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
+            //生成订单记录->订单模块
+            System.out.println("用户id: "+user.getId()+"成功共享租赁订单,商品类id: "+CgoodsId);
+            //订单记录-->订单模块
+
             return 1;
         }
         return -1;
+    }
+
+    @Override
+    public Integer purchaseGoods(Integer cgoodsId, Integer userId) {
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(cgoodsId);
+        Double price=cgoods.getPrice();
+        Double balance=userMapper.findUserById(userId).getBalance();
+        if(balance<price){
+            //余额不足
+            return  0;
+        }
+        Integer result=goodsMapper.purchaseGoods(cgoodsId, userId);
+        //用户余额减少
+        userMapper.changeUserbalance(userId, -price);
+        //商家余额增加
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), price);
+        //商品库存减少
+        cGoodsMapper.changeCGoodsRepertory(cgoodsId, -1);
+        if(result>=0){
+            return 1;
+        }else {
+            return -1;
+        }
+    }
+
+    @Override
+    public Integer rerentGoods(Integer goodsId, Integer userId) {
+        Double balance=userMapper.findUserById(userId).getBalance();
+        Integer cGoodsId=goodsMapper.findGoodsById(goodsId).getCgoodsId();
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(cGoodsId);
+        Double rent=cgoods.getRental();
+        //用户已支付的月数
+        Integer differMonth=goodsMapper.selectDifferMonth(goodsId);
+        Double rentMonth1=Math.floor(cgoods.getPrice()/cgoods.getRental());
+        //商品需要支付的月数
+        Integer rentMonth=rentMonth1.intValue();
+        if(differMonth>=rentMonth){
+            //商品不用再续租
+            return 2;
+        }
+        Installment installment=goodsMapper.findInstallmentByGoodsId(goodsId);
+        if(balance<rent){
+            //余额不足
+            return 0;
+        }
+        //续租，订单下次交租时间加30天
+        Integer result=goodsMapper.rerentGoods(goodsId);
+        //用户余额减少
+        userMapper.changeUserbalance(userId, -rent);
+        //商家余额增加
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), rent);
+        if(result>0){
+            //续租成功
+            return 1;
+        }else {
+            //续租失败
+            return -1;
+        }
     }
 }
