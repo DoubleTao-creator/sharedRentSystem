@@ -3,7 +3,9 @@ package com.xyc.service.imp;
 import com.xyc.dto.CGoodsAddDTO;
 import com.xyc.dto.CGoodsModifyDTO;
 import com.xyc.dto.CGoodsShowDTO;
+import com.xyc.dto.GoodsShowDTO;
 import com.xyc.mapper.CGoodsMapper;
+import com.xyc.mapper.GoodsMapper;
 import com.xyc.pojo.CGoods;
 import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
@@ -25,9 +27,13 @@ public class CGoodsServiceImp implements CGoodsService {
     @Autowired
     private CGoodsMapper cGoodsMapper;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+
     @Override
     public int updateInfo(CGoodsModifyDTO cGoodsMD) {
         CGoods cGoods = cGoodsMapper.queryById(cGoodsMD.getId());
+
         try {
             FTPConstants fc = new FTPConstants();
             //删除原来的照片
@@ -35,8 +41,11 @@ public class CGoodsServiceImp implements CGoodsService {
             PhotoUtils.deleteFile(fc);
             //上传照片
             fc.setFilename(PhotoUtils.SELLER_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(cGoodsMD.getPic())));
+            File file = PhotoUtils.MultipartFileToFile(cGoodsMD.getPic());
+            fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
+
+            PhotoUtils.deleteTempFile(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -55,6 +64,11 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setStatus(cGoodsMD.getStatus());
 
         return cGoodsMapper.modify(cGoods);
+    }
+
+    @Override
+    public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId) {
+        return goodsMapper.getGoodsByCGoodsId(cGoodsId);
     }
 
     @Override

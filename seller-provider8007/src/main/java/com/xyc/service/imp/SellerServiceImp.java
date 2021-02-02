@@ -7,12 +7,12 @@ import com.xyc.mapper.SellerMapper;
 import com.xyc.pojo.Seller;
 import com.xyc.service.SellerService;
 import entity.FTPConstants;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,9 +39,14 @@ public class SellerServiceImp implements SellerService {
         try {
             FTPConstants fc = new FTPConstants();
             fc.setFilename(PhotoUtils.LICENSE_PREFIX+sellerRD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(sellerRD.getLicense())));
+
+            File file = PhotoUtils.MultipartFileToFile(sellerRD.getLicense());
+            fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
             System.out.println("营业执照已上传");
+
+            PhotoUtils.deleteTempFile(file);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -82,13 +87,16 @@ public class SellerServiceImp implements SellerService {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
         try {
             FTPConstants fc = new FTPConstants();
-
+            //删除原来的照片
             fc.setFilename(PhotoUtils.SELLER_PREFIX+seller.getName()+PhotoUtils.SUFFIX);
             PhotoUtils.deleteFile(fc);
-
+            //上传新的照片
             fc.setFilename(PhotoUtils.SELLER_PREFIX+sellerMD.getName()+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(PhotoUtils.transferToFile(sellerMD.getPic())));
+            File file = PhotoUtils.MultipartFileToFile(sellerMD.getPic());
+            fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
+
+            PhotoUtils.deleteTempFile(file);
 
             seller.setId(sellerMD.getId());
             seller.setName(sellerMD.getName());

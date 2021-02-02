@@ -3,6 +3,7 @@ package com.xyc.service;
 import com.xyc.dto.CGoodsAddDTO;
 import com.xyc.dto.CGoodsModifyDTO;
 import com.xyc.dto.CGoodsShowDTO;
+import com.xyc.dto.GoodsShowDTO;
 import com.xyc.pojo.CGoods;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface CGoodsService {
 
     public int updateInfo(CGoodsModifyDTO cGoodsAD);
 
+    public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId);
 }
