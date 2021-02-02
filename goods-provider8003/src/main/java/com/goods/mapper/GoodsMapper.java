@@ -136,4 +136,26 @@ public interface GoodsMapper {
      * @return
      */
     Integer refundRent(@Param("goodsId") Integer goodsId,@Param("userId") Integer userId);
+
+    /**
+     * 查询当前时间与开始时间相差几天（共享租赁）
+     * @param goodsId
+     * @return
+     */
+    Integer differDayShareRent(Integer goodsId);
+
+    /**
+     * 根据订单ID查询共享租赁记录
+     * @param goodsId
+     * @return
+     */
+    ShareRent findShareRentByGoodsId(@Param("goodsId") Integer goodsId);
+
+    /**
+     * 改变共享租赁订单状态 空闲（结算成功），待结算（结算失败，余额不足）
+     * @param goodsId 订单id
+     * @param status 状态
+     * @return
+     */
+    Integer changeShareRentStatus(@Param("goodsId") Integer goodsId,@Param("status") String status);
 }

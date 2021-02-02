@@ -38,7 +38,7 @@
     </update>
     <insert id="createShareRentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
-          VALUES (#{cgoodsId},#{userId},'待结算',3,#{sellId});
+          VALUES (#{cgoodsId},#{userId},'体验中',3,#{sellId});
     </insert>
     <insert id="purchaseGoods">
         INSERT INTO goods(cgoods_id,user_id,status) VALUES (#{cgoodsId},#{userId},'已购买');
@@ -60,5 +60,15 @@
     </select>
     <update id="refundRent">
         update goods SET status='空闲' WHERE id=#{goodsId} and user_id=#{userId};
+    </update>
+    <select id="differDayShareRent" resultType="java.lang.Integer">
+        SELECT TIMESTAMPDIFF(DAY,start_time,NOW()) FROM sharerent WHERE  goods_id=#{goodsId};
+    </select>
+    <select id="findShareRentByGoodsId" resultType="com.goods.entity.ShareRent">
+        select * from sharerent WHERE goods_id=#{goodsId};
+    </select>
+    <update id="changeShareRentStatus" >
+        UPDATE goods SET status=#{status}where goods_id=#{goodsId};
+        UPDATE sharerent set dead_time= NOW() where goods_id=#{goodsId};
     </update>
 </mapper>

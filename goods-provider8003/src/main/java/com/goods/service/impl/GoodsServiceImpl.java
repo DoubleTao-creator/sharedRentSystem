@@ -9,6 +9,7 @@ import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.xtt.entity.User;
 import entity.Seller;
+import org.HdrHistogram.DoubleLinearIterator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author xtt
  */
 @Service
-public class GoodsServiceImpl implements GoodsService{
+public class GoodsServiceImpl implements
+        GoodsService{
     @Autowired
     GoodsMapper goodsMapper;
     @Autowired
@@ -115,8 +117,10 @@ public class GoodsServiceImpl implements GoodsService{
             shareRent.setId(sellId);
             goodsMapper.updateShareRentRecode(shareRent);
 
-            //用户余额减少押金(商家不增加押金)
+            //用户余额减少押金
             userMapper.changeUserbalance(userId, -currentDeposit);
+            //商家增加押金
+            sellerMapper.changeUserbalance(sellId, currentDeposit);
             //商品类库存减1
             cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
             //生成订单记录->订单模块
@@ -207,7 +211,7 @@ public class GoodsServiceImpl implements GoodsService{
         userMapper.changeUserbalance(userId, -shouldPay);
         //商家增加余额
         sellerMapper.changeUserbalance(cgoods.getSellerId(), shouldPay);
-        //改订单未已购买
+        //改订单为已购买
         goodsMapper.purchaseRentToBuy(goodsId);
         return 1;
     }
@@ -224,4 +228,38 @@ public class GoodsServiceImpl implements GoodsService{
         }
         return 0;
     }
+
+    @Override
+    public Integer settleShareRent(Integer goodsId, Integer userId) {
+        User user=userMapper.findUserById(userId);
+        Goods goods=goodsMapper.findGoodsById(goodsId);
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(goods.getCgoodsId());
+        Integer differDay=goodsMapper.differDayShareRent(goodsId);
+        //用户余额
+        Double balance=user.getBalance();
+        //用户应该付的钱（按天计费）
+        Double shouldPay=differDay*cgoods.getRental()/30;
+        //押金
+        Double deposit=goodsMapper.findShareRentByGoodsId(goodsId).getDeposit();
+        if(balance<shouldPay){
+            //余额不足
+            //将订单状态改为待结算，并且保存当前停止时间
+            goodsMapper.changeShareRentStatus(goodsId, "待结算");
+            return 0;
+        }
+        //用户减少余额
+        userMapper.changeUserbalance(userId, -shouldPay);
+        //商家增加余额
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), shouldPay);
+        //用户增加押金
+        userMapper.changeUserbalance(userId, deposit);
+        //商家减少押金
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), -deposit);
+        //结算成功，将商品改为空闲状态
+        goodsMapper.changeShareRentStatus(goodsId, "空闲");
+        //商品库存加1
+        cGoodsMapper.changeCGoodsRepertory(cgoods.getId(), 1);
+        return 1;
+    }
+
 }

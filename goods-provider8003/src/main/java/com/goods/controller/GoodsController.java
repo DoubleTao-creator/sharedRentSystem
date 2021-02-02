@@ -34,6 +34,7 @@ public class GoodsController {
      * @param userId
      * @return
      */
+    @PostMapping("/goods/purchaseGoods")
     public CommonResult purchaseGoods(Integer cgoodsId,Integer userId){
         Integer result=goodsService.purchaseGoods(cgoodsId, userId);
         if(result==0){
@@ -54,6 +55,7 @@ public class GoodsController {
      * @param userId
      * @return
      */
+    @PostMapping("/goods/rerentGoods")
     public CommonResult rerentGoods(Integer goodsId,Integer userId){
         Integer result=goodsService.rerentGoods(goodsId, userId);
         if(result==2){
@@ -73,6 +75,7 @@ public class GoodsController {
      * @param userId
      * @return
      */
+    @PostMapping("/goods/purchaseRentToBuy")
     public CommonResult purchaseRentToBuy(Integer goodsId,Integer userId){
         Integer result=goodsService.purchaseRentToBuy(goodsId, userId);
         if(result==0){
@@ -88,6 +91,7 @@ public class GoodsController {
      * @param userId
      * @return
      */
+    @PostMapping("/goods/refundRent")
     public CommonResult refundRent(Integer goodsId,Integer userId){
         Integer result=goodsService.refundRent(goodsId, userId);
         if(result==1){
@@ -97,5 +101,21 @@ public class GoodsController {
             System.out.println("userId:"+userId+"退租失败");
             return CommonResultVO.error("退租失败");
         }
+    }
+
+    /**
+     * 结算共享租赁订单
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    @PostMapping("/goods/settleShareRent")
+    public CommonResult settltShareRent(Integer goodsId,Integer userId){
+        Integer result=goodsService.settleShareRent(goodsId, userId);
+        if(result==1){
+            return CommonResultVO.error("余额不足");
+        }
+        //结算成功
+        return CommonResultVO.success(null);
     }
 }

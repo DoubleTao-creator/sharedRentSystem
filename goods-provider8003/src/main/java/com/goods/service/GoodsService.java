@@ -47,4 +47,12 @@ public interface GoodsService {
      * @return
      */
     Integer refundRent(Integer goodsId,Integer userId);
+
+    /**
+     * 结算共享租赁订单
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    Integer settleShareRent(Integer goodsId,Integer userId);
 }

@@ -16,5 +16,6 @@ public class ShareRent {
     private Integer id;
     private Double deposit;
     private Integer goodsId;
-    private Timestamp timestamp;
+    private Timestamp startTime;
+    private Timestamp deadTime;
 }
