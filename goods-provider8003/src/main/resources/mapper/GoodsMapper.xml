@@ -38,7 +38,7 @@
     </update>
     <insert id="createShareRentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
-          VALUES (#{cgoodsId},#{userId},'未结算',3,#{sellId});
+          VALUES (#{cgoodsId},#{userId},'待结算',3,#{sellId});
     </insert>
     <insert id="purchaseGoods">
         INSERT INTO goods(cgoods_id,user_id,status) VALUES (#{cgoodsId},#{userId},'已购买');
@@ -52,4 +52,13 @@
     <select id="selectDifferMonth" resultType="java.lang.Integer">
         select TIMESTAMPDIFF(MONTH ,start_time,dead_time) from installment WHERE goods_id=#{goodsId};
     </select>
+    <update id="purchaseRentToBuy" >
+        UPDATE goods SET status='已购买' WHERE id=#{goodsId};
+    </update>
+    <select id="findRentToBuyById" resultType="com.goods.entity.RentToBuy">
+        SELECT * FROM renttobuy WHERE goodsId=#{goodsId};
+    </select>
+    <update id="refundRent">
+        update goods SET status='空闲' WHERE id=#{goodsId} and user_id=#{userId};
+    </update>
 </mapper>

@@ -31,4 +31,20 @@ public interface GoodsService {
      * @return
      */
     Integer rerentGoods(Integer goodsId,Integer userId);
+
+    /**
+     * 购买先租后买
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    Integer purchaseRentToBuy(Integer goodsId,Integer userId);
+
+    /**
+     * 退租（退商品不退钱）
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    Integer refundRent(Integer goodsId,Integer userId);
 }

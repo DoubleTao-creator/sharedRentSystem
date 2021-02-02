@@ -66,4 +66,36 @@ public class GoodsController {
             return CommonResultVO.error("续租失败");
         }
     }
+
+    /**
+     * 购买先租后买订单
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    public CommonResult purchaseRentToBuy(Integer goodsId,Integer userId){
+        Integer result=goodsService.purchaseRentToBuy(goodsId, userId);
+        if(result==0){
+            return CommonResultVO.error("余额不足!");
+        }else{
+            return CommonResultVO.success(null);
+        }
+    }
+
+    /**
+     * 退租
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    public CommonResult refundRent(Integer goodsId,Integer userId){
+        Integer result=goodsService.refundRent(goodsId, userId);
+        if(result==1){
+            System.out.println("userId:"+userId+"退租成功");
+            return CommonResultVO.success(null);
+        }else {
+            System.out.println("userId:"+userId+"退租失败");
+            return CommonResultVO.error("退租失败");
+        }
+    }
 }

@@ -8,12 +8,11 @@ import com.goods.mapper.SellerMapper;
 import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.xtt.entity.User;
-import org.apache.naming.factory.ResourceLinkFactory;
+import entity.Seller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 /**
  * @author xtt
  */
@@ -185,5 +184,44 @@ public class GoodsServiceImpl implements GoodsService{
             //续租失败
             return -1;
         }
+    }
+
+    @Override
+    public Integer purchaseRentToBuy(Integer goodsId, Integer userId) {
+        Goods goods=goodsMapper.findGoodsById(goodsId);
+        Cgoods cgoods=cGoodsMapper.getCgoodsById(goods.getCgoodsId());
+        User user=userMapper.findUserById(userId);
+        //商品总费用
+        Double price=cgoods.getPrice();
+        //用户体验期支付费用
+        Double havePay=goodsMapper.findRentToBuyById(goodsId).getRentTime()*cgoods.getRental();
+        //用户余额
+        Double balance=user.getBalance();
+        //用户应该支付费用
+        Double shouldPay=price-havePay;
+        if(balance<shouldPay){
+            //用户余额不足
+            return 0;
+        }
+        //用户减少余额
+        userMapper.changeUserbalance(userId, -shouldPay);
+        //商家增加余额
+        sellerMapper.changeUserbalance(cgoods.getSellerId(), shouldPay);
+        //改订单未已购买
+        goodsMapper.purchaseRentToBuy(goodsId);
+        return 1;
+    }
+    @Override
+    public Integer refundRent(Integer goodsId, Integer userId) {
+        Goods goods=goodsMapper.findGoodsById(goodsId);
+        //改商品为空闲
+        Integer result=goodsMapper.refundRent(goodsId, userId);
+        if(result>0){
+            //商品库存增加
+            cGoodsMapper.changeCGoodsRepertory(goods.getCgoodsId(), 1);
+        }else {
+            return 0;
+        }
+        return 0;
     }
 }

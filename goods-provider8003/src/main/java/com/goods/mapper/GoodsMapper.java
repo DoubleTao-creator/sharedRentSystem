@@ -114,4 +114,26 @@ public interface GoodsMapper {
      * @return 相差的月数
      */
     Integer selectDifferMonth(@Param("goodsId") Integer goodsId);
+
+    /**
+     * 对先租后买订单选择购买
+     * @param goodsId
+     * @return
+     */
+    Integer purchaseRentToBuy(@Param("goodsId") Integer goodsId);
+
+    /**
+     * 查询先租后买记录
+     * @param goodsId 订单ID
+     * @return 先租后买记录
+     */
+    RentToBuy findRentToBuyById(Integer goodsId);
+
+    /**
+     * 退租（退商品不退钱）
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    Integer refundRent(@Param("goodsId") Integer goodsId,@Param("userId") Integer userId);
 }
