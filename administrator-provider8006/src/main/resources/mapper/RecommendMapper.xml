@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xyc.mapper.RecommendMapper">
+
+    <select id="get" resultMap="RecommendMap">
+        select r.id rid,c.id cid,c.name name,c.pic pic,c.info info,c.price price,c.rental rental,c.deposit deposit
+        from recommend r,cgoods c
+        where c.id = r.cgoods_id
+    </select>
+    <resultMap id="RecommendMap" type="com.xyc.pojo.Recommend">
+        <result property="id" column="rid"/>
+        <association property="CGoods" javaType="com.xyc.pojo.CGoods">
+            <result property="id" column="cid"/>
+            <result property="name" column="name"/>
+            <result property="pic" column="pic"/>
+            <result property="info" column="info"/>
+            <result property="price" column="price"/>
+            <result property="rental" column="rental"/>
+            <result property="deposit" column="deposit"/>
+        </association>
+    </resultMap>
+
+
+</mapper>
