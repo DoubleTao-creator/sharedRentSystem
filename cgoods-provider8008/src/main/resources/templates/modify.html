@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div style="width: 980px;margin: auto">
+    <form method="post" role="form" th:action="@{/cgoods/modify}" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label>sellerId</label>
+            <input type="text" name="sellerId" class="form-control" th:value="${cGoodSD.getId()}">
+        </div>
+
+        <div class="form-group">
+            <label>name</label>
+            <input type="text" class="form-control" name="name" th:value="${cGoodSD.getName()}">
+        </div>
+
+        <div class="form-group">
+            <label>type</label>
+            <select class="form-control" name="typeId">
+                <option th:value="${type.getId()}" th:each="type:${types}" th:text="${type.getName()}">1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>repertory</label>
+            <input type="number" name="repertory" class="form-control" th:value="${cGoodSD.getRepertory()}">
+        </div>
+
+        <div class="form-group">
+            <label>pic</label>
+            <input type="file" name="pic" th:value="${cGoodSD.getPic()}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>info</label>
+            <input type="text" name="info" th:value="${cGoodSD.getInfo()}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>sellModels</label><br>
+            <label class="radio-inline">
+                <input type="checkbox" name="sellModels" value="以租代售">以租代售
+            </label>
+            <label class="radio-inline">
+                <input type="checkbox" name="sellModels"  value="先租后买">先租后买
+            </label>
+            <label class="radio-inline">
+                <input type="checkbox" name="sellModels"  value="共享租赁">共享租赁
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>price</label>
+            <input type="text" th:value="${cGoodSD.getPrice()}" name="price" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>rental</label>
+            <input type="text" name="rental" th:value="${cGoodSD.getRental()}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>deposit</label>
+            <input type="text" name="deposit" th:value="${cGoodSD.getDeposit()}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">更新</button>
+
+    </form>
+</div>
+
+</body>
+</html>

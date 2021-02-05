@@ -5,6 +5,10 @@
 
 <mapper namespace="com.xyc.mapper.SlidShowMapper">
 
+    <select id="getById" resultType="com.xyc.pojo.SlidShow">
+        select * from slidshow where id = #{id}
+    </select>
+
     <update id="add" parameterType="com.xyc.pojo.SlidShow">
         insert into slidshow(cgoods_id,pic) values(#{cgoodsId},#{pic})
     </update>
@@ -16,6 +20,5 @@
     <select id="get" resultType="com.xyc.pojo.SlidShow">
         select * from slidshow;
     </select>
-
 
 </mapper>

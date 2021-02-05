@@ -11,7 +11,6 @@ import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import utils.PhotoUtils;
 
 import java.io.File;
@@ -37,10 +36,10 @@ public class CGoodsServiceImp implements CGoodsService {
         try {
             FTPConstants fc = new FTPConstants();
             //删除原来的照片
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
             PhotoUtils.deleteFile(fc);
             //上传照片
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
             File file = PhotoUtils.MultipartFileToFile(cGoodsMD.getPic());
             fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
@@ -55,7 +54,7 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setName(cGoodsMD.getName());
         cGoods.setTypeId(cGoodsMD.getTypeId());
         cGoods.setRepertory(cGoodsMD.getRepertory());
-        cGoods.setPic(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
+        cGoods.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
         cGoods.setInfo(cGoodsMD.getInfo());
         cGoods.setSellModel(judgeSellModels(cGoodsMD.getSellModels()));
         cGoods.setPrice(cGoodsMD.getPrice());
@@ -78,7 +77,7 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setName(cGoodsAD.getName());
         cGoods.setTypeId(cGoodsAD.getTypeId());
         cGoods.setRepertory(cGoodsAD.getRepertory());
-        cGoods.setPic(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
+        cGoods.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
         cGoods.setInfo(cGoodsAD.getInfo());
         cGoods.setPrice(cGoodsAD.getPrice());
         cGoods.setRental(cGoodsAD.getRental());

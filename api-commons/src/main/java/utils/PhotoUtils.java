@@ -17,15 +17,16 @@ import java.io.IOException;
 
 @Slf4j
 public class PhotoUtils {
-    public static final String BASE_HEAD_PHOTO_URL ="http://120.78.182.170:8080/photo/default_avatar.png";
-    public static final String BASE_PREFIX="http://120.78.182.170:8080/photo/";
-    public static final String USER_PREFIX="head_user";
-    public static final String SELLER_PREFIX="head_seller";
-    public static final String LICENSE_PREFIX="license_seller";
-    public static final String GOODS_PREFIX="head_goods";
-    public static final String SUFFIX=".png";
+    public static final String BASE_HEAD_PHOTO_URL = "http://120.78.182.170:8080/photo/default_avatar.png";
+    public static final String BASE_PREFIX = "http://120.78.182.170:8080/photo/";
+    public static final String USER_PREFIX = "head_user";
+    public static final String SELLER_PREFIX = "head_seller";
+    public static final String LICENSE_PREFIX = "license_seller";
+    public static final String GOODS_PREFIX = "head_goods";
+    public static final String SUFFIX = ".png";
+    public static final String SLIDSHOW_PREFIX = "head_slidshow";
     public static boolean uploadFile(FTPConstants ftpConstants) throws IOException {
-        FTPClient ftpClient=new FTPClient();
+        FTPClient ftpClient = new FTPClient();
         try {
             int reply;
             ftpClient.enterLocalPassiveMode();
@@ -75,13 +76,14 @@ public class PhotoUtils {
 
     /**
      * 删除文件
-     *设置FTPConstants传入文件名即可
+     * 设置FTPConstants传入文件名即可
+     *
      * @param ftpConstants
      * @return
      * @throws IOException
      */
-    public static Boolean deleteFile(FTPConstants  ftpConstants) throws IOException {
-        FTPClient ftpClient=new FTPClient();
+    public static Boolean deleteFile(FTPConstants ftpConstants) throws IOException {
+        FTPClient ftpClient = new FTPClient();
         ftpClient.enterLocalPassiveMode();
         System.out.println("连接FTP服务器");
         try {
@@ -97,16 +99,16 @@ public class PhotoUtils {
             ftpClient.changeWorkingDirectory(ftpConstants.getFilepath());
             System.out.println("删除文件");
             //根据传入的文件名进行删除
-            if(ftpClient.deleteFile(ftpConstants.getFilename())){
+            if (ftpClient.deleteFile(ftpConstants.getFilename())) {
                 ftpClient.logout();
                 System.out.println("文件删除成功");
                 return true;
-            } else{
+            } else {
                 return false;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             ftpClient.logout();
         }
         return false;
@@ -114,6 +116,7 @@ public class PhotoUtils {
 
     /**
      * multipartfile转为file
+     *
      * @param multipartFile
      * @return
      */
@@ -128,7 +131,7 @@ public class PhotoUtils {
             }
             //这里有点问题 一直说filename数组越界
             // 然后filename数组打印确实也打印不出东西
-            file= File.createTempFile(filename[0], filename[1]);
+            file = File.createTempFile(filename[0], filename[1]);
             multipartFile.transferTo(file);
             file.deleteOnExit();
         } catch (IOException e) {
@@ -146,12 +149,21 @@ public class PhotoUtils {
         try {
             File file = File.createTempFile(fileName, prefix);
             multiFile.transferTo(file);
-            file.deleteOnExit();
             return file;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-}
 
+    //删除本地缓存 C:\UserData\AppData\Local\Temp下的文件
+    public static void deleteTempFile(File file) {
+        if (file != null) {
+            System.out.println(file.toURI());
+            File delFile = new File(file.toURI());
+            delFile.delete();
+        }
+        return;
+    }
+
+}
