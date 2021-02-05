@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface SlidShowMapper {
 
+    public SlidShow getById(@Param("id") Integer id);
+
     public int add(SlidShow slidShow);
 
     public int delete(@Param("id") Integer id);
