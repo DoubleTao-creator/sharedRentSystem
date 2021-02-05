@@ -4,6 +4,7 @@ import com.goods.dto.UserExperienceDTO;
 import com.goods.mapper.CGoodsMapper;
 import com.goods.service.GoodsService;
 import com.goods.service.OrderService;
+import com.goods.vo.OrderResultVO;
 import com.goods.vo.RecodeVO;
 import entity.CommonResult;
 import entity.CommonResultVO;
@@ -156,5 +157,16 @@ public class GoodsController {
     public CommonResult findRecode(Integer userId){
         List<RecodeVO> recodeVOS=orderService.findRecodeByUserId(userId);
         return CommonResultVO.success(recodeVOS);
+    }
+
+    /**
+     * 根据用户id查询订单
+     * @param userId
+     * @return
+     */
+    @GetMapping("/goods/getOrder")
+    public  CommonResult getOrder(Integer userId){
+        List<OrderResultVO> orders=orderService.findOrder(userId);
+        return CommonResultVO.success(orders);
     }
 }
