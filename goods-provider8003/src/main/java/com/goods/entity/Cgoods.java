@@ -40,7 +40,7 @@ public class Cgoods {
     /**
      * 出售模式
      */
-    private String sellModel;
+    private Integer sellModel;
     /**
      * 价格
      */

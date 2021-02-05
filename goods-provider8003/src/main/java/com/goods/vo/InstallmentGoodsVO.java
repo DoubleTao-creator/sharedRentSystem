@@ -1,7 +1,13 @@
 package com.goods.vo;
 
-import java.sql.Timestamp;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class InstallmentGoodsVO {
     /**
      * 订单开始时间

@@ -4,6 +4,7 @@ import com.goods.dto.UserExperienceDTO;
 import com.goods.mapper.CGoodsMapper;
 import com.goods.service.GoodsService;
 import com.goods.service.OrderService;
+import com.goods.vo.RecodeVO;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 /**
  *@author  xtt
  */
@@ -141,5 +145,16 @@ public class GoodsController {
     @GetMapping("/goods/findExperiencedGoods")
     public CommonResult findExperience(){
         return null;
+    }
+
+    /**
+     * 查询记录
+     * @param userId
+     * @return
+     */
+    @GetMapping("/goods/getRecode")
+    public CommonResult findRecode(Integer userId){
+        List<RecodeVO> recodeVOS=orderService.findRecodeByUserId(userId);
+        return CommonResultVO.success(recodeVOS);
     }
 }

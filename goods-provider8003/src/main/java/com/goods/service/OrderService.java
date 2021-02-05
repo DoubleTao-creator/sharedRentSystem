@@ -1,6 +1,8 @@
 package com.goods.service;
 
+import com.goods.vo.OrderResultVO;
 import com.goods.vo.OwnedGoodsVO;
+import com.goods.vo.RecodeVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,4 +13,18 @@ import java.util.List;
 @Service
 public interface OrderService {
     List<OwnedGoodsVO> findOwnedGoods(Integer userId);
+
+    /**
+     * 查询记录通过用户id
+     * @param userId
+     * @return
+     */
+    List<RecodeVO> findRecodeByUserId(Integer userId);
+
+    /**
+     * 查询订单通过用户id
+     * @param userId
+     * @return
+     */
+    List<OrderResultVO> findOrder(Integer userId);
 }

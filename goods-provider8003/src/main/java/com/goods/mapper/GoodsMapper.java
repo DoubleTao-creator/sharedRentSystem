@@ -4,10 +4,12 @@ import com.goods.entity.Goods;
 import com.goods.entity.Installment;
 import com.goods.entity.RentToBuy;
 import com.goods.entity.ShareRent;
+import org.apache.commons.net.ntp.TimeStamp;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -161,4 +163,5 @@ public interface GoodsMapper {
      * @return
      */
     Integer changeShareRentStatus(@Param("goodsId") Integer goodsId,@Param("status") String status);
+    Timestamp timeAfterAddMonth(@Param("time") Timestamp timestamp,@Param("month") Integer month);
 }

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * @author xtt
+ */
 public class BaseInformationVO {
     private Integer sellerId;
     private String sellerName;
@@ -16,5 +19,4 @@ public class BaseInformationVO {
     private Double cgoodsPrice;
     private String status;
     private String model;
-
 }

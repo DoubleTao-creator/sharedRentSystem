@@ -7,4 +7,23 @@
         INSERT INTO orderrecode(goods_id,user_id,model_id,cost,paytime,info)
           VALUES (#{goodsId},#{userId},#{modelId},#{cost},NOW(),#{info});
     </insert>
+    <select id="findRecode" resultType="entity.OrderRecode">
+        select * FROM orderrecode WHERE  user_id=#{userId};
+    </select>
+    <select id="findModel" resultType="java.lang.String">
+        SELECT info FROM sellmodle WHERE id=#{modelId};
+    </select>
+    <select id="findGoodsByUserId" resultType="com.goods.entity.Goods">
+        SELECT * FROM goods WHERE user_id=#{userId};
+    </select>
+
+    <select id="findInstalmentById" resultType="com.goods.entity.Installment">
+        select * from installment WHERE  id=#{id};
+    </select>
+    <select id="findRentToBuyById" resultType="com.goods.entity.RentToBuy">
+        SELECT * from renttobuy WHERE id=#{id};
+    </select>
+    <select id="findShareRentById" resultType="com.goods.entity.ShareRent">
+        select * from sharerent WHERE id=#{id};
+    </select>
 </mapper>
