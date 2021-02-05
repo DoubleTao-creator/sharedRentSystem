@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xyc.mapper.SlidShowMapper">
+
+    <update id="add" parameterType="com.xyc.pojo.SlidShow">
+        insert into slidshow(cgoods_id,pic) values(#{cgoodsId},#{pic})
+    </update>
+
+    <update id="delete" parameterType="int">
+        delete from slidshow where id = #{id}
+    </update>
+
+    <select id="get" resultType="com.xyc.pojo.SlidShow">
+        select * from slidshow;
+    </select>
+
+
+</mapper>

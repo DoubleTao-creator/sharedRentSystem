@@ -1,7 +1,9 @@
 package com.xyc;
 
 import com.xyc.mapper.RecommendMapper;
+import com.xyc.mapper.SlidShowMapper;
 import com.xyc.pojo.Recommend;
+import com.xyc.pojo.SlidShow;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -24,6 +26,21 @@ public class test {
 
     @Autowired
     private RecommendMapper recommendMapper;
+
+    @Autowired
+    private SlidShowMapper slidShowMapper;
+
+    @Test
+    public void test0205(){
+        SlidShow slidShow = new SlidShow(3,"...");
+
+        System.out.println(slidShowMapper.add(slidShow));
+
+        List<SlidShow> list = slidShowMapper.get();
+        for (SlidShow show : list) {
+            System.out.println(show);
+        }
+    }
 
     @Test
     public void test0204(){

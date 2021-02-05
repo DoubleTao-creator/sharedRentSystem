@@ -5,6 +5,14 @@
 
 <mapper namespace="com.xyc.mapper.RecommendMapper">
 
+    <update id="add" parameterType="com.xyc.pojo.Recommend">
+        insert into recommend(cgoods_id) values(#{cgoodsId})
+    </update>
+
+    <update id="delete" parameterType="int">
+        delete from recommend where id = #{id}
+    </update>
+
     <select id="get" resultMap="RecommendMap">
         select r.id rid,c.id cid,c.name name,c.pic pic,c.info info,c.price price,c.rental rental,c.deposit deposit
         from recommend r,cgoods c
