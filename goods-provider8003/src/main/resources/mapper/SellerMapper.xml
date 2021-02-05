@@ -6,4 +6,7 @@
     <update id="changeUserbalance" >
         update seller SET balance=balance+#{balanceToChange} where id=#{sellerId};
     </update>
+    <select id="findSellerById" resultType="entity.Seller">
+        SELECT * FROM seller WHERE id=#{sellerId};
+    </select>
 </mapper>

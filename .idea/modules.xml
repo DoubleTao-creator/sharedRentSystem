@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/administrator-provider8006/administrator-provider8006.iml" filepath="$PROJECT_DIR$/administrator-provider8006/administrator-provider8006.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-commons/api-commons.iml" filepath="$PROJECT_DIR$/api-commons/api-commons.iml" />
       <module fileurl="file://$PROJECT_DIR$/auth8001/auth8001.iml" filepath="$PROJECT_DIR$/auth8001/auth8001.iml" />
       <module fileurl="file://$PROJECT_DIR$/cgoods-provider8008/cgoods-provider8008.iml" filepath="$PROJECT_DIR$/cgoods-provider8008/cgoods-provider8008.iml" />

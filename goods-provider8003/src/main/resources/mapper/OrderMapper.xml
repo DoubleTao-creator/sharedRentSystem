@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goods.mapper.OrderMapper">
+    <resultMap id="OrderMap" type="entity.OrderRecode" autoMapping="true"></resultMap>
+
+    <insert id="addOrderRecode" parameterType="entity.OrderRecode">
+        INSERT INTO orderrecode(goods_id,user_id,model_id,cost,paytime,info)
+          VALUES (#{goodsId},#{userId},#{modelId},#{cost},NOW(),#{info});
+    </insert>
+</mapper>

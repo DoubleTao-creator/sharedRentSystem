@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author  xtt
+ */
 @Mapper
 @Component
 public interface GoodsMapper {
