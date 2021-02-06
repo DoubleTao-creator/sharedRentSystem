@@ -15,10 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/orderRecord")
 public class OrderRecordController {
 
     @Autowired
     private OrderRecordMapper orderRecordMapper;
+
+    /**
+     * 根据查询用户商品订单记录
+     * @param goodsId
+     * @return
+     */
+    @GetMapping("/query/{goodsId}")
+    public CommonResult<List> queryByGoodsId(@PathVariable("goodsId") Integer goodsId){
+        List<OrderRecord> orderRecords = orderRecordMapper.queryByGoodsId(goodsId);
+        return CommonResultVO.success(orderRecords);
+    }
 
 
     /**
@@ -35,12 +47,6 @@ public class OrderRecordController {
             return CommonResultVO.error("支付失败，订单取消，记录添加失败");
         }
 
-    }
-
-    @GetMapping("/query/{id}")
-    public CommonResult<List> queryByGoodsId(@PathVariable("id") Integer id){
-        List<OrderRecord> orderRecords = orderRecordMapper.queryByGoodsId(id);
-        return CommonResultVO.success(orderRecords);
     }
 
 }

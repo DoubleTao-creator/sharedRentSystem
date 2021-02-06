@@ -18,6 +18,20 @@ public class testService {
     private CGoodsService cGoodsService;
 
     @Test
+    public void test0206(){
+
+        cGoodsService.changeStatus(5);
+
+        List<CGoodsShowDTO> sdList = cGoodsService.getByStatus();
+
+        for (CGoodsShowDTO cGoodsShowDTO : sdList) {
+            System.out.println(cGoodsShowDTO);
+        }
+
+    }
+
+
+    @Test
     public void test0131(){
 
 //        List<CGoodsShowDTO> sdList = cGoodsService.getAll();

@@ -9,6 +9,14 @@
         select * from cgoods where id=#{id}
     </select>
 
+    <select id="getByStatus" resultType="com.xyc.pojo.CGoods">
+        select * from cgoods where status = '待审核'
+    </select>
+
+    <update id="changeStatus" parameterType="int">
+        update cgoods set status = '正常' where id = #{id}
+    </update>
+
     <insert id="add" parameterType="com.xyc.pojo.CGoods">
         insert into cgoods(sellerId,name,typeId,pic,repertory,info,sellModel,price,rental,deposit,status)
         values (#{sellerId},#{name},#{typeId},#{pic},#{repertory},#{info},#{sellModel},#{price},#{rental},#{deposit},#{status})

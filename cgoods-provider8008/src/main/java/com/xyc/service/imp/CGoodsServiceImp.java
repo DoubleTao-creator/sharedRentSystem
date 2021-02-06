@@ -60,7 +60,8 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setPrice(cGoodsMD.getPrice());
         cGoods.setRental(cGoodsMD.getRental());
         cGoods.setDeposit(cGoodsMD.getDeposit());
-        cGoods.setStatus(cGoodsMD.getStatus());
+        //每次修改商品信息都需要再次审核！！
+        cGoods.setStatus("待审核");
 
         return cGoodsMapper.modify(cGoods);
     }
@@ -69,6 +70,7 @@ public class CGoodsServiceImp implements CGoodsService {
     public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId) {
         return goodsMapper.getGoodsByCGoodsId(cGoodsId);
     }
+
 
     @Override
     public int add(CGoodsAddDTO cGoodsAD) {
@@ -136,6 +138,17 @@ public class CGoodsServiceImp implements CGoodsService {
     @Override
     public CGoodsShowDTO getById(Integer id) {
         return getCGoodsSD(cGoodsMapper.queryById(id));
+    }
+
+    @Override
+    public List<CGoodsShowDTO> getByStatus() {
+        List<CGoodsShowDTO> sdList = getCGoodsSDList(cGoodsMapper.getByStatus());
+        return sdList;
+    }
+
+    @Override
+    public int changeStatus(Integer id) {
+        return cGoodsMapper.changeStatus(id);
     }
 
     @Override

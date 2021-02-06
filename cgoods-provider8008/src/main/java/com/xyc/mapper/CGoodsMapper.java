@@ -18,8 +18,18 @@ public interface CGoodsMapper {
 
     public List<CGoods> queryAll();
 
+    /**
+     * 根据商家id得到 商品
+     * @param sellerId
+     * @return
+     */
     public List<CGoods> queryBySellerId(@Param("sellerId") int sellerId);
 
+    /**
+     * 模糊查询 根据商家名，商品名，商品信息
+     * @param info
+     * @return
+     */
     public List<CGoods> queryByInfo(@Param("info") String info);
     //select DISTINCT c.* from cgoods c,seller s WHERE
     //    c.name like '%c%' or
@@ -28,11 +38,34 @@ public interface CGoodsMapper {
     //            SELECT s.id from seller WHERE s.name like '%c%'
     //    )
 
+    /**
+     * 得到某个类型的商品
+     * @param typeId
+     * @return
+     */
     public List<CGoods> queryByTypeId(@Param("typeId") int typeId);
 
     public int modify(CGoods cGoods);
 
+    /**
+     * 根据出售模式flag查询 出售模式
+     * @param flag
+     * @return
+     */
     public int getSellModel(@Param("flag") String flag);
+
+    /**
+     * 查询 '待审核'的 商品
+     * @return
+     */
+    public List<CGoods> getByStatus();
+
+    /**
+     * 更改商品的状态 '待审核'--->'正常'
+     * @param id
+     * @return
+     */
+    public int changeStatus(@Param("id") Integer id);
 
 
 }

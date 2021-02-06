@@ -125,5 +125,25 @@ public class CGoodsController {
         }
     }
 
+    @GetMapping("/getCGoodsToApprove")
+    public CommonResult<List> getCGoodsByStatus(){
+        List<CGoodsShowDTO> list = cGoodsService.getByStatus();
+        if (list.size() == 0){
+            return CommonResultVO.success("当前没有待审核的商品");
+        }else {
+            return CommonResultVO.success(list);
+        }
+    }
+
+    @GetMapping("/approve/{cgoodsId}")
+    public CommonResult approveCGoods(@PathVariable("cgoodsId") Integer cgoodsId){
+        int i = cGoodsService.changeStatus(cgoodsId);
+        if (i<=0) {
+            return CommonResultVO.error("商品审核未通过");
+        }else {
+            return CommonResultVO.success("商品类:"+cgoodsId+" 审核通过");
+        }
+    }
+
 
 }

@@ -31,10 +31,11 @@ public class SellerServiceImp implements SellerService {
         seller.setPassword(MD5Utils.encode(sellerRD.getPassword()));
         seller.setEmail(sellerRD.getEmail());
         seller.setTel(sellerRD.getTel());
-        seller.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.BASE_HEAD_PHOTO_URL);
+        seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
         seller.setStatus("审核中");
-        seller.setLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX+sellerRD.getName()+PhotoUtils.SUFFIX);
+        seller.setLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
+                +sellerRD.getName()+PhotoUtils.SUFFIX);
 
         try {
             FTPConstants fc = new FTPConstants();
@@ -103,7 +104,8 @@ public class SellerServiceImp implements SellerService {
             seller.setPassword(sellerMD.getPassword());
             seller.setTel(sellerMD.getTel());
             seller.setEmail(sellerMD.getEmail());
-            seller.setPic(PhotoUtils.SELLER_PREFIX+sellerMD.getName()+PhotoUtils.SUFFIX);
+            seller.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
+                    +sellerMD.getName()+PhotoUtils.SUFFIX);
 
             sellerMapper.update(seller);
             seller = sellerMapper.queryById(sellerMD.getId());

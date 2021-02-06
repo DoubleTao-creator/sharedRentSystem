@@ -25,4 +25,8 @@ public interface CGoodsService {
     public int updateInfo(CGoodsModifyDTO cGoodsAD);
 
     public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId);
+
+    public List<CGoodsShowDTO> getByStatus();
+
+    public int changeStatus(Integer id);
 }
