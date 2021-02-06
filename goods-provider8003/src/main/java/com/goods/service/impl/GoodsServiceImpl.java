@@ -2,14 +2,10 @@ package com.goods.service.impl;
 
 import com.goods.dto.UserExperienceDTO;
 import com.goods.entity.*;
-import com.goods.mapper.CGoodsMapper;
-import com.goods.mapper.GoodsMapper;
-import com.goods.mapper.SellerMapper;
-import com.goods.mapper.UserMapper;
+import com.goods.mapper.*;
 import com.goods.service.GoodsService;
 import com.xtt.entity.User;
-import entity.Seller;
-import org.HdrHistogram.DoubleLinearIterator;
+import entity.OrderRecode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +24,8 @@ public class GoodsServiceImpl implements
     CGoodsMapper cGoodsMapper;
     @Autowired
     SellerMapper sellerMapper;
-
+    @Autowired
+    OrderMapper orderMapper;
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer ExperienceGoods(UserExperienceDTO userExperienceDTO) {
@@ -63,11 +60,14 @@ public class GoodsServiceImpl implements
             sellerMapper.changeUserbalance(cgoods.getSellerId(), cgoods.getRental());
             //商品类库存减1
             cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
-            //生成订单记录->订单模块
+            //生成付款记录
             System.out.println("用户id: "+user.getId()+"商家id: "+sellId+"成功交易"+cgoods.getRental()+"元");
             System.out.println("用户id: "+user.getId()+"成功以租代售订单,商品类id: "+CgoodsId);
-
-
+            OrderRecode orderRecode=new OrderRecode();
+            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(cgoods.getRental());
+            orderRecode.setModelId(1);
+            orderRecode.setInfo("以租代售下单");
+            orderMapper.addOrderRecode(orderRecode);
             return 1;
         }else if("先租后买".equals(sellModel)){
             //处理先租后买订单
@@ -97,8 +97,10 @@ public class GoodsServiceImpl implements
             //生成订单记录->订单模块
             System.out.println("用户id: "+user.getId()+"商家id: "+sellId+"成功交易"+cgoods.getRental()*rentTime+"元");
             System.out.println("用户id: "+user.getId()+"成功先租后买订单,商品类id: "+CgoodsId+"体验期"+rentTime+"个月");
-
-
+            OrderRecode orderRecode=new OrderRecode();
+            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(cgoods.getRental()*rentTime);
+            orderRecode.setModelId(2);orderRecode.setInfo("先租后买下单");
+            orderMapper.addOrderRecode(orderRecode);
             return 1;
         }else if("共享租赁".equals(sellModel)){
             //处理共享租赁订单
@@ -126,6 +128,10 @@ public class GoodsServiceImpl implements
             //生成订单记录->订单模块
             System.out.println("用户id: "+user.getId()+"成功共享租赁订单,商品类id: "+CgoodsId);
             //订单记录-->订单模块
+            OrderRecode orderRecode=new OrderRecode();
+            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(currentDeposit);
+            orderRecode.setModelId(3);orderRecode.setInfo("共享租赁下单");
+            orderMapper.addOrderRecode(orderRecode);
 
             return 1;
         }
@@ -181,6 +187,12 @@ public class GoodsServiceImpl implements
         userMapper.changeUserbalance(userId, -rent);
         //商家余额增加
         sellerMapper.changeUserbalance(cgoods.getSellerId(), rent);
+        //生成付款记录
+        OrderRecode orderRecode=new OrderRecode();
+        orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(rent);
+        orderRecode.setModelId(1);
+        orderRecode.setInfo("续租以租代售");
+        orderMapper.addOrderRecode(orderRecode);
         if(result>0){
             //续租成功
             return 1;
@@ -213,6 +225,10 @@ public class GoodsServiceImpl implements
         sellerMapper.changeUserbalance(cgoods.getSellerId(), shouldPay);
         //改订单为已购买
         goodsMapper.purchaseRentToBuy(goodsId);
+        OrderRecode orderRecode=new OrderRecode();
+        orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
+        orderRecode.setModelId(2);orderRecode.setInfo("购买先租后买");
+        orderMapper.addOrderRecode(orderRecode);
         return 1;
     }
     @Override
@@ -223,6 +239,10 @@ public class GoodsServiceImpl implements
         if(result>0){
             //商品库存增加
             cGoodsMapper.changeCGoodsRepertory(goods.getCgoodsId(), 1);
+            OrderRecode orderRecode=new OrderRecode();
+            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);
+            orderRecode.setModelId(2);orderRecode.setInfo("退租先租后买");
+            orderMapper.addOrderRecode(orderRecode);
         }else {
             return 0;
         }
@@ -245,6 +265,10 @@ public class GoodsServiceImpl implements
             //余额不足
             //将订单状态改为待结算，并且保存当前停止时间
             goodsMapper.changeShareRentStatus(goodsId, "待结算");
+            OrderRecode orderRecode=new OrderRecode();
+            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
+            orderRecode.setModelId(3);orderRecode.setInfo("商品已归还，待结算订单");
+            orderMapper.addOrderRecode(orderRecode);
             return 0;
         }
         //用户减少余额
@@ -259,6 +283,11 @@ public class GoodsServiceImpl implements
         goodsMapper.changeShareRentStatus(goodsId, "空闲");
         //商品库存加1
         cGoodsMapper.changeCGoodsRepertory(cgoods.getId(), 1);
+        //生成付款记录
+        OrderRecode orderRecode=new OrderRecode();
+        orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
+        orderRecode.setModelId(3);orderRecode.setInfo("结算共享租赁");
+        orderMapper.addOrderRecode(orderRecode);
         return 1;
     }
 

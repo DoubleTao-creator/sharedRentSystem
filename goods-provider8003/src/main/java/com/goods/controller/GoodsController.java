@@ -3,12 +3,20 @@ package com.goods.controller;
 import com.goods.dto.UserExperienceDTO;
 import com.goods.mapper.CGoodsMapper;
 import com.goods.service.GoodsService;
+import com.goods.service.OrderService;
+import com.goods.vo.OrderResultVO;
+import com.goods.vo.RecodeVO;
 import entity.CommonResult;
 import entity.CommonResultVO;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 /**
  *@author  xtt
  */
@@ -16,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoodsController {
     @Autowired
     GoodsService goodsService;
+    @Autowired
+    OrderService orderService;
     @PostMapping("/goods/createOrder")
     public CommonResult ExperienceGoods(@RequestBody UserExperienceDTO userExperienceDTO){
         Integer result=goodsService.ExperienceGoods(userExperienceDTO);
@@ -117,5 +127,46 @@ public class GoodsController {
         }
         //结算成功
         return CommonResultVO.success(null);
+    }
+
+    /**
+     * 用户查询自己已购买的商品
+     * @param userId
+     * @return
+     */
+    @GetMapping("/goods/findOwnedGoods")
+    public CommonResult findOwnedGoods(Integer userId){
+        return CommonResultVO.success(orderService.findOwnedGoods(userId));
+    }
+
+    /**
+     * 用户查看自己体验中的商品
+     * @return
+     */
+    @GetMapping("/goods/findExperiencedGoods")
+    public CommonResult findExperience(){
+        return null;
+    }
+
+    /**
+     * 查询记录
+     * @param userId
+     * @return
+     */
+    @GetMapping("/goods/getRecode")
+    public CommonResult findRecode(Integer userId){
+        List<RecodeVO> recodeVOS=orderService.findRecodeByUserId(userId);
+        return CommonResultVO.success(recodeVOS);
+    }
+
+    /**
+     * 根据用户id查询订单
+     * @param userId
+     * @return
+     */
+    @GetMapping("/goods/getOrder")
+    public  CommonResult getOrder(Integer userId){
+        List<OrderResultVO> orders=orderService.findOrder(userId);
+        return CommonResultVO.success(orders);
     }
 }

@@ -71,4 +71,7 @@
         UPDATE goods SET status=#{status}where goods_id=#{goodsId};
         UPDATE sharerent set dead_time= NOW() where goods_id=#{goodsId};
     </update>
+    <select id="timeAfterAddMonth" resultType="java.sql.Timestamp">
+        SELECT DATE_SUB(#{time},INTERVAL -#{month} MONTH);
+    </select>
 </mapper>

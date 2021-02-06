@@ -1,5 +1,6 @@
 package com.goods.mapper;
 
+import entity.Seller;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -18,4 +19,11 @@ public interface SellerMapper {
      * @return
      */
     Integer changeUserbalance(@Param("sellerId")Integer sellerId, @Param("balanceToChange") Double balanceToChange);
+
+    /**
+     * 根据id查询卖家信息
+     * @param sellerId
+     * @return
+     */
+    Seller findSellerById(Integer sellerId);
 }
