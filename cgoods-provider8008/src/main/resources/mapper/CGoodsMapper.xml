@@ -51,8 +51,9 @@
     <update id="modify" parameterType="com.xyc.pojo.CGoods">
         update cgoods set name=#{name},typeId=#{typeId},
             pic=#{pic},repertory=#{repertory},info=#{info},
-            sellModel=#{sellModel},price=#{price},rental={rental},
+            sellModel=#{sellModel},price=#{price},rental=#{rental},
             deposit=#{deposit},status=#{status}
+        where id=#{id}
     </update>
 
     <select id="getSellModel" resultType="int">

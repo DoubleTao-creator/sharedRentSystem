@@ -33,24 +33,6 @@ public class CGoodsServiceImp implements CGoodsService {
     public int updateInfo(CGoodsModifyDTO cGoodsMD) {
         CGoods cGoods = cGoodsMapper.queryById(cGoodsMD.getId());
 
-        try {
-            FTPConstants fc = new FTPConstants();
-            //删除原来的照片
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
-            PhotoUtils.deleteFile(fc);
-            //上传照片
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
-            File file = PhotoUtils.MultipartFileToFile(cGoodsMD.getPic());
-            fc.setInput(new FileInputStream(file));
-            PhotoUtils.uploadFile(fc);
-
-            PhotoUtils.deleteTempFile(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         cGoods.setName(cGoodsMD.getName());
         cGoods.setTypeId(cGoodsMD.getTypeId());
         cGoods.setRepertory(cGoodsMD.getRepertory());
@@ -63,7 +45,29 @@ public class CGoodsServiceImp implements CGoodsService {
         //每次修改商品信息都需要再次审核！！
         cGoods.setStatus("待审核");
 
-        return cGoodsMapper.modify(cGoods);
+        int i = cGoodsMapper.modify(cGoods);
+        //数据库更新成功后 更新服务器上的照片
+        if (i>0){
+            try {
+                FTPConstants fc = new FTPConstants();
+                //删除原来的照片
+                fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
+                PhotoUtils.deleteFile(fc);
+                //上传照片
+                fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
+                File file = PhotoUtils.MultipartFileToFile(cGoodsMD.getPic());
+                fc.setInput(new FileInputStream(file));
+                PhotoUtils.uploadFile(fc);
+
+                PhotoUtils.deleteTempFile(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return i;
     }
 
     @Override
