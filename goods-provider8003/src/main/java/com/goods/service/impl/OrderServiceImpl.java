@@ -6,12 +6,8 @@ import com.goods.service.OrderService;
 import com.goods.vo.*;
 import entity.OrderRecode;
 import entity.Seller;
-import entity.User;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
