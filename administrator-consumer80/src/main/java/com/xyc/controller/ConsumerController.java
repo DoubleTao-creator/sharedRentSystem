@@ -16,6 +16,7 @@ public class ConsumerController {
 
     private static final String ORDER_PREFIX = "http://localhost:8002/orderRecord";
     private static final String CGOODS_PREFIX = "http://localhost:8008/cgoods";
+    private static final String SELLER_PREFIX = "http://localhost:8007/seller";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -37,7 +38,8 @@ public class ConsumerController {
      */
     @GetMapping("/getCGoodsToApprove")
     public CommonResult<List> getUnapproveCGoods(){
-        return restTemplate.getForObject(CGOODS_PREFIX+"/getCGoodsToApprove"
+        return restTemplate.getForObject(
+                CGOODS_PREFIX+"/getCGoodsToApprove"
                 ,CommonResult.class);
     }
 
@@ -48,9 +50,34 @@ public class ConsumerController {
      */
     @GetMapping("/approve/{goodsId}")
     public CommonResult cGoodsApprove(@PathVariable("goodsId") Integer goodsId){
-        return restTemplate.getForObject(CGOODS_PREFIX+"/approve/"+goodsId
+        return restTemplate.getForObject(
+                CGOODS_PREFIX+"/approve/"+goodsId
                 ,CommonResult.class);
     }
+
+    /**
+     * 管理员得到需要认证的商户
+     * @return
+     */
+    @GetMapping("/getFrozenSeller")
+    public CommonResult<List> getFrozenSeller(){
+        return restTemplate.getForObject(
+                SELLER_PREFIX+"/frozenAccount"
+                ,CommonResult.class);
+    }
+
+    /**
+     * 管理员认证商家
+     * @param sellerId
+     * @return
+     */
+    @GetMapping("/authenticate/{sellerId}")
+    public CommonResult authenticate(@PathVariable("sellerId") Integer sellerId){
+        return restTemplate.getForObject(
+                SELLER_PREFIX+"/authenticate/"+sellerId
+                ,CommonResult.class);
+    }
+
 
 
 

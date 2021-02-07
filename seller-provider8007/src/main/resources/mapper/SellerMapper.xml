@@ -18,15 +18,24 @@
         select * from seller where name = #{name}
     </select>
 
-    <update id="update" parameterType="com.xyc.dto.SellerModifyDTO">
+    <update id="update" parameterType="com.xyc.pojo.Seller">
         update seller set name=#{name},password=#{password},tel=#{tel},
-            email=#{email},pic=#{pic}
+            email=#{email},pic=#{pic},status=#{status}
         where id = #{id}
     </update>
 
-    <update id="updateBalance">
+    <select id="getFrozenAccount" resultType="com.xyc.pojo.Seller">
+        select * from seller where status = '商户冻结中'
+    </select>
+
+    <update id="sellerAuthenticate" parameterType="int">
+        update seller set status = '正常营业'
+        where id = #{id}
+    </update>
+
+    <update id="updateBalance" parameterType="int">
         update seller set balance = #{income}+balance
-        where id = #{sellerId}
+        where id = #{id}
     </update>
 
 

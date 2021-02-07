@@ -26,7 +26,11 @@ public class SellerModifyDTO {
     private String email;
     @NotNull(message = "头像不能为空")
     private MultipartFile pic;
-    @NotNull(message = "营业许可证不能为空")
+
+    private Double balance;
+
     private MultipartFile license;
+
+    private String status;
 
 }

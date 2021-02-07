@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface SellerMapper {
@@ -20,5 +22,9 @@ public interface SellerMapper {
 
     public int update(Seller seller);
 
-    public int updateBalance(int income,@Param("sellerId") int sellerId);
+    public List<Seller> getFrozenAccount();
+
+    public int sellerAuthenticate(@Param("id") int id);
+
+    public int updateBalance(int income,@Param("id") int id);
 }
