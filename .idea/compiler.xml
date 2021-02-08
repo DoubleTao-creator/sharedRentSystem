@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="administrator-consumer80" />
         <module name="administrator-provider8006" />
         <module name="api-commons" />
         <module name="auth8001" />
@@ -27,6 +28,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="administrator-consumer80" target="1.8" />
       <module name="administrator-provider8006" target="1.8" />
       <module name="api-commons" target="1.8" />
       <module name="apicommons" target="1.8" />

@@ -7,12 +7,15 @@ import com.goods.vo.*;
 import entity.OrderRecode;
 import entity.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author xtt
  */
+@Service
 public class OrderServiceImpl implements OrderService{
     @Autowired
     GoodsMapper goodsMapper;
@@ -34,7 +37,7 @@ public class OrderServiceImpl implements OrderService{
             OwnedGoodsVO ownedGoodsVO=new OwnedGoodsVO();
             ownedGoodsVO.setCgoodsId(cgoods.getId());
             ownedGoodsVO.setId(goods1.getId());ownedGoodsVO.setCgoodsInfo(cgoods.getInfo());ownedGoodsVO.setCgoodsName(cgoods.getName());ownedGoodsVO.setCgoodsPic(cgoods.getPic());ownedGoodsVO.setPrice(cgoods.getPrice());
-            ownedGoodsVO.setSellerId(seller.getId());ownedGoodsVO.setSellerName(seller.getName());ownedGoodsVO.setStatus(seller.getStatus());
+            ownedGoodsVO.setSellerId(seller.getId());ownedGoodsVO.setSellerName(seller.getName());ownedGoodsVO.setStatus(goods1.getStatus());
             list.add(ownedGoodsVO);
         }
         return list;
@@ -61,17 +64,22 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderResultVO> findOrder(Integer userId) {
         List<Goods> orders=orderMapper.findGoodsByUserId(userId);
         List<OrderResultVO> resultVOS=new ArrayList<>();
-        OrderResultVO orderResultVO=new OrderResultVO();
         for(Goods order:orders){
+            OrderResultVO orderResultVO=new OrderResultVO();
             Cgoods cgoods=cGoodsMapper.getCgoodsById(order.getCgoodsId());
             com.xtt.entity.User user=userMapper.findUserById(userId);
             Seller seller=sellerMapper.findSellerById(cgoods.getSellerId());
             BaseInformationVO baseInformationVO=new BaseInformationVO();
             baseInformationVO.setCgoodsId(cgoods.getId());baseInformationVO.setCgoodsName(cgoods.getName());baseInformationVO.setCgoodsPic(cgoods.getPic());baseInformationVO.setCgoodsPrice(cgoods.getPrice());baseInformationVO.setModel(orderMapper.findModel(order.getSellModel()));
             baseInformationVO.setSellerId(seller.getId());baseInformationVO.setSellerName(seller.getName());baseInformationVO.setStatus(order.getStatus());
+            baseInformationVO.setGoodsId(order.getId());
             orderResultVO.setBase(baseInformationVO);
+            if(order.getSellModel()==null){
+                //直接购买的（未经体验）
+                resultVOS.add(orderResultVO);
+            }
             //以租代售
-            if(order.getSellId()==1){
+            else if(order.getSellModel()==1){
                 InstallmentGoodsVO installmentGoodsVO=new InstallmentGoodsVO();
                 Installment installment=orderMapper.findInstalmentById(order.getSellId());
                 installmentGoodsVO.setStartTime(installment.getStartTime());

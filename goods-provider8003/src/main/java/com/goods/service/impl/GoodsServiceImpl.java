@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
 /**
  * @author xtt
  */
@@ -116,13 +118,14 @@ public class GoodsServiceImpl implements
             goods.setSellId(sellId);
             goodsMapper.createShareRentOrder(goods);
             Integer goodsId=goods.getId();
+            shareRent.setGoodsId(goodsId);
             shareRent.setId(sellId);
             goodsMapper.updateShareRentRecode(shareRent);
 
             //用户余额减少押金
             userMapper.changeUserbalance(userId, -currentDeposit);
             //商家增加押金
-            sellerMapper.changeUserbalance(sellId, currentDeposit);
+            sellerMapper.changeUserbalance(cgoods.getSellerId(), currentDeposit);
             //商品类库存减1
             cGoodsMapper.changeCGoodsRepertory(CgoodsId, -1);
             //生成订单记录->订单模块
@@ -139,8 +142,10 @@ public class GoodsServiceImpl implements
     }
 
     @Override
-    public Integer purchaseGoods(Integer cgoodsId, Integer userId) {
+    public Integer purchaseGoods( Integer cgoodsId,Integer userId) {
+        System.out.println("cgoodsId "+cgoodsId+" "+"userId "+userId);
         Cgoods cgoods=cGoodsMapper.getCgoodsById(cgoodsId);
+        System.out.println(cgoods);
         Double price=cgoods.getPrice();
         Double balance=userMapper.findUserById(userId).getBalance();
         if(balance<price){
@@ -210,7 +215,12 @@ public class GoodsServiceImpl implements
         //商品总费用
         Double price=cgoods.getPrice();
         //用户体验期支付费用
+        System.out.println(cGoodsMapper);
+        System.out.println(goodsId+" "+userId);
+        System.out.println(goodsMapper.findRentToBuyById(goodsId));
+        System.out.println(cgoods.getRental());
         Double havePay=goodsMapper.findRentToBuyById(goodsId).getRentTime()*cgoods.getRental();
+        System.out.println("havePay"+havePay);
         //用户余额
         Double balance=user.getBalance();
         //用户应该支付费用
@@ -255,6 +265,10 @@ public class GoodsServiceImpl implements
         Goods goods=goodsMapper.findGoodsById(goodsId);
         Cgoods cgoods=cGoodsMapper.getCgoodsById(goods.getCgoodsId());
         Integer differDay=goodsMapper.differDayShareRent(goodsId);
+        if(differDay==0){
+            //不满一天，按一天算
+            differDay=1;
+        }
         //用户余额
         Double balance=user.getBalance();
         //用户应该付的钱（按天计费）
@@ -277,6 +291,11 @@ public class GoodsServiceImpl implements
         sellerMapper.changeUserbalance(cgoods.getSellerId(), shouldPay);
         //用户增加押金
         userMapper.changeUserbalance(userId, deposit);
+        //记录
+        OrderRecode orderRecode1=new OrderRecode();
+        orderRecode1.setUserId(userId);orderRecode1.setGoodsId(goodsId);orderRecode1.setCost(deposit);
+        orderRecode1.setModelId(3);orderRecode1.setInfo("押金归还"+deposit+"元");
+        orderMapper.addOrderRecode(orderRecode1);
         //商家减少押金
         sellerMapper.changeUserbalance(cgoods.getSellerId(), -deposit);
         //结算成功，将商品改为空闲状态
@@ -286,7 +305,7 @@ public class GoodsServiceImpl implements
         //生成付款记录
         OrderRecode orderRecode=new OrderRecode();
         orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
-        orderRecode.setModelId(3);orderRecode.setInfo("结算共享租赁");
+        orderRecode.setModelId(3);orderRecode.setInfo("结算共享租赁"+",使用天数"+differDay);
         orderMapper.addOrderRecode(orderRecode);
         return 1;
     }

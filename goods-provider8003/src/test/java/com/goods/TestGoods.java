@@ -5,11 +5,15 @@ import com.goods.entity.Installment;
 import com.goods.mapper.GoodsMapper;
 import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
+import com.goods.service.OrderService;
+import com.goods.vo.OrderResultVO;
+import com.goods.vo.OwnedGoodsVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @SpringBootTest
 public class TestGoods {
@@ -19,6 +23,8 @@ public class TestGoods {
     GoodsService goodsService;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    OrderService orderService;
     @Test
     public  void test1(){
         Installment installment=new Installment();
@@ -60,5 +66,12 @@ public class TestGoods {
     public void test6(){
         Integer differMonth=goodsMapper.selectDifferMonth(1);
         System.out.println(differMonth);
+    }
+    @Test
+    public void testPurchase(){
+        List<OrderResultVO> list=orderService.findOrder(2);
+        for(OrderResultVO orderResultVO:list){
+            System.out.println(orderResultVO);
+        }
     }
 }

@@ -14,6 +14,7 @@ public class BaseInformationVO {
     private Integer sellerId;
     private String sellerName;
     private Integer cgoodsId;
+    private Integer goodsId;
     private String cgoodsName;
     private String  cgoodsPic;
     private Double cgoodsPrice;

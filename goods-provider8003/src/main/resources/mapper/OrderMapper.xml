@@ -4,11 +4,11 @@
     <resultMap id="OrderMap" type="entity.OrderRecode" autoMapping="true"></resultMap>
 
     <insert id="addOrderRecode" parameterType="entity.OrderRecode">
-        INSERT INTO orderrecode(goods_id,user_id,model_id,cost,paytime,info)
+        INSERT INTO orderrecord(goods_id,user_id,model_id,cost,paytime,info)
           VALUES (#{goodsId},#{userId},#{modelId},#{cost},NOW(),#{info});
     </insert>
     <select id="findRecode" resultType="entity.OrderRecode">
-        select * FROM orderrecode WHERE  user_id=#{userId};
+        select * FROM orderrecord WHERE  user_id=#{userId};
     </select>
     <select id="findModel" resultType="java.lang.String">
         SELECT info FROM sellmodle WHERE id=#{modelId};

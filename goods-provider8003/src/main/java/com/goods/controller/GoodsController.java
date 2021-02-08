@@ -10,13 +10,9 @@ import entity.CommonResult;
 import entity.CommonResultVO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 /**
  *@author  xtt
  */
@@ -45,7 +41,7 @@ public class GoodsController {
      * @return
      */
     @PostMapping("/goods/purchaseGoods")
-    public CommonResult purchaseGoods(Integer cgoodsId,Integer userId){
+    public CommonResult purchaseGoods(@RequestParam("cgoodsId") Integer cgoodsId, @RequestParam("userId") Integer userId){
         Integer result=goodsService.purchaseGoods(cgoodsId, userId);
         if(result==0){
             //余额不足
@@ -122,7 +118,7 @@ public class GoodsController {
     @PostMapping("/goods/settleShareRent")
     public CommonResult settltShareRent(Integer goodsId,Integer userId){
         Integer result=goodsService.settleShareRent(goodsId, userId);
-        if(result==1){
+        if(result==0){
             return CommonResultVO.error("余额不足");
         }
         //结算成功
@@ -130,7 +126,7 @@ public class GoodsController {
     }
 
     /**
-     * 用户查询自己已购买的商品
+     * 用户查询自己已购买的订单
      * @param userId
      * @return
      */
@@ -140,16 +136,7 @@ public class GoodsController {
     }
 
     /**
-     * 用户查看自己体验中的商品
-     * @return
-     */
-    @GetMapping("/goods/findExperiencedGoods")
-    public CommonResult findExperience(){
-        return null;
-    }
-
-    /**
-     * 查询记录
+     * 查询操作记录
      * @param userId
      * @return
      */

@@ -34,7 +34,7 @@
           VALUES (#{deposit},NOW());
     </insert>
     <update id="updateShareRentRecode" parameterType="com.goods.entity.ShareRent">
-        UPDATE sharerent SET goods_id=#{goodsId} where if=#{id};
+        UPDATE sharerent SET goods_id=#{goodsId} where id=#{id};
     </update>
     <insert id="createShareRentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
@@ -56,7 +56,7 @@
         UPDATE goods SET status='已购买' WHERE id=#{goodsId};
     </update>
     <select id="findRentToBuyById" resultType="com.goods.entity.RentToBuy">
-        SELECT * FROM renttobuy WHERE goodsId=#{goodsId};
+        SELECT * FROM renttobuy WHERE goods_id=#{goodsId};
     </select>
     <update id="refundRent">
         update goods SET status='空闲' WHERE id=#{goodsId} and user_id=#{userId};
@@ -68,7 +68,7 @@
         select * from sharerent WHERE goods_id=#{goodsId};
     </select>
     <update id="changeShareRentStatus" >
-        UPDATE goods SET status=#{status}where goods_id=#{goodsId};
+        UPDATE goods SET status=#{status}where id=#{goodsId};
         UPDATE sharerent set dead_time= NOW() where goods_id=#{goodsId};
     </update>
     <select id="timeAfterAddMonth" resultType="java.sql.Timestamp">
