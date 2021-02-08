@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class SellerServiceImp implements SellerService {
@@ -23,6 +24,11 @@ public class SellerServiceImp implements SellerService {
     @Autowired
     private SellerMapper sellerMapper;
 
+    /**
+     * 商家注册
+     * @param sellerRD
+     * @return
+     */
     @Override
     public int register(SellerRegisterDTO sellerRD) {
         Seller seller = new Seller();
@@ -33,7 +39,7 @@ public class SellerServiceImp implements SellerService {
         seller.setTel(sellerRD.getTel());
         seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
-        seller.setStatus("审核中");
+        seller.setStatus("商家冻结中");
         seller.setLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
                 +sellerRD.getName()+PhotoUtils.SUFFIX);
 
@@ -57,6 +63,11 @@ public class SellerServiceImp implements SellerService {
         return sellerMapper.register(seller);
     }
 
+    /**
+     * 商家登录
+     * @param sellerLD
+     * @return
+     */
     @Override
     public Seller login(SellerLoginDTO sellerLD) {
         Seller seller = sellerMapper.login(sellerLD);
@@ -72,19 +83,13 @@ public class SellerServiceImp implements SellerService {
         return null;
     }
 
+    /**
+     * 商家修改个人信息  '余额' '状态' 不可修改
+     * @param sellerMD
+     * @return
+     */
     @Override
-    public Seller queryById(int id){
-        return sellerMapper.queryById(id);
-    }
-
-    @Override
-    public int updateBalance(int income,int sellerId) {
-        sellerMapper.updateBalance(income,sellerId);
-        return 0;
-    }
-
-    @Override
-    public Seller modifySeller(SellerModifyDTO sellerMD) {
+    public int modifySeller(SellerModifyDTO sellerMD) {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
         try {
             FTPConstants fc = new FTPConstants();
@@ -107,12 +112,52 @@ public class SellerServiceImp implements SellerService {
             seller.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
                     +sellerMD.getName()+PhotoUtils.SUFFIX);
 
-            sellerMapper.update(seller);
-            seller = sellerMapper.queryById(sellerMD.getId());
+            //一直想不清 修改信息能不能修改营业执照
+
+            //修改信息需要管理员重新审核
+            seller.setStatus("商家冻结中");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return seller;
+        return sellerMapper.update(seller);
     }
+
+    /**
+     * 查询商家信息 根据id
+     * @param id
+     * @return
+     */
+    @Override
+    public Seller queryById(int id){
+        return sellerMapper.queryById(id);
+    }
+
+    /**
+     * 得到status（状态）为'冻结'状态的商家
+     * @return
+     */
+    @Override
+    public List<Seller> getFrozenAccount() {
+        return sellerMapper.getFrozenAccount();
+    }
+
+    /**
+     * 修改status为'正常营业' （商家认证）
+     * @param id
+     * @return
+     */
+    @Override
+    public int sellerAuthenticate(int id) {
+        return sellerMapper.sellerAuthenticate(id);
+    }
+
+    @Override
+    public int updateBalance(int income,int sellerId) {
+        sellerMapper.updateBalance(income,sellerId);
+        return 0;
+    }
+
+
 }
