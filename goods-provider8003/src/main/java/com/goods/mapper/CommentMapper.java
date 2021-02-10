@@ -1,16 +1,15 @@
-package com.xtt.mapper;
+package com.goods.mapper;
 
-import com.xtt.entity.Comment;
+import entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Mapper
 @Component
 public interface CommentMapper {
-    /**
-     * 用户对商品发表评论
-     * @param comment
-     * @return
-     */
+
     Integer pushComment(Comment comment);
+    List<Comment> getComment(Integer cgoodsId);
 }

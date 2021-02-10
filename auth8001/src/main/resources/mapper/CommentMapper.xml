@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xtt.mapper.CommentMapper">
-    <insert id="pushComment" parameterType="com.xtt.entity.Comment">
-        INSERT INTO comment(user_id,goods_id,remark,remark_pic,time)
-        VALUES (#{userId},#{goodsId},#{remark},#{remarkPic},NOW());
-    </insert>
-
-</mapper>

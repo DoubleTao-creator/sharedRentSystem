@@ -1,4 +1,4 @@
-package com.xtt.entity;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-/**
- * @author xtt
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
     private Integer id;
     private Integer userId;
-    private Integer goodsId;
+    private Integer cgoodsId;
     private String remark;
     private String remarkPic;
     private Timestamp time;
