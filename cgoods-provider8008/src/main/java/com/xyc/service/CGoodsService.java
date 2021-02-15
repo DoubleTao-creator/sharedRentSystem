@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CGoodsService {
 
+    public CGoods getById2(Integer id);
+
     public CGoodsShowDTO getById(Integer id);
 
     public int add(CGoodsAddDTO cGoodsAD);

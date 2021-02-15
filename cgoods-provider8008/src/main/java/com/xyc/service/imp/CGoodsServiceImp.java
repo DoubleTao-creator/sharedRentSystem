@@ -140,6 +140,11 @@ public class CGoodsServiceImp implements CGoodsService {
     }
 
     @Override
+    public CGoods getById2(Integer id) {
+        return cGoodsMapper.queryById(id);
+    }
+
+    @Override
     public CGoodsShowDTO getById(Integer id) {
         return getCGoodsSD(cGoodsMapper.queryById(id));
     }

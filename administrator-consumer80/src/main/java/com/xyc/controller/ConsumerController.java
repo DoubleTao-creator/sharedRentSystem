@@ -77,8 +77,4 @@ public class ConsumerController {
                 SELLER_PREFIX+"/authenticate/"+sellerId
                 ,CommonResult.class);
     }
-
-
-
-
 }

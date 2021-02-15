@@ -10,6 +10,15 @@ mybatis:
 
 
 spring:
+  mail:
+    username: 1830069482@qq.com
+    password: axxshflhrkgycfie
+    host: smtp.qq.com
+    properties:
+      mail:
+        stmp:
+          ssl:
+            enable: ture
   application:
     name: cGoodsProvider8008
   datasource:

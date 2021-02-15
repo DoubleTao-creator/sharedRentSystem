@@ -4,10 +4,15 @@ import com.xyc.dto.CGoodsAddDTO;
 import com.xyc.dto.CGoodsModifyDTO;
 import com.xyc.dto.CGoodsShowDTO;
 import com.xyc.dto.GoodsShowDTO;
+import com.xyc.pojo.CGoods;
+import com.xyc.pojo.Seller;
 import com.xyc.service.CGoodsService;
+import com.xyc.service.SellerService;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,8 @@ public class CGoodsController {
     @Autowired
     private CGoodsService cGoodsService;
 
+    @Autowired
+    private SellerService sellerService;
     /**
      * 添加商品类
      * @param cGoodsAD
@@ -141,9 +148,30 @@ public class CGoodsController {
         if (i<=0) {
             return CommonResultVO.error("商品审核未通过");
         }else {
+            //给商家发送邮件，告知商品审核已通过
+            CGoods cGoods = cGoodsService.getById2(cgoodsId);
+            Seller seller = sellerService.queryById(cGoods.getSellerId());
+            mailSenderImp(seller,cGoods);
             return CommonResultVO.success("商品类:"+cgoodsId+" 审核通过");
         }
     }
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
+
+    private void mailSenderImp(Seller seller, CGoods cGoods){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setSubject("极限一带四租赁平台商品审核结果来信");
+        mailMessage.setText("亲爱的"+seller.getName()
+                +", 您的商品"+cGoods.getName()
+                +"（商品id："+cGoods.getId()+"）"
+                +" 已经通过平台审核");
+        mailMessage.setTo(seller.getEmail());
+        mailMessage.setFrom("1830069482@qq.com");
+
+        mailSender.send(mailMessage);
+    }
+
 
 
 }
