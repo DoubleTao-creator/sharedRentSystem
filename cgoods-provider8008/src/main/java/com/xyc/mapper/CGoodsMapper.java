@@ -48,6 +48,21 @@ public interface CGoodsMapper {
     public int modify(CGoods cGoods);
 
     /**
+     * 修改照片
+     * @param pic
+     * @param cGoodsId
+     * @return
+     */
+    public int modifyPic(@Param("pic") String pic,@Param("id") Integer cGoodsId);
+
+    /**
+     * 得到当前商品的id
+     * @return
+     */
+    public int getId(@Param("sellerId") Integer sellerId
+            ,@Param("name") String name);
+
+    /**
      * 根据出售模式flag查询 出售模式
      * @param flag
      * @return

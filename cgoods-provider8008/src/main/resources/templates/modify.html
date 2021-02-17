@@ -7,17 +7,23 @@
 </head>
 <body>
 
-<div style="width: 980px;margin: auto">
+<div style="width: 980px;margin:40px auto;">
+
     <form method="post" role="form" th:action="@{/cgoods/modify}" enctype="multipart/form-data">
 
         <div class="form-group">
-            <label>id</label>
             <input type="hidden" name="id" class="form-control" th:value="${cGoodSD.getId()}">
         </div>
 
         <div class="form-group">
-            <label>sellerId</label>
-            <input type="text" name="sellerId" class="form-control" th:value="${cGoodSD.getSellerId()}">
+            <input type="hidden" name="sellerId" class="form-control" th:value="${cGoodSD.getSellerId()}">
+        </div>
+
+        <div class="form-group">
+            <label>pic</label>
+            <div>
+                <a th:href="@{/cgoods/toModifyPic/}+${cGoodSD.getId()}"><img style="width: 100px;" th:src="${cGoodSD.getPic()}" alt=""></a>
+            </div>
         </div>
 
         <div class="form-group">
@@ -37,10 +43,7 @@
             <input type="number" name="repertory" class="form-control" th:value="${cGoodSD.getRepertory()}">
         </div>
 
-        <div class="form-group">
-            <label>pic</label>
-            <input type="file" name="pic" th:value="${cGoodSD.getPic()}" class="form-control">
-        </div>
+
 
         <div class="form-group">
             <label>info</label>

@@ -20,8 +20,8 @@ public class CGoodsModifyDTO {
     private Integer typeId;
     @NotNull(message = "商品库存不能为空")
     private Integer repertory;
-    @NotNull(message = "商品图片不能为空")
-    private MultipartFile pic;
+//    @NotNull(message = "商品图片不能为空")
+//    private MultipartFile pic;
     @NotNull(message = "商品信息不能为空")
     private String info;
     @NotNull(message = "商品可支持的租赁模式不能为空")

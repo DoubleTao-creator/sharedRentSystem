@@ -56,6 +56,16 @@
         where id=#{id}
     </update>
 
+    <update id="modifyPic">
+        update cgoods set pic=#{pic}
+        where id=#{id}
+    </update>
+
+    <select id="getId" resultType="int">
+        select id from cgoods
+        where name=#{name} and sellerId=#{sellerId}
+    </select>
+
     <select id="getSellModel" resultType="int">
         select id from sellmodle where flag=#{flag}
     </select>

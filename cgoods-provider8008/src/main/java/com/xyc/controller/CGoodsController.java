@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import utils.ValidDataUtil;
 
 import java.util.List;
@@ -69,6 +70,24 @@ public class CGoodsController {
 
         }
     }
+
+    /**
+     * 更新照片
+     * @return
+     */
+    @PostMapping("/modifyPic")
+    public CommonResult modifyPic(MultipartFile pic,Integer id){
+        System.out.println(id);
+        boolean flag = cGoodsService.updatePic(pic,id);
+
+        if (flag){
+            return CommonResultVO.success("商品照片更新成功！请耐心等待管理员审核");
+        }else {
+            return CommonResultVO.error("商品照片更新失败");
+        }
+
+    }
+
 
     /**
      * 根据商家id得到商品类

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -41,6 +42,15 @@ public class RouteController {
         model.addAttribute("types",types);
 
         return "modify";
+    }
+
+    @GetMapping("/toModifyPic/{cGoodsId}")
+    public String toModifyPic(Model model,@PathVariable("cGoodsId") int id){
+        CGoods cGoods = cGoodsMapper.queryById(id);
+        CGoodsShowDTO cGoodsSD = getCGoodsSD(cGoods);
+        model.addAttribute("cGoodSD",cGoodsSD);
+
+        return "modifyPic";
     }
 
     private CGoodsShowDTO getCGoodsSD(CGoods cGoods){

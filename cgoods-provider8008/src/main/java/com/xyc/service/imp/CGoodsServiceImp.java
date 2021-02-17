@@ -11,6 +11,7 @@ import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import utils.PhotoUtils;
 
 import java.io.File;
@@ -32,47 +33,23 @@ public class CGoodsServiceImp implements CGoodsService {
     @Override
     public int updateInfo(CGoodsModifyDTO cGoodsMD) {
         CGoods cGoods = cGoodsMapper.queryById(cGoodsMD.getId());
-
         cGoods.setName(cGoodsMD.getName());
         cGoods.setTypeId(cGoodsMD.getTypeId());
         cGoods.setRepertory(cGoodsMD.getRepertory());
-        cGoods.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
         cGoods.setInfo(cGoodsMD.getInfo());
+
         cGoods.setSellModel(judgeSellModels(cGoodsMD.getSellModels()));
+        for (String sellModel : cGoodsMD.getSellModels()) {
+            System.out.println(sellModel);
+        }
+
         cGoods.setPrice(cGoodsMD.getPrice());
         cGoods.setRental(cGoodsMD.getRental());
         cGoods.setDeposit(cGoodsMD.getDeposit());
         //每次修改商品信息都需要再次审核！！
         cGoods.setStatus("待审核");
-
         int i = cGoodsMapper.modify(cGoods);
-        //数据库更新成功后 更新服务器上的照片
-        if (i>0){
-            try {
-                FTPConstants fc = new FTPConstants();
-                //删除原来的照片
-                fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoods.getName()+PhotoUtils.SUFFIX);
-                PhotoUtils.deleteFile(fc);
-                //上传照片
-                fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsMD.getName()+PhotoUtils.SUFFIX);
-                File file = PhotoUtils.MultipartFileToFile(cGoodsMD.getPic());
-                fc.setInput(new FileInputStream(file));
-                PhotoUtils.uploadFile(fc);
-
-                PhotoUtils.deleteTempFile(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         return i;
-    }
-
-    @Override
-    public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId) {
-        return goodsMapper.getGoodsByCGoodsId(cGoodsId);
     }
 
 
@@ -90,32 +67,33 @@ public class CGoodsServiceImp implements CGoodsService {
         cGoods.setDeposit(cGoodsAD.getDeposit());
         cGoods.setStatus("待审核");
 
-        for (String sellModel : cGoodsAD.getSellModels()) {
-            System.out.println(sellModel);
-        }
         Integer sellModelId = judgeSellModels(cGoodsAD.getSellModels());
         cGoods.setSellModel(sellModelId);
 
-        System.out.println(cGoods);
+//        System.out.println(cGoods);
+        int i = cGoodsMapper.add(cGoods);
 
-//        上传商品照片到服务器
+        //得到新添加商品类的id，修改照片的名字
+        int id = cGoodsMapper.getId(cGoods.getSellerId(),cGoods.getName());
+        cGoods.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.GOODS_PREFIX+id+PhotoUtils.SUFFIX);
+        cGoodsMapper.modifyPic(cGoods.getPic(),id);
+
+        //上传商品照片到服务器
         try {
             FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsAD.getName()+PhotoUtils.SUFFIX);
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+id+PhotoUtils.SUFFIX);
             File file = PhotoUtils.MultipartFileToFile(cGoodsAD.getPic());
             fc.setInput(new FileInputStream(file));
             PhotoUtils.uploadFile(fc);
-            System.out.println("商品类照片已上传");
             //删除本地临时文件 C:\UserData\AppData\Local\Temp目录下
-            PhotoUtils.deleteTempFile(file);
+//            PhotoUtils.deleteTempFile(file);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return cGoodsMapper.add(cGoods);
+        return i;
     }
 
     private Integer judgeSellModels(String[] sellModels){
@@ -137,6 +115,32 @@ public class CGoodsServiceImp implements CGoodsService {
         String ss = new String(s);
         sellModel = cGoodsMapper.getSellModel(ss);
         return sellModel;
+    }
+
+    @Override
+    public boolean updatePic(MultipartFile pic, Integer cGoodsId) {
+        boolean flag = false;
+        try {
+            FTPConstants fc = new FTPConstants();
+            //删除原来的照片
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+cGoodsId+PhotoUtils.SUFFIX);
+            PhotoUtils.deleteFile(fc);
+            //上传照片
+            File file = PhotoUtils.MultipartFileToFile(pic);
+            fc.setInput(new FileInputStream(file));
+            flag = PhotoUtils.uploadFile(fc);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public List<GoodsShowDTO> getEachGoodsByCGoodId(Integer cGoodsId) {
+        return goodsMapper.getGoodsByCGoodsId(cGoodsId);
     }
 
     @Override
