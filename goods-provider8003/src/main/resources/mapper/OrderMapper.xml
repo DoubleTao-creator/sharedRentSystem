@@ -26,4 +26,7 @@
     <select id="findShareRentById" resultType="com.goods.entity.ShareRent">
         select * from sharerent WHERE id=#{id};
     </select>
+    <update id="changeGoodsStatus" >
+        UPDATE goods SET status=#{status} where id=#{goodsId};
+    </update>
 </mapper>
