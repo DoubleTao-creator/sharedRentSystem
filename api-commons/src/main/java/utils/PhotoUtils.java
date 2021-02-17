@@ -109,9 +109,10 @@ public class PhotoUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            ftpClient.logout();
         }
+//        finally {
+//            ftpClient.logout();
+//        }
         return false;
     }
 
