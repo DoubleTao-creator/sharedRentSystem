@@ -1,11 +1,14 @@
 package com.xtt.service;
 
 import com.xtt.dto.ModifyUserDTO;
+import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
 import com.xtt.entity.User;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.stereotype.Service;
+
+import java.beans.ParameterDescriptor;
 
 /**
  * @author xtt
@@ -34,7 +37,7 @@ public interface UserService {
     User userLogin(String username,String password);
 
     /**
-     * 更改用户信息
+     * 更改用户基本信息(用户名，头像，手机号，邮箱）
      * @param modifyUserDTO
      * @return
      */
@@ -46,4 +49,5 @@ public interface UserService {
      * @return
      */
     User findUserById(Integer id);
+    Integer modifyUserPassword(PassWordDTO passWordDTO);
 }

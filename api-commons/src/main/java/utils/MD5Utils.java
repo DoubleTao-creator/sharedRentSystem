@@ -45,7 +45,7 @@ public class MD5Utils {
      * @param encodedPassword 数据库中已加密的密码
      * @return true相同 false 不同
      */
-    public Boolean matches(String password,String encodedPassword){
+    public static Boolean matches(String password,String encodedPassword){
         if(encode(password).equals(encodedPassword)) {
             return true;
         }

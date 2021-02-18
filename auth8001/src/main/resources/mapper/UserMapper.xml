@@ -11,11 +11,11 @@
     </insert>
 
     <select id="findIdByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT id FROM USER WHERE username=#{username};
+        SELECT id FROM USER WHERE name=#{username};
     </select>
 
     <select id="userLogin" parameterType="java.lang.String" resultMap="BaseResultMapper">
-        SELECT * FROM USER WHERE username=#{username} and password=#{passsword};
+        SELECT * FROM USER WHERE name=#{username} and password=#{password};
     </select>
 
     <select id="findUserById" parameterType="java.lang.Integer" resultMap="BaseResultMapper">
@@ -23,9 +23,12 @@
     </select>
 
     <update id="modifyUser" parameterType="com.xtt.entity.User">
-        update USER set username=#{username},password=#{password},tel=#{tel},pic#{pic},email=#{email} where id=#{id};
+        update USER set name=#{username},tel=#{tel},pic=#{pic},email=#{email} where id=#{id};
     </update>
     <update id="addUserBalance">
         UPDATE USER SET balance=balance+#{balance} where id=#{userId}
+    </update>
+    <update id="modifyUserPassword" >
+        UPDATE user SET password=#{password} where id=#{userId};
     </update>
 </mapper>

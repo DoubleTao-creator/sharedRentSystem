@@ -22,6 +22,11 @@ public class GoodsController {
     GoodsService goodsService;
     @Autowired
     OrderService orderService;
+    /**
+     * 用户下体验订单
+     * @param userExperienceDTO
+     * @return
+     */
     @PostMapping("/goods/createOrder")
     public CommonResult ExperienceGoods(@RequestBody UserExperienceDTO userExperienceDTO){
         Integer result=goodsService.ExperienceGoods(userExperienceDTO);
@@ -29,6 +34,8 @@ public class GoodsController {
             return CommonResultVO.error("余额不足!");
         }else if(result==1){
             return CommonResultVO.success(null);
+        }else if(result==2){
+            return CommonResultVO.error("信誉分低于60无法下单");
         }else {
             return CommonResultVO.error("发生未知错误");
         }

@@ -32,7 +32,7 @@ public interface UserMapper {
      * @param password
      * @return
      */
-    User userLogin(String username,String password);
+    User userLogin(@Param("username") String username,@Param("password") String password);
 
     /**
      * 根据id查询用户
@@ -42,7 +42,7 @@ public interface UserMapper {
     User findUserById(Integer id);
 
     /**
-     * 更改用户信息
+     * 更改用户基本信息
      * @param user
      */
     void modifyUser(User user);
@@ -54,4 +54,12 @@ public interface UserMapper {
      * @return
      */
     Integer addUserBalance(@Param("userId") Integer userId,@Param("balance") Double balance);
+
+    /**
+     * 更改用户密码
+     * @param userId
+     * @param password
+     * @return
+     */
+    Integer modifyUserPassword(@Param("userId") Integer userId,@Param("password") String password);
 }

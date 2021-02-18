@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class GoodsServiceImpl implements
         GoodsService{
+    private Integer credit_add=5;
+    private Integer credit_sub=10;
     @Autowired
     GoodsMapper goodsMapper;
     @Autowired
@@ -30,11 +32,15 @@ public class GoodsServiceImpl implements
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer ExperienceGoods(UserExperienceDTO userExperienceDTO) {
-        String sellModel=userExperienceDTO.getSellModel();
         Integer userId=userExperienceDTO.getUserId();
+        User user=userMapper.findUserById(userId);
+        if(user.getCredit()<60){
+            //信誉分低于60无法下单
+            return 2;
+        }
+        String sellModel=userExperienceDTO.getSellModel();
         Integer CgoodsId=userExperienceDTO.getCgoodsId();
         Integer rentTime=userExperienceDTO.getRentTime();
-        User user=userMapper.findUserById(userId);
         Cgoods cgoods=cGoodsMapper.getCgoodsById(CgoodsId);
         //处理以租代售订单
         if("以租代售".equals(sellModel)){
@@ -67,7 +73,7 @@ public class GoodsServiceImpl implements
             OrderRecode orderRecode=new OrderRecode();
             orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(cgoods.getRental());
             orderRecode.setModelId(1);
-            orderRecode.setInfo("以租代售下单");
+            orderRecode.setInfo("以租代售商品下单");
             orderMapper.addOrderRecode(orderRecode);
             return 1;
         }else if("先租后买".equals(sellModel)){
@@ -159,6 +165,8 @@ public class GoodsServiceImpl implements
         //商品库存减少
         cGoodsMapper.changeCGoodsRepertory(cgoodsId, -1);
         if(result>=0){
+            //信誉积分增加
+            userMapper.addCredit(userId, credit_add);
             return 1;
         }else {
             return -1;
@@ -199,6 +207,8 @@ public class GoodsServiceImpl implements
         orderMapper.addOrderRecode(orderRecode);
         if(result>0){
             //续租成功
+            //增加信誉积分
+            userMapper.addCredit(userId, credit_add);
             return 1;
         }else {
             //续租失败

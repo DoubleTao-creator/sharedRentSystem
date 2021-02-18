@@ -1,5 +1,7 @@
 package com.xtt;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.xtt.mapper.UserMapper;
 import com.xtt.util.MailUtils;
 import entity.FTPConstants;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.javamail.JavaMailSender;
 import sun.net.ftp.FtpClient;
+import utils.JwtUtils;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
@@ -68,5 +71,10 @@ public class TestClass {
     @Test
     public void test2(){
         System.out.println(userMapper);
+    }
+    @Test
+    public void testToken(){
+        String token=JwtUtils.generateToken("1", "用户");
+        System.out.println(token);
     }
 }
