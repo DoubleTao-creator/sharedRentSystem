@@ -3,7 +3,6 @@ package com.xtt.service.impl;
  * @author xtt
  * @date
  */
-
 import com.xtt.dto.ModifyUserDTO;
 import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
         try{
             FTPConstants ftpConstants=new FTPConstants();
             ftpConstants.setFilename(PhotoUtils.USER_PREFIX+modifyUserDTO.getId()+PhotoUtils.SUFFIX);
-            ftpConstants.setInput(new FileInputStream(PhotoUtils.transferToFile(modifyUserDTO.getFile())));
+            ftpConstants.setInput(new FileInputStream(PhotoUtils.MultipartFileToFile(modifyUserDTO.getFile())));
             //删除原来的头像
             PhotoUtils.deleteFile(ftpConstants);
             //上传新的头像

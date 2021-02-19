@@ -3,7 +3,6 @@ package com.xtt.controller;
  * @Author xtt
  * @date 2021/1/20
  */
-import cn.hutool.system.UserInfo;
 import com.xtt.dto.ModifyUserDTO;
 import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
@@ -73,8 +72,8 @@ public class UserController {
             //生成token
             String token= JwtUtils.generateToken(user.getId().toString(), user.getRole());
             UserInformationVO userInformationVO=new UserInformationVO();
-            userInformationVO.setUser(user);
-            userInformationVO.setTokrn(token);
+            userInformationVO.setUserId(user.getId());
+            userInformationVO.setToken(token);
             //返回用户信息及token
             return CommonResultVO.success(userInformationVO);
         }else{
@@ -87,8 +86,8 @@ public class UserController {
      * @param email
      * @return
      */
-    @GetMapping("/user/getEmailCode")
-    public CommonResult<String> getEmailCode(@RequestParam("email") String email){
+    @GetMapping("/user/getEmailCode/{email}")
+    public CommonResult<String> getEmailCode(@PathVariable("email") String email){
         String code=mailUtils.sendEmail(email);
         if(code!=null){
             return CommonResultVO.success(code);
@@ -142,8 +141,8 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/user/getUserInfo")
-    public CommonResult getUserInfo(Integer id){
+    @GetMapping("/user/getUserInfo/{id}")
+    public CommonResult getUserInfo(@PathVariable("id") Integer id){
         User user=userService.findUserById(id);
         if(user==null) {
             return CommonResultVO.error("不存在该用户");

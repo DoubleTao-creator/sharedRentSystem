@@ -10,7 +10,7 @@ public class JwtUtils {
     //秘钥
     public static final String SECRET_KEY = "123456";
     //token过期时间 秒
-    public static final long TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
+    public static final long TOKEN_EXPIRE_TIME = 30 *5 * 60 * 1000;
     //refreshToken过期时间 秒
     public static final long REFRESH_TOKEN_EXPIRE_TIME =   24 * 60 * 60 * 1000;
     //签发人
