@@ -31,4 +31,7 @@
     <update id="modifyUserPassword" >
         UPDATE user SET password=#{password} where id=#{userId};
     </update>
+    <update id="reCharge" >
+        UPDATE user SET balance=balance+#{money} where id=#{userId};
+    </update>
 </mapper>

@@ -33,15 +33,17 @@ public class AuthCheckFilter implements GlobalFilter,Ordered{
         System.out.println("处理请求:"+url);
         String token=exchange.getRequest().getHeaders().getFirst("token");
         System.out.println("token："+token);
-        if(Arrays.asList(skipAuthUrls).contains(url)){
-            return chain.filter(exchange);
+        for(String skipurl:skipAuthUrls){
+            if(skipurl.equals(url)||url.startsWith(skipurl)){
+                return chain.filter(exchange);
+            }
         }
         if(token==null){
             return authErro(exchange.getResponse(), "请先登录！");
         }
         if(!JwtUtils.verify(token)){
             System.out.println("token身份认证");
-            return authErro(exchange.getResponse(), "认证失败");
+            return authErro(exchange.getResponse(), "认证失败,请先登录！");
         }
         String userId=JwtUtils.getId(token);
         String role=JwtUtils.getRole(token);

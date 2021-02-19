@@ -62,4 +62,12 @@ public interface UserMapper {
      * @return
      */
     Integer modifyUserPassword(@Param("userId") Integer userId,@Param("password") String password);
+
+    /**
+     * 用户充值
+     * @param userId 用户id
+     * @param money 金额
+     * @return
+     */
+    Integer reCharge(@Param("userId") Integer userId,@Param("money") Double money);
 }

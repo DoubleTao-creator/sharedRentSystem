@@ -131,7 +131,7 @@ public class UserController {
             return CommonResultVO.error("原密码输入有误");
         }else if(result==1){
             //修改成功
-            return CommonResultVO.success(userService.findUserById(passWordDTO.getUserId()));
+            return CommonResultVO.success(null);
         }else {
             return CommonResultVO.error("修改成功");
         }
@@ -148,6 +148,22 @@ public class UserController {
             return CommonResultVO.error("不存在该用户");
         }else{
             return CommonResultVO.success(user);
+        }
+    }
+
+    /**
+     * 用户充值
+     * @param userId 用户id
+     * @param money 充值金额
+     * @return
+     */
+    @PostMapping("/user/reCharge")
+    public CommonResult reCharge(Integer userId,Double money){
+        Integer result=userService.reCharge(userId, money);
+        if(result==1){
+            return CommonResultVO.success(null);
+        }else {
+            return CommonResultVO.error("充值失败");
         }
     }
 }

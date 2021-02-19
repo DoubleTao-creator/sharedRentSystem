@@ -13,6 +13,7 @@ import entity.FTPConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.awt.geom.AreaOp;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
@@ -87,12 +88,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer modifyUserPassword(PassWordDTO passWordDTO) {
         User user=userMapper.findUserById(passWordDTO.getUserId());
-        if(MD5Utils.matches(passWordDTO.getOldPassword(), user.getPassword())){
+        if(!MD5Utils.matches(passWordDTO.getOldPassword(), user.getPassword())){
             //原密码错误,返回
             return 0;
         }
         //更改密码
         userMapper.modifyUserPassword(passWordDTO.getUserId(), MD5Utils.encode(passWordDTO.getNewPassword()));
         return 1;
+    }
+
+    @Override
+    public Integer reCharge(Integer userId,Double money) {
+        Integer result=userMapper.reCharge(userId, money);
+        if(result>0){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 }
