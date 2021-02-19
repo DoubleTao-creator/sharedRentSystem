@@ -9,7 +9,9 @@ import entity.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,6 +84,9 @@ public class OrderServiceImpl implements OrderService{
             else if(order.getSellModel()==1){
                 InstallmentGoodsVO installmentGoodsVO=new InstallmentGoodsVO();
                 Installment installment=orderMapper.findInstalmentById(order.getSellId());
+                if((installment.getDeadTime().compareTo(new Timestamp(System.currentTimeMillis()))==-1)){
+                    orderMapper.changeGoodsStatus(order.getId(), "已逾期");
+                }
                 installmentGoodsVO.setStartTime(installment.getStartTime());
                 installmentGoodsVO.setDeadTime(installment.getDeadTime());
                 //已付月数
@@ -95,6 +100,9 @@ public class OrderServiceImpl implements OrderService{
                 //先租后买
                 RentToBuyGoodsVO rentToBuyGoodsVO=new RentToBuyGoodsVO();
                 RentToBuy rentToBuy=orderMapper.findRentToBuyById(order.getSellId());
+                if(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()).compareTo(new Timestamp(System.currentTimeMillis()))==-1){
+                    orderMapper.changeGoodsStatus(order.getId(), "已逾期");
+                }
                 rentToBuyGoodsVO.setStartTime(rentToBuy.getStartTime());
                 rentToBuyGoodsVO.setEndTime(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()));
                 rentToBuyGoodsVO.setTotalRentTime(rentToBuy.getRentTime());

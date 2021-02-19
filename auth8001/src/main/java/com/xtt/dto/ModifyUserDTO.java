@@ -20,9 +20,7 @@ public class ModifyUserDTO {
     private Integer id;
     @NotNull(message = "用户名不能为空")
     private String name;
-    @NotNull(message = "密码不能为空")
-    private String password;
-    @Pattern(regexp = "^1(3|4|5|7|8)d{9}$",message = "手机号格式错误")
+   // @Pattern(regexp = "^1(3|4|5|7|8)d{9}$",message = "手机号格式错误")
     private String tel;
     @NotNull(message = "头像不能为空")
     private MultipartFile file;

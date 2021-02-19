@@ -75,8 +75,7 @@ public class SellerServiceImp implements SellerService {
 
         if (seller!=null){
             System.out.println("用户存在");
-            MD5Utils md = new MD5Utils();
-            if (md.matches(sellerLD.getPassword(),seller.getPassword())){
+            if (MD5Utils.matches(sellerLD.getPassword(),seller.getPassword())){
                return seller;
             }
         }

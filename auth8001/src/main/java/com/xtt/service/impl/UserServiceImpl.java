@@ -5,6 +5,7 @@ package com.xtt.service.impl;
  */
 
 import com.xtt.dto.ModifyUserDTO;
+import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
 import com.xtt.entity.User;
 import com.xtt.mapper.UserMapper;
@@ -64,7 +65,6 @@ public class UserServiceImpl implements UserService {
             User user=new User();
             user.setId(modifyUserDTO.getId());
             user.setName(modifyUserDTO.getName());
-            user.setPassword(modifyUserDTO.getPassword());
             user.setEmail(modifyUserDTO.getEmail());
             user.setTel(modifyUserDTO.getTel());
             user.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.USER_PREFIX+modifyUserDTO
@@ -83,5 +83,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Integer id) {
         return userMapper.findUserById(id);
+    }
+
+    @Override
+    public Integer modifyUserPassword(PassWordDTO passWordDTO) {
+        User user=userMapper.findUserById(passWordDTO.getUserId());
+        if(MD5Utils.matches(passWordDTO.getOldPassword(), user.getPassword())){
+            //原密码错误,返回
+            return 0;
+        }
+        //更改密码
+        userMapper.modifyUserPassword(passWordDTO.getUserId(), MD5Utils.encode(passWordDTO.getNewPassword()));
+        return 1;
     }
 }

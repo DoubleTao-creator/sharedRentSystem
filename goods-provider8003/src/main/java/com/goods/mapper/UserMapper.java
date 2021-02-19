@@ -25,4 +25,12 @@ public interface UserMapper {
      * @return
      */
     Integer changeUserbalance(@Param("userId") Integer userId, @Param("balanceToChange") Double balanceToChange);
+
+    /**
+     * 用户增加信誉积分
+     * @param userId
+     * @param credit
+     * @return
+     */
+    Integer addCredit(@Param("userId") Integer userId,@Param("credit") Integer credit);
 }

@@ -9,6 +9,7 @@ import com.goods.vo.CommentVO;
 import entity.Comment;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import utils.PhotoUtils;
 
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentMapper commentMapper;

@@ -7,12 +7,12 @@ import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.goods.service.OrderService;
 import com.goods.vo.OrderResultVO;
-import com.goods.vo.OwnedGoodsVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -73,5 +73,14 @@ public class TestGoods {
         for(OrderResultVO orderResultVO:list){
             System.out.println(orderResultVO);
         }
+    }
+    @Test
+    public void testTime(){
+        Installment installment=goodsMapper.findInstallmentByGoodsId(7);
+       // System.out.println(installment.getDeadTime());
+        Timestamp timestamp1=installment.getDeadTime();
+        Timestamp timestamp2=new Timestamp(System.currentTimeMillis());
+        //System.out.println(new Timestamp(new Date().getTime()));
+        System.out.println(timestamp2.compareTo(timestamp1));
     }
 }

@@ -14,6 +14,7 @@ spring:
           predicates:
             - Path=/user/**        # 断言，路径相匹配的进行路由
 
+
 eureka:
   instance:
     hostname: cloud-gateway-service

@@ -3,18 +3,25 @@ package com.xtt.controller;
  * @Author xtt
  * @date 2021/1/20
  */
+import cn.hutool.system.UserInfo;
 import com.xtt.dto.ModifyUserDTO;
+import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
 import com.xtt.entity.User;
 import com.xtt.service.UserService;
 import com.xtt.util.MailUtils;
+import com.xtt.vo.UserInformationVO;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import utils.JwtUtils;
 import utils.ValidDataUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -31,6 +38,10 @@ public class UserController {
      */
     @PostMapping("/user/register")
     public CommonResult userRegister(@Validated @RequestBody UserDTO userDTO, BindingResult result){
+        System.out.println(userDTO.getName());
+        System.out.println(userDTO.getPassword());
+        System.out.println(userDTO.getEmail());
+        System.out.println(userDTO.getTel());
         //参数传入有误
         if(ValidDataUtil.validData(result)!=null){
             return CommonResultVO.error(ValidDataUtil.validData(result));
@@ -55,10 +66,17 @@ public class UserController {
      */
     @PostMapping ("/user/login")
     public CommonResult userLogin(String username,String password){
+        System.out.println("用户"+username+"请求登录");
         User user=userService.userLogin(username, password);
         if(user!=null){
             //登录成功
-            return CommonResultVO.success(user);
+            //生成token
+            String token= JwtUtils.generateToken(user.getId().toString(), user.getRole());
+            UserInformationVO userInformationVO=new UserInformationVO();
+            userInformationVO.setUser(user);
+            userInformationVO.setTokrn(token);
+            //返回用户信息及token
+            return CommonResultVO.success(userInformationVO);
         }else{
             //登录失败
             return CommonResultVO.error("用户名或密码错误");
@@ -80,7 +98,7 @@ public class UserController {
     }
 
     /**
-     * 更改用户信息
+     * 更改用户基本信息（头像，tel, email,username)
      * @param modifyUserDTO
      * @param bindingResult
      * @return
@@ -102,6 +120,23 @@ public class UserController {
         }
     }
 
+    /**
+     * 修改用户密码
+     * @param passWordDTO 用户id,原密码，新密码
+     * @return
+     */
+    @PostMapping("/user/modifyUserPassword")
+    public CommonResult modifyUserPassword(PassWordDTO passWordDTO){
+        Integer result=userService.modifyUserPassword(passWordDTO);
+        if(result==0){
+            return CommonResultVO.error("原密码输入有误");
+        }else if(result==1){
+            //修改成功
+            return CommonResultVO.success(userService.findUserById(passWordDTO.getUserId()));
+        }else {
+            return CommonResultVO.error("修改成功");
+        }
+    }
     /**
      * 根据id查询用户信息
      * @param id

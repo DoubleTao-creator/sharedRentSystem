@@ -3,7 +3,7 @@
 <mapper namespace="com.goods.mapper.CommentMapper">
     <insert id="pushComment" parameterType="entity.Comment">
         INSERT INTO comment(user_id,cgoods_id,remark,remark_pic,time)
-        VALUES (#{userId,#{cgoodsId},#{remark},#{remarkPic},NOW());
+        VALUES (#{userId},#{cgoodsId},#{remark},#{remarkPic},NOW());
     </insert>
     <select id="getComment" resultType="entity.Comment">
         select * from comment WHERE cgoods_id=#{cgoodsId};
