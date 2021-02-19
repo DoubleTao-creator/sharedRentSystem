@@ -9,6 +9,7 @@ import com.xyc.service.SellerService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
@@ -40,27 +41,31 @@ public class SellerServiceImp implements SellerService {
         seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
         seller.setStatus("商家冻结中");
-        seller.setLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
-                +sellerRD.getName()+PhotoUtils.SUFFIX);
+        seller.setLicense("null");
 
-        try {
-            FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.LICENSE_PREFIX+sellerRD.getName()+PhotoUtils.SUFFIX);
+        int i = sellerMapper.add(seller);
 
-            File file = PhotoUtils.MultipartFileToFile(sellerRD.getLicense());
-            fc.setInput(new FileInputStream(file));
-            PhotoUtils.uploadFile(fc);
-            System.out.println("营业执照已上传");
+        if (i>0){
 
-            PhotoUtils.deleteTempFile(file);
+            int id = sellerMapper.getId(sellerRD.getName(),sellerRD.getEmail());
+            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
+                            +id+PhotoUtils.SUFFIX,id);
+            try {
+                FTPConstants fc = new FTPConstants();
+                fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
+                File file = PhotoUtils.MultipartFileToFile(sellerRD.getLicense());
+                fc.setInput(new FileInputStream(file));
+                PhotoUtils.uploadFile(fc);
+                System.out.println("营业执照已上传");
+                PhotoUtils.deleteTempFile(file);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        return sellerMapper.register(seller);
+        return i;
     }
 
     /**
@@ -70,7 +75,8 @@ public class SellerServiceImp implements SellerService {
      */
     @Override
     public Seller login(SellerLoginDTO sellerLD) {
-        Seller seller = sellerMapper.login(sellerLD);
+
+        Seller seller = sellerMapper.queryByName(sellerLD);
         System.out.println(seller);
 
         if (seller!=null){
@@ -84,43 +90,76 @@ public class SellerServiceImp implements SellerService {
 
     /**
      * 商家修改个人信息  '余额' '状态' 不可修改
+     * 同时状态变成‘商家冻结中’ 等待管理员审核
      * @param sellerMD
      * @return
      */
     @Override
     public int modifySeller(SellerModifyDTO sellerMD) {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
+
+        seller.setName(sellerMD.getName());
+        seller.setPassword(sellerMD.getPassword());
+        seller.setTel(sellerMD.getTel());
+        seller.setEmail(sellerMD.getEmail());
+        //修改信息需要管理员重新审核
+        seller.setStatus("商家冻结中");
+
+        return sellerMapper.update(seller);
+    }
+
+    /**
+     * 更换头像
+     * @param pic
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean modifyPic(MultipartFile pic,Integer id) {
+        boolean flag = false;
         try {
             FTPConstants fc = new FTPConstants();
             //删除原来的照片
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+seller.getName()+PhotoUtils.SUFFIX);
-            PhotoUtils.deleteFile(fc);
+            fc.setFilename(PhotoUtils.SELLER_PREFIX+id+PhotoUtils.SUFFIX);
+            flag = PhotoUtils.deleteFile(fc);
             //上传新的照片
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+sellerMD.getName()+PhotoUtils.SUFFIX);
-            File file = PhotoUtils.MultipartFileToFile(sellerMD.getPic());
+            File file = PhotoUtils.MultipartFileToFile(pic);
             fc.setInput(new FileInputStream(file));
-            PhotoUtils.uploadFile(fc);
-
+            flag = PhotoUtils.uploadFile(fc);
+            //删除本地缓存Temp
             PhotoUtils.deleteTempFile(file);
-
-            seller.setId(sellerMD.getId());
-            seller.setName(sellerMD.getName());
-            seller.setPassword(sellerMD.getPassword());
-            seller.setTel(sellerMD.getTel());
-            seller.setEmail(sellerMD.getEmail());
-            seller.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
-                    +sellerMD.getName()+PhotoUtils.SUFFIX);
-
-            //一直想不清 修改信息能不能修改营业执照
-
-            //修改信息需要管理员重新审核
-            seller.setStatus("商家冻结中");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return flag;
+    }
 
-        return sellerMapper.update(seller);
+    /**
+     * 更新营业执照
+     * 同时状态变成‘商家冻结中’ 等待管理员审核
+     * @param license
+     * @param id
+     * @return
+     */
+    @Override
+    public int modifyLicense(MultipartFile license,Integer id) {
+        int i = 0;
+        try {
+            FTPConstants fc = new FTPConstants();
+            //删除原来的照片
+            fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
+            PhotoUtils.deleteFile(fc);
+            //上传新的照片
+            File file = PhotoUtils.MultipartFileToFile(license);
+            fc.setInput(new FileInputStream(file));
+            PhotoUtils.uploadFile(fc);
+            //删除本地缓存Temp
+            PhotoUtils.deleteTempFile(file);
+            i = sellerMapper.updateLicense(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return i;
     }
 
     /**

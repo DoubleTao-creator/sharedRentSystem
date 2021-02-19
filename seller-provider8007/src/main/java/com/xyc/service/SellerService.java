@@ -6,6 +6,7 @@ import com.xyc.dto.SellerRegisterDTO;
 import com.xyc.pojo.Seller;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -17,7 +18,11 @@ public interface SellerService {
 
     public Seller login(SellerLoginDTO seller);
 
-    public int modifySeller(SellerModifyDTO sellerMD) throws FileNotFoundException;
+    public int modifySeller(SellerModifyDTO sellerMD);
+
+    public boolean modifyPic(MultipartFile pic, Integer id);
+
+    public int modifyLicense(MultipartFile license,Integer id);
 
     public Seller queryById(int id);
 

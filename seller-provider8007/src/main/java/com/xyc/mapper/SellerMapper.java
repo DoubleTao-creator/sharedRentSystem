@@ -16,11 +16,17 @@ public interface SellerMapper {
 
     public Seller queryById(@Param("id") int id);
 
-    public int register(Seller seller);
+    public int getId(@Param("name") String name,@Param("email") String email);
 
-    public Seller login(SellerLoginDTO sellerLD);
+    public int add(Seller seller);
+
+    public Seller queryByName(SellerLoginDTO sellerLD);
 
     public int update(Seller seller);
+
+    public int updatePic(@Param("pic") String pic,@Param("id") Integer id);
+
+    public int updateLicense(@Param("id") Integer id);
 
     public List<Seller> getFrozenAccount();
 

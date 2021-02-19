@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import utils.ValidDataUtil;
 
 import javax.servlet.http.HttpSession;
@@ -52,11 +53,44 @@ public class SellerController {
     public CommonResult modifySeller(SellerModifyDTO sellerMD) throws FileNotFoundException {
         int i = sellerService.modifySeller(sellerMD);
         if (i>0){
-            return CommonResultVO.success("商家信息更新成功");
+            return CommonResultVO.success("商家信息更新成功，请耐心等待管理员的审核");
         }else {
             return CommonResultVO.error("商家信息更新失败");
         }
     }
+
+    /**
+     * 商家头像更新
+     * @param pic
+     * @param id
+     * @return
+     */
+    @PostMapping("/modifyPic/{id}")
+    public CommonResult modifyPic(MultipartFile pic,@PathVariable("id") Integer id){
+        boolean flag = sellerService.modifyPic(pic,id);
+        if (flag){
+            return CommonResultVO.success("商家照片更新成功");
+        }else {
+            return CommonResultVO.error("商家照片更新失败");
+        }
+    }
+
+    /**
+     * 商家营业执照更新
+     * @param pic
+     * @param id
+     * @return
+     */
+    @PostMapping("/modifyLicense/{id}")
+    public CommonResult modifyLicense(MultipartFile pic,@PathVariable("id") Integer id){
+        int i = sellerService.modifyLicense(pic,id);
+        if (i>0){
+            return CommonResultVO.success("商家营业执照更新成功，请耐心等待管理员审核");
+        }else {
+            return CommonResultVO.error("商家营业执照更新失败");
+        }
+    }
+
 
     /**
      * 登录

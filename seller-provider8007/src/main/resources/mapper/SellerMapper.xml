@@ -9,18 +9,32 @@
         select * from seller where id=#{id}
     </select>
 
-    <insert id="register" parameterType="com.xyc.pojo.Seller">
+    <select id="getId" resultType="int">
+        select id from seller where name = #{name} and email = #{email}
+    </select>
+
+    <insert id="add" parameterType="com.xyc.pojo.Seller">
         insert into seller(name,password,tel,email,pic,balance,license,status)
         values(#{name},#{password},#{tel},#{email},#{pic},#{balance},#{license},#{status})
     </insert>
 
-    <select id="login" parameterType="com.xyc.dto.SellerLoginDTO" resultType="com.xyc.pojo.Seller">
+    <select id="queryByName" parameterType="com.xyc.dto.SellerLoginDTO" resultType="com.xyc.pojo.Seller">
         select * from seller where name = #{name}
     </select>
 
     <update id="update" parameterType="com.xyc.pojo.Seller">
         update seller set name=#{name},password=#{password},tel=#{tel},
             email=#{email},pic=#{pic},status=#{status}
+        where id = #{id}
+    </update>
+
+    <update id="updatePic">
+        update seller set pic=#{pic}
+        where id = #{id}
+    </update>
+
+    <update id="updateLicense">
+        update seller set status='商家冻结中'
         where id = #{id}
     </update>
 

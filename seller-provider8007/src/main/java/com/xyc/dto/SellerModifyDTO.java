@@ -24,7 +24,7 @@ public class SellerModifyDTO {
     private String tel;
     @Email(message = "非法邮箱")
     private String email;
-    @NotNull(message = "头像不能为空")
+
     private MultipartFile pic;
 
     private Double balance;
