@@ -28,7 +28,6 @@ public class SlidShowServiceImp implements SlidShowService {
         slidShow.setCgoodsId(showDTO.getCgoodsId());
         slidShow.setPic(PhotoUtils.BASE_PREFIX+PhotoUtils.SLIDSHOW_PREFIX
                 +showDTO.getCgoodsId()+PhotoUtils.SUFFIX);
-        slidShowMapper.add(slidShow);
 
 //        上传商品照片到服务器
         try {
@@ -47,24 +46,23 @@ public class SlidShowServiceImp implements SlidShowService {
             e.printStackTrace();
         }
 
-        return 0;
+        return slidShowMapper.add(slidShow);
     }
 
     @Override
-    public int delete(Integer id) {
-        SlidShow slidShow = slidShowMapper.getById(id);
+    public int delete(Integer cgoodsId) {
         //同时删除服务器上对应的轮播图
         try {
             FTPConstants fc = new FTPConstants();
             //删除原来的照片
-            fc.setFilename(PhotoUtils.SLIDSHOW_PREFIX+slidShow.getCgoodsId()+PhotoUtils.SUFFIX);
+            fc.setFilename(PhotoUtils.SLIDSHOW_PREFIX+cgoodsId+PhotoUtils.SUFFIX);
             PhotoUtils.deleteFile(fc);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return slidShowMapper.delete(id);
+        return slidShowMapper.delete(cgoodsId);
     }
 
     @Override

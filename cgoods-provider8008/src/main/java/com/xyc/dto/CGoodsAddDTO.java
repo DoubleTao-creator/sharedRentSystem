@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CGoodsAddDTO {
+public class CGoodsAddDTO implements Serializable {
 
     @NotNull(message = "商家id不能为空")
     private Integer sellerId;

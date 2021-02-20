@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RecommendService {
 
-    public int add(Recommend recommend);
+    public int add(Integer cGoodsId);
 
     public int delete(Integer id);
 

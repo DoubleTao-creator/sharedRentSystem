@@ -22,8 +22,8 @@ public class RecommendServiceImp implements RecommendService {
 
 
     @Override
-    public int add(Recommend recommend) {
-        return recommendMapper.add(recommend.getCGoods().getId());
+    public int add(Integer cGoodsId) {
+        return recommendMapper.add(cGoodsId);
     }
 
     @Override

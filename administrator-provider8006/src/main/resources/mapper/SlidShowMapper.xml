@@ -14,7 +14,7 @@
     </update>
 
     <update id="delete" parameterType="int">
-        delete from slidshow where id = #{id}
+        delete from slidshow where cgoods_id = #{cgoodsId}
     </update>
 
     <select id="get" resultType="com.xyc.pojo.SlidShow">
