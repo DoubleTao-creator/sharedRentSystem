@@ -38,18 +38,20 @@ public class SellerServiceImp implements SellerService {
         seller.setPassword(MD5Utils.encode(sellerRD.getPassword()));
         seller.setEmail(sellerRD.getEmail());
         seller.setTel(sellerRD.getTel());
-        seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
+        seller.setPic("");
         seller.setBalance(0);
         seller.setStatus("商家冻结中");
-        seller.setLicense("null");
+        seller.setLicense("");
 
         int i = sellerMapper.add(seller);
 
         if (i>0){
 
             int id = sellerMapper.getId(sellerRD.getName(),sellerRD.getEmail());
-            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
+            sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
                             +id+PhotoUtils.SUFFIX,id);
+            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
+                    +id+PhotoUtils.SUFFIX,id);
             try {
                 FTPConstants fc = new FTPConstants();
                 fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
@@ -99,7 +101,7 @@ public class SellerServiceImp implements SellerService {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
 
         seller.setName(sellerMD.getName());
-        seller.setPassword(sellerMD.getPassword());
+        seller.setPassword(MD5Utils.encode(sellerMD.getPassword()));
         seller.setTel(sellerMD.getTel());
         seller.setEmail(sellerMD.getEmail());
         //修改信息需要管理员重新审核
@@ -142,24 +144,23 @@ public class SellerServiceImp implements SellerService {
      * @return
      */
     @Override
-    public int modifyLicense(MultipartFile license,Integer id) {
-        int i = 0;
+    public boolean modifyLicense(MultipartFile license,Integer id) {
+        boolean flag = false;
         try {
             FTPConstants fc = new FTPConstants();
             //删除原来的照片
             fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
-            PhotoUtils.deleteFile(fc);
+            flag = PhotoUtils.deleteFile(fc);
             //上传新的照片
             File file = PhotoUtils.MultipartFileToFile(license);
             fc.setInput(new FileInputStream(file));
-            PhotoUtils.uploadFile(fc);
+            flag = PhotoUtils.uploadFile(fc);
             //删除本地缓存Temp
             PhotoUtils.deleteTempFile(file);
-            i = sellerMapper.updateLicense(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return i;
+        return flag;
     }
 
     /**

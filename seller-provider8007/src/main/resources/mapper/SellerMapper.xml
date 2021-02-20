@@ -34,7 +34,7 @@
     </update>
 
     <update id="updateLicense">
-        update seller set status='商家冻结中'
+        update seller set license=#{license},status='商家冻结中'
         where id = #{id}
     </update>
 

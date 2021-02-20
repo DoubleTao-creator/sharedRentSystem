@@ -32,14 +32,14 @@ public class SellerController {
      * @param id
      * @return
      */
-    @PostMapping("getInfo/{id}")
+    @GetMapping("/getInfo/{id}")
     public CommonResult getInfo(@PathVariable("id") int id){
         Seller seller = sellerService.queryById(id);
         System.out.println(seller);
         if (seller==null){
             return CommonResultVO.error("请重新登录");
         }else{
-            return CommonResultVO.success("个人消息已得到");
+            return CommonResultVO.success(seller);
         }
     }
 
@@ -65,8 +65,8 @@ public class SellerController {
      * @param id
      * @return
      */
-    @PostMapping("/modifyPic/{id}")
-    public CommonResult modifyPic(MultipartFile pic,@PathVariable("id") Integer id){
+    @PostMapping("/modifyPic")
+    public CommonResult modifyPic(MultipartFile pic,Integer id){
         boolean flag = sellerService.modifyPic(pic,id);
         if (flag){
             return CommonResultVO.success("商家照片更新成功");
@@ -77,14 +77,14 @@ public class SellerController {
 
     /**
      * 商家营业执照更新
-     * @param pic
+     * @param license
      * @param id
      * @return
      */
-    @PostMapping("/modifyLicense/{id}")
-    public CommonResult modifyLicense(MultipartFile pic,@PathVariable("id") Integer id){
-        int i = sellerService.modifyLicense(pic,id);
-        if (i>0){
+    @PostMapping("/modifyLicense")
+    public CommonResult modifyLicense(MultipartFile license,Integer id){
+        boolean flag = sellerService.modifyLicense(license,id);
+        if (flag){
             return CommonResultVO.success("商家营业执照更新成功，请耐心等待管理员审核");
         }else {
             return CommonResultVO.error("商家营业执照更新失败");

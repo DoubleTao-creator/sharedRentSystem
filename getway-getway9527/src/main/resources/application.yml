@@ -17,6 +17,10 @@ spring:
           uri: http://localhost:8008
           predicates:
             - Path=/cgoods/**
+        - id: seller_api
+          uri: http://localhost:8007
+          predicates:
+            - Path=/seller/**
 
 
 eureka:

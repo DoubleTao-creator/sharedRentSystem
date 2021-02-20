@@ -26,7 +26,7 @@ public interface SellerMapper {
 
     public int updatePic(@Param("pic") String pic,@Param("id") Integer id);
 
-    public int updateLicense(@Param("id") Integer id);
+    public int updateLicense(@Param("license") String license,@Param("id") Integer id);
 
     public List<Seller> getFrozenAccount();
 

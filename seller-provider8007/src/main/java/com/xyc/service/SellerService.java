@@ -22,7 +22,7 @@ public interface SellerService {
 
     public boolean modifyPic(MultipartFile pic, Integer id);
 
-    public int modifyLicense(MultipartFile license,Integer id);
+    public boolean modifyLicense(MultipartFile license,Integer id);
 
     public Seller queryById(int id);
 
