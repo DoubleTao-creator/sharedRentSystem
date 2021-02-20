@@ -49,5 +49,18 @@ public interface UserService {
      * @return
      */
     User findUserById(Integer id);
+
+    /**
+     * 修改密码
+     * @param passWordDTO
+     * @return
+     */
     Integer modifyUserPassword(PassWordDTO passWordDTO);
+
+    /**
+     * 用户充值
+     * @param userId
+     * @return
+     */
+    Integer reCharge(Integer userId,Double money);
 }

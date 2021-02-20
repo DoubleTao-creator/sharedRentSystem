@@ -3,7 +3,6 @@ package com.xtt.service.impl;
  * @author xtt
  * @date
  */
-
 import com.xtt.dto.ModifyUserDTO;
 import com.xtt.dto.PassWordDTO;
 import com.xtt.dto.UserDTO;
@@ -14,6 +13,7 @@ import entity.FTPConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.awt.geom.AreaOp;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         try{
             FTPConstants ftpConstants=new FTPConstants();
             ftpConstants.setFilename(PhotoUtils.USER_PREFIX+modifyUserDTO.getId()+PhotoUtils.SUFFIX);
-            ftpConstants.setInput(new FileInputStream(PhotoUtils.transferToFile(modifyUserDTO.getFile())));
+            ftpConstants.setInput(new FileInputStream(PhotoUtils.MultipartFileToFile(modifyUserDTO.getFile())));
             //删除原来的头像
             PhotoUtils.deleteFile(ftpConstants);
             //上传新的头像
@@ -88,12 +88,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer modifyUserPassword(PassWordDTO passWordDTO) {
         User user=userMapper.findUserById(passWordDTO.getUserId());
-        if(MD5Utils.matches(passWordDTO.getOldPassword(), user.getPassword())){
+        if(!MD5Utils.matches(passWordDTO.getOldPassword(), user.getPassword())){
             //原密码错误,返回
             return 0;
         }
         //更改密码
         userMapper.modifyUserPassword(passWordDTO.getUserId(), MD5Utils.encode(passWordDTO.getNewPassword()));
         return 1;
+    }
+
+    @Override
+    public Integer reCharge(Integer userId,Double money) {
+        Integer result=userMapper.reCharge(userId, money);
+        if(result>0){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 }
