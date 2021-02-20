@@ -7,7 +7,7 @@
         from user u,goods g,sellmodle s
         where g.cgoods_id = #{cGoodsId}
         and g.user_id = u.id
-        and g.sell_modle = s.id
+        and g.sell_model = s.id
     </select>
     <resultMap id="CGoodsSD" type="com.xyc.dto.GoodsShowDTO">
 
