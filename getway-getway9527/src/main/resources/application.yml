@@ -25,6 +25,10 @@ spring:
           uri: http://localhost:80
           predicates:
             - Path=/admin/consumer/**
+        - id: admin_provider_api
+          uri: http://localhost:8006
+          predicates:
+            - Path=/admin/provider/**
 
 
 eureka:
