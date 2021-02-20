@@ -15,7 +15,7 @@ public interface SlidShowMapper {
 
     public int add(SlidShow slidShow);
 
-    public int delete(@Param("id") Integer id);
+    public int delete(@Param("cgoodsId") Integer cgoodsId);
 
     public List<SlidShow> get();
 }

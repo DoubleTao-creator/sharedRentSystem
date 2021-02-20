@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class Recommend {
 
     private Integer id;
-    private Integer cGoodsId;
+    private CGoods cGoods;
 }

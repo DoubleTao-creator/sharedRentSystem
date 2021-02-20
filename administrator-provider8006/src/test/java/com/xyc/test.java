@@ -4,6 +4,7 @@ import com.xyc.mapper.RecommendMapper;
 import com.xyc.mapper.SlidShowMapper;
 import com.xyc.pojo.Recommend;
 import com.xyc.pojo.SlidShow;
+import entity.FTPConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -13,7 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import utils.PhotoUtils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @SpringBootTest
@@ -29,6 +33,20 @@ public class test {
 
     @Autowired
     private SlidShowMapper slidShowMapper;
+
+    @Test
+    public void test0220(){
+        try {
+            FTPConstants fc = new FTPConstants();
+            fc.setFilename("head_slidshow10.png");
+            PhotoUtils.deleteFile(fc);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void test0205(){

@@ -73,9 +73,9 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/slidshow/delete/{id}")
-    public CommonResult deleteSlidShow(@PathVariable("id") Integer id){
-        int i = slidShowService.delete(id);
+    @GetMapping("/slidshow/delete/{cgoodsId}")
+    public CommonResult deleteSlidShow(@PathVariable("cgoodsId") Integer cgoodsId){
+        int i = slidShowService.delete(cgoodsId);
         if (i>0){
             return CommonResultVO.success("轮播图删除成功");
         }else{
