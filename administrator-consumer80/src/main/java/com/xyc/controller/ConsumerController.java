@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/administrator")
+@RequestMapping("/admin/consumer")
 public class ConsumerController {
 
     private static final String ORDER_PREFIX = "http://localhost:8002/orderRecord";

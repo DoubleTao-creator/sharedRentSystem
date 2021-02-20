@@ -8,6 +8,8 @@ import com.xyc.service.SellerService;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -156,9 +158,11 @@ public class SellerController {
     public CommonResult authenticate(@PathVariable("id") int id){
         int i = sellerService.sellerAuthenticate(id);
         if (i>0){
-            return CommonResultVO.success("商家信息更新成功");
+            Seller seller = sellerService.queryById(id);
+            mailSenderImp(seller);
+            return CommonResultVO.success("已通过该商家的认证");
         }else {
-            return CommonResultVO.error("商家信息更新失败");
+            return CommonResultVO.error("商家认证失败");
         }
     }
 
@@ -179,4 +183,17 @@ public class SellerController {
         }
     }
 
+    @Autowired
+    JavaMailSenderImpl mailSender;
+
+    private void mailSenderImp(Seller seller){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setSubject("极限一带四租赁平台商品审核结果来信");
+        mailMessage.setText("亲爱的"+seller.getName()
+                +", 您的店铺已经通过平台审核, 欢迎加入我们!");
+        mailMessage.setTo(seller.getEmail());
+        mailMessage.setFrom("1830069482@qq.com");
+
+        mailSender.send(mailMessage);
+    }
 }

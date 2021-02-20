@@ -155,6 +155,8 @@ public class SellerServiceImp implements SellerService {
             File file = PhotoUtils.MultipartFileToFile(license);
             fc.setInput(new FileInputStream(file));
             flag = PhotoUtils.uploadFile(fc);
+            sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
+                    +id+PhotoUtils.SUFFIX,id);
             //删除本地缓存Temp
             PhotoUtils.deleteTempFile(file);
         } catch (Exception e) {

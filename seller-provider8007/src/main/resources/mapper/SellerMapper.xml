@@ -39,7 +39,7 @@
     </update>
 
     <select id="getFrozenAccount" resultType="com.xyc.pojo.Seller">
-        select * from seller where status = '商户冻结中'
+        select * from seller where status = '商家冻结中'
     </select>
 
     <update id="sellerAuthenticate" parameterType="int">
