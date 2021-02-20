@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import utils.JwtUtils;
 
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -26,7 +27,14 @@ public class AuthCheckFilter implements GlobalFilter,Ordered{
     /**
      * 跳过拦截的请求
      */
-    private String[] skipAuthUrls=new String[]{"/user/getEmailCode","/user/register","/user/login",""};
+    private String[] skipAuthUrls=new String[]{"/user/getEmailCode","/user/register","/user/login"};
+
+    /**
+     * 拦截器
+     * @param exchange
+     * @param chain
+     * @return
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url=exchange.getRequest().getURI().getPath();
@@ -49,13 +57,23 @@ public class AuthCheckFilter implements GlobalFilter,Ordered{
         String role=JwtUtils.getRole(token);
         if(url.startsWith("/user/")){
             System.out.println("用户角色为"+role);
-            if(!"ROLE_USER".equals(role)){
+            //用户角色不是用户或管理员
+            if((!"ROLE_USER".equals(role))&&!"ROLE_ADMIN".equals(role)){
+                return authErro(exchange.getResponse(), "你没有权限访问");
+            }
+        }else if(url.startsWith("/goods/")){
+            System.out.println("用户角色为"+role);
+            if((!"ROLE_USER".equals(role))&&!"ROLE_ADMIN".equals(role)){
                 return authErro(exchange.getResponse(), "你没有权限访问");
             }
         }
         return chain.filter(exchange);
     }
 
+    /**
+     * 优先级
+     * @return
+     */
     @Override
     public int getOrder() {
         return -100;

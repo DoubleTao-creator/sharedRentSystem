@@ -3,6 +3,7 @@ package com.goods.service.impl;
 import com.goods.entity.*;
 import com.goods.mapper.*;
 import com.goods.service.OrderService;
+import com.goods.utils.GoodsUtils;
 import com.goods.vo.*;
 import entity.OrderRecode;
 import entity.Seller;
@@ -102,6 +103,8 @@ public class OrderServiceImpl implements OrderService{
                 RentToBuy rentToBuy=orderMapper.findRentToBuyById(order.getSellId());
                 if(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()).compareTo(new Timestamp(System.currentTimeMillis()))==-1){
                     orderMapper.changeGoodsStatus(order.getId(), "已逾期");
+                    //信誉积分减少
+                    GoodsUtils.addCredit(userId, GoodsUtils.credit_sub);
                 }
                 rentToBuyGoodsVO.setStartTime(rentToBuy.getStartTime());
                 rentToBuyGoodsVO.setEndTime(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()));

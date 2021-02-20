@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class GoodsUtils {
     @Autowired
     static UserMapper userMapper;
+    public static  Integer  credit_add=5;
+    public static Integer credit_sub=10;
     public static void addCredit(Integer userId,Integer credit){
         User user= userMapper.findUserById(userId);
         credit=user.getCredit()+credit;

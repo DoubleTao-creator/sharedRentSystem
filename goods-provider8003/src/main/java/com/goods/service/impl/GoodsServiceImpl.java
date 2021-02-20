@@ -4,6 +4,7 @@ import com.goods.dto.UserExperienceDTO;
 import com.goods.entity.*;
 import com.goods.mapper.*;
 import com.goods.service.GoodsService;
+import com.goods.utils.GoodsUtils;
 import com.xtt.entity.User;
 import entity.OrderRecode;
 import org.springframework.beans.BeanUtils;
@@ -166,7 +167,7 @@ public class GoodsServiceImpl implements
         cGoodsMapper.changeCGoodsRepertory(cgoodsId, -1);
         if(result>=0){
             //信誉积分增加
-            userMapper.addCredit(userId, credit_add);
+            userMapper.addCredit(userId, GoodsUtils.credit_add);
             return 1;
         }else {
             return -1;
@@ -208,7 +209,7 @@ public class GoodsServiceImpl implements
         if(result>0){
             //续租成功
             //增加信誉积分
-            userMapper.addCredit(userId, credit_add);
+            userMapper.addCredit(userId, GoodsUtils.credit_add);
             return 1;
         }else {
             //续租失败
@@ -248,6 +249,8 @@ public class GoodsServiceImpl implements
         orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
         orderRecode.setModelId(2);orderRecode.setInfo("购买先租后买");
         orderMapper.addOrderRecode(orderRecode);
+        //信誉分增加
+        GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
         return 1;
     }
     @Override
@@ -262,10 +265,12 @@ public class GoodsServiceImpl implements
             orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);
             orderRecode.setModelId(2);orderRecode.setInfo("退租先租后买");
             orderMapper.addOrderRecode(orderRecode);
+            //信誉分增加
+            GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
+            return 1;
         }else {
             return 0;
         }
-        return 0;
     }
 
     @Override
@@ -316,6 +321,8 @@ public class GoodsServiceImpl implements
         orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
         orderRecode.setModelId(3);orderRecode.setInfo("结算共享租赁"+",使用天数"+differDay);
         orderMapper.addOrderRecode(orderRecode);
+        //增加信誉积分
+        GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
         return 1;
     }
 

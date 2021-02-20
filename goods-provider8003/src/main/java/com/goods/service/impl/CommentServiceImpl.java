@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
             try {
                 FTPConstants ftpConstants = new FTPConstants();
                 ftpConstants.setFilename(PhotoUtils.COMMENT_PREFIX + commentDTO.getRemarkPic().getName() + PhotoUtils.SUFFIX);
-                ftpConstants.setInput(new FileInputStream(PhotoUtils.transferToFile(commentDTO.getRemarkPic())));
+                ftpConstants.setInput(new FileInputStream(PhotoUtils.MultipartFileToFile(commentDTO.getRemarkPic())));
                 //上传图片
                 PhotoUtils.uploadFile(ftpConstants);
                 comment.setRemarkPic(PhotoUtils.BASE_HEAD_PHOTO_URL + PhotoUtils.COMMENT_PREFIX + commentDTO.getRemarkPic().getName() + PhotoUtils.SUFFIX);

@@ -1,6 +1,6 @@
 # Docker image for demo file run
 # VERSION 0.0.1
-# Author: smallgourd
+# Author: xtt
 # 基础镜像使用java
 FROM java:8
 # 作者
