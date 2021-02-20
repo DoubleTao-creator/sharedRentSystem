@@ -40,9 +40,10 @@ public class mailTest {
     public void test0217(){
         try {
             FTPConstants fc = new FTPConstants();
-            fc.setFilename(PhotoUtils.GOODS_PREFIX+12+PhotoUtils.SUFFIX);
-            fc.setInput(new FileInputStream(new File("C:\\Users\\徐一婵\\IdeaProjects\\work\\oracle\\src\\main\\webapp\\static\\images\\2.jpeg")));
-            PhotoUtils.uploadFile(fc);
+            fc.setFilename(PhotoUtils.GOODS_PREFIX+"Nikon5600"+PhotoUtils.SUFFIX);
+            PhotoUtils.deleteFile(fc);
+//            fc.setInput(new FileInputStream(new File("C:\\Users\\徐一婵\\IdeaProjects\\work\\oracle\\src\\main\\webapp\\static\\images\\3.jpg")));
+//            PhotoUtils.uploadFile(fc);
             //删除本地临时文件 C:\UserData\AppData\Local\Temp目录下
 //            PhotoUtils.deleteTempFile(file);
 

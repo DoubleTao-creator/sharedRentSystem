@@ -94,7 +94,7 @@ public class CGoodsController {
      * @param sellerId 商家id
      * @return
      */
-    @GetMapping("/getCGoods/{sellerId}")
+    @GetMapping("/seller/getCGoods/{sellerId}")
     public CommonResult<List> getSellerOwnCGoods(@PathVariable("sellerId") Integer sellerId){
         List<CGoodsShowDTO> list = cGoodsService.searchBySellerId(sellerId);
 
@@ -110,7 +110,7 @@ public class CGoodsController {
      * @param cGoodsId 商品类
      * @return
      */
-    @GetMapping("/getCGoods/getEachGoods/{cGoodsId}")
+    @GetMapping("/seller/getCGoods/getEachGoods/{cGoodsId}")
     public CommonResult<List> getEachGoodsByCGoodId(
             @PathVariable("cGoodsId") Integer cGoodsId){
         List<GoodsShowDTO> list = cGoodsService.getEachGoodsByCGoodId(cGoodsId);
@@ -141,7 +141,7 @@ public class CGoodsController {
      * @param typeId
      * @return
      */
-    @GetMapping("/getCGoods/{typeId}")
+    @GetMapping("/type/getCGoods/{typeId}")
     public CommonResult<List> getCGoodsByTypeId(@PathVariable("typeId") Integer typeId){
         List<CGoodsShowDTO> list = cGoodsService.searchByTypeId(typeId);
         if (list.size() == 0){
