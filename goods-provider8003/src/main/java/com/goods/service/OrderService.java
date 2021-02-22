@@ -27,4 +27,12 @@ public interface OrderService {
      * @return
      */
     List<OrderResultVO> findOrder(Integer userId);
+
+    /**
+     * 查询指定类型的订单
+     * @param userId
+     * @param sellModel
+     * @return
+     */
+    List<OrderResultVO> findOrderByModel(Integer userId,String sellModel);
 }

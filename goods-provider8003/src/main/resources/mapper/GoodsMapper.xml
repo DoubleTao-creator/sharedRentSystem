@@ -7,7 +7,7 @@
         SELECT * FROM goods WHERE  id=#{goodsId};
     </select>
     <select id="findOwnedGoods" parameterType="java.lang.Integer" resultMap="GoodsMapper">
-        SELECT id,cgoods_id,user_id FROM goods WHERE user_id=#{userId} and status='已购买';
+        SELECT * FROM goods WHERE user_id=#{userId} and status='已购买';
     </select>
     <insert id="createInstallmentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
@@ -38,7 +38,7 @@
     </update>
     <insert id="createShareRentOrder" parameterType="com.goods.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO goods(cgoods_id,user_id,status,sell_model,sell_id)
-          VALUES (#{cgoodsId},#{userId},'体验中',3,#{sellId});
+          VALUES (#{cgoodsId},#{userId},'待结算',3,#{sellId});
     </insert>
     <insert id="purchaseGoods">
         INSERT INTO goods(cgoods_id,user_id,status) VALUES (#{cgoodsId},#{userId},'已购买');

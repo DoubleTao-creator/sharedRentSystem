@@ -6,6 +6,7 @@ import com.goods.mapper.GoodsMapper;
 import com.goods.mapper.UserMapper;
 import com.goods.service.GoodsService;
 import com.goods.service.OrderService;
+import com.goods.utils.GoodsUtils;
 import com.goods.vo.OrderResultVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,11 @@ public class TestGoods {
         Timestamp timestamp2=new Timestamp(System.currentTimeMillis());
         //System.out.println(new Timestamp(new Date().getTime()));
         System.out.println(timestamp2.compareTo(timestamp1));
+    }
+    @Test
+    public void  testCredit(){
+        userMapper.findUserById(1);
+        //GoodsUtils.addCredit(1, GoodsUtils.credit_add);
+        orderService.findOwnedGoods(1);
     }
 }

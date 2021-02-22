@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URI;
+
 /**
  * @author xtt
  */
@@ -30,6 +32,8 @@ public class GoodsServiceImpl implements
     SellerMapper sellerMapper;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    GoodsUtils goodsUtils;
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer ExperienceGoods(UserExperienceDTO userExperienceDTO) {
@@ -113,8 +117,8 @@ public class GoodsServiceImpl implements
         }else if("共享租赁".equals(sellModel)){
             //处理共享租赁订单
             ShareRent shareRent=new ShareRent();
-            //当前押金
-            Double currentDeposit=cgoods.getDeposit();
+            //当前押金(关联信誉积分）
+            Double currentDeposit=goodsUtils.getRealDeposit(user.getCredit(), cgoods.getDeposit());
             shareRent.setDeposit(currentDeposit);
 
             goodsMapper.addShareRentRecode(shareRent);
@@ -167,7 +171,7 @@ public class GoodsServiceImpl implements
         cGoodsMapper.changeCGoodsRepertory(cgoodsId, -1);
         if(result>=0){
             //信誉积分增加
-            userMapper.addCredit(userId, GoodsUtils.credit_add);
+            goodsUtils.addCredit(userId, GoodsUtils.credit_add);
             return 1;
         }else {
             return -1;
@@ -186,6 +190,7 @@ public class GoodsServiceImpl implements
         //商品需要支付的月数
         Integer rentMonth=rentMonth1.intValue();
         if(differMonth>=rentMonth){
+            orderMapper.changeGoodsStatus(goodsId, "已购买");
             //商品不用再续租
             return 2;
         }
@@ -209,7 +214,7 @@ public class GoodsServiceImpl implements
         if(result>0){
             //续租成功
             //增加信誉积分
-            userMapper.addCredit(userId, GoodsUtils.credit_add);
+            goodsUtils.addCredit(userId, GoodsUtils.credit_add);
             return 1;
         }else {
             //续租失败
@@ -250,7 +255,7 @@ public class GoodsServiceImpl implements
         orderRecode.setModelId(2);orderRecode.setInfo("购买先租后买");
         orderMapper.addOrderRecode(orderRecode);
         //信誉分增加
-        GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
+        goodsUtils.addCredit(userId, GoodsUtils.credit_add);
         return 1;
     }
     @Override
@@ -266,7 +271,7 @@ public class GoodsServiceImpl implements
             orderRecode.setModelId(2);orderRecode.setInfo("退租先租后买");
             orderMapper.addOrderRecode(orderRecode);
             //信誉分增加
-            GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
+            goodsUtils.addCredit(userId, GoodsUtils.credit_add);
             return 1;
         }else {
             return 0;
@@ -291,12 +296,6 @@ public class GoodsServiceImpl implements
         Double deposit=goodsMapper.findShareRentByGoodsId(goodsId).getDeposit();
         if(balance<shouldPay){
             //余额不足
-            //将订单状态改为待结算，并且保存当前停止时间
-            goodsMapper.changeShareRentStatus(goodsId, "待结算");
-            OrderRecode orderRecode=new OrderRecode();
-            orderRecode.setUserId(userId);orderRecode.setGoodsId(goodsId);orderRecode.setCost(shouldPay);
-            orderRecode.setModelId(3);orderRecode.setInfo("商品已归还，待结算订单");
-            orderMapper.addOrderRecode(orderRecode);
             return 0;
         }
         //用户减少余额
@@ -322,7 +321,7 @@ public class GoodsServiceImpl implements
         orderRecode.setModelId(3);orderRecode.setInfo("结算共享租赁"+",使用天数"+differDay);
         orderMapper.addOrderRecode(orderRecode);
         //增加信誉积分
-        GoodsUtils.addCredit(userId, GoodsUtils.credit_add);
+        goodsUtils.addCredit(userId, GoodsUtils.credit_add);
         return 1;
     }
 

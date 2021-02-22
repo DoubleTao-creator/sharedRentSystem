@@ -9,6 +9,6 @@
         UPDATE user SET balance=balance+#{balanceToChange} where id=#{userId};
     </update>
     <update id="addCredit">
-        UPDATE user SET credit=credit+#{credit} where id=#{userId};
+        UPDATE user SET credit=#{credit} where id=#{userId};
     </update>
 </mapper>
