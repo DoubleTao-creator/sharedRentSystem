@@ -30,6 +30,8 @@ public class OrderServiceImpl implements OrderService{
     SellerMapper sellerMapper;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    GoodsUtils goodsUtils;
     @Override
     public List<OwnedGoodsVO> findOwnedGoods(Integer userId) {
         List<Goods> goods=goodsMapper.findOwnedGoods(userId);
@@ -104,7 +106,8 @@ public class OrderServiceImpl implements OrderService{
                 if(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()).compareTo(new Timestamp(System.currentTimeMillis()))==-1){
                     orderMapper.changeGoodsStatus(order.getId(), "已逾期");
                     //信誉积分减少
-                    GoodsUtils.addCredit(userId, GoodsUtils.credit_sub);
+                    goodsUtils.addCredit(userId, -GoodsUtils
+                    .credit_sub);
                 }
                 rentToBuyGoodsVO.setStartTime(rentToBuy.getStartTime());
                 rentToBuyGoodsVO.setEndTime(goodsMapper.timeAfterAddMonth(rentToBuy.getStartTime(), rentToBuy.getRentTime()));
@@ -117,11 +120,24 @@ public class OrderServiceImpl implements OrderService{
                 ShareRentGoodsVO shareRentGoodsVO=new ShareRentGoodsVO();
                 shareRentGoodsVO.setDeposit(shareRent.getDeposit());
                 shareRentGoodsVO.setStartTime(shareRent.getStartTime());
-                orderResultVO.setExtra(shareRent);
+                shareRentGoodsVO.setDeadTime(shareRent.getDeadTime());
+                orderResultVO.setExtra(shareRentGoodsVO);
                 resultVOS.add(orderResultVO);
             }
         }
         return resultVOS;
+    }
+
+    @Override
+    public List<OrderResultVO> findOrderByModel(Integer userId, String sellModel) {
+        List<OrderResultVO> resultVOS=findOrder(userId);
+        List<OrderResultVO> result=new ArrayList<>();
+        for(OrderResultVO vo:resultVOS){
+            if(sellModel.equals(vo.getBase().getModel())){
+                result.add(vo);
+            }
+        }
+        return result;
     }
 
 }

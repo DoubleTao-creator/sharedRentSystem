@@ -161,4 +161,10 @@ public class GoodsController {
         List<OrderResultVO> orders=orderService.findOrder(userId);
         return CommonResultVO.success(orders);
     }
+    @GetMapping("/goods/getOrderByModel")
+    public CommonResult getOrderByModel(Integer userId,String sellModel){
+        List<OrderResultVO> orders=orderService.findOrderByModel(userId,sellModel);
+        return CommonResultVO
+                .success(orders);
+    }
 }

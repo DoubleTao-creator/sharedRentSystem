@@ -17,4 +17,8 @@ public class ShareRentGoodsVO {
      * 押金
      */
     private Double deposit;
+    /**
+     * 结束时间
+     */
+    private Timestamp deadTime;
 }

@@ -8,18 +8,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class GoodsUtils {
     @Autowired
-    static UserMapper userMapper;
+      UserMapper userMapper;
     public static  Integer  credit_add=5;
     public static Integer credit_sub=10;
-    public static void addCredit(Integer userId,Integer credit){
+    public  void addCredit(Integer userId,Integer credit){
         User user= userMapper.findUserById(userId);
-        credit=user.getCredit()+credit;
-        if(credit>100){
-            credit=100;
+        int creditToAdd=credit+user.getCredit();
+        System.out.println(credit+"   "+creditToAdd);
+        if(creditToAdd>100){
+            creditToAdd=100;
         }
-        if(credit<0){
-            credit=0;
+        if(creditToAdd<0){
+            creditToAdd=0;
         }
-        userMapper.addCredit(userId, credit);
+        userMapper.addCredit(userId, creditToAdd);
+    }
+    public Double getRealDeposit(Integer credit,Double deposit){
+        if(credit>=90){
+            //90分以上免押金
+            return 0.0;
+        }else if(credit>=80&&credit<90){
+            //80到90半款押金
+            return deposit*0.5;
+        }else {
+            //80分以下全款押金
+            return deposit;
+        }
     }
 }
