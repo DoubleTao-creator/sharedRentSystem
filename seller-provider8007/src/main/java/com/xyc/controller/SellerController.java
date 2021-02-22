@@ -8,14 +8,19 @@ import com.xyc.service.SellerService;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import utils.ValidDataUtil;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
@@ -101,7 +106,8 @@ public class SellerController {
      * @return
      */
     @PostMapping("/login")
-    public CommonResult login(@Validated SellerLoginDTO sellerLD,BindingResult result){
+    public CommonResult login(@Validated SellerLoginDTO sellerLD, BindingResult result
+                        , HttpServletResponse response){
         if (ValidDataUtil.validData(result)!=null){
             return CommonResultVO.error(ValidDataUtil.validData(result));
         }
@@ -109,6 +115,12 @@ public class SellerController {
         if (seller==null){
             return CommonResultVO.error("用户名或密码错误");
         }else {
+            Cookie cookie = new Cookie("sellerId",seller.getId().toString());
+//            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+            Cookie cookie2 = new Cookie("sellerStatus",seller.getStatus());
+//            cookie.setHttpOnly(true);
+            response.addCookie(cookie2);
             return CommonResultVO.success(seller);
         }
     }

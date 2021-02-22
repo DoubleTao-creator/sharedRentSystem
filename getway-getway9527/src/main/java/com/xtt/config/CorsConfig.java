@@ -15,6 +15,8 @@ public class CorsConfig {
         config.addAllowedMethod("*");
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
+        // cookie跨域
+        config.setAllowCredentials(Boolean.TRUE);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);

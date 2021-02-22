@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.CommonResult;
 import entity.CommonResultVO;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -27,7 +28,8 @@ public class AuthCheckFilter implements GlobalFilter,Ordered{
     /**
      * 跳过拦截的请求
      */
-    private String[] skipAuthUrls=new String[]{"/user/getEmailCode","/user/register","/user/login"};
+    private String[] skipAuthUrls=new String[]{"/user/getEmailCode","/user/register","/user/login",
+                        "/cgoods","/seller","/admin"};
 
     /**
      * 拦截器
