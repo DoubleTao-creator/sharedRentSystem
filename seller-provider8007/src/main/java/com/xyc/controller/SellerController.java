@@ -118,9 +118,6 @@ public class SellerController {
             Cookie cookie = new Cookie("sellerId",seller.getId().toString());
 //            cookie.setHttpOnly(true);
             response.addCookie(cookie);
-            Cookie cookie2 = new Cookie("sellerStatus",seller.getStatus());
-//            cookie.setHttpOnly(true);
-            response.addCookie(cookie2);
             return CommonResultVO.success(seller);
         }
     }
