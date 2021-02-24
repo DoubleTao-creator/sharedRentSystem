@@ -25,12 +25,12 @@ public class CGoodsCheckFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url=exchange.getRequest().getURI().getPath();
-        System.out.println("CgoodsCheck: 处理请求:"+url);
         for(String accessUrl:accessUrls ){
             if(url.equals(accessUrl)||url.startsWith(accessUrl)){
                 return chain.filter(exchange);
             }
         }
+        System.out.println("CgoodsCheck: 处理请求:"+url);
         HttpCookie cookie = exchange.getRequest().getCookies().
                 getFirst("sellerStatus");
         System.out.println(cookie);

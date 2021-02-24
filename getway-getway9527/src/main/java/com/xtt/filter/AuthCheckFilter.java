@@ -39,14 +39,14 @@ public class AuthCheckFilter implements GlobalFilter,Ordered{
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url=exchange.getRequest().getURI().getPath();
-        System.out.println("处理请求:"+url);
-        String token=exchange.getRequest().getHeaders().getFirst("token");
-        System.out.println("token："+token);
         for(String skipurl:skipAuthUrls){
             if(skipurl.equals(url)||url.startsWith(skipurl)){
                 return chain.filter(exchange);
             }
         }
+        System.out.println("处理请求:"+url);
+        String token=exchange.getRequest().getHeaders().getFirst("token");
+        System.out.println("token："+token);
         if(token==null){
             return authErro(exchange.getResponse(), "请先登录！");
         }

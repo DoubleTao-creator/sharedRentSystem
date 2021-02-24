@@ -11,10 +11,8 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import utils.JwtUtils;
 
 import java.nio.charset.StandardCharsets;
 
@@ -27,12 +25,12 @@ public class SellerCheckFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url=exchange.getRequest().getURI().getPath();
-        System.out.println("SellerCheck: 处理请求:"+url);
         for(String accessUrl:accessUrls ){
             if(url.equals(accessUrl)||url.startsWith(accessUrl)){
                 return chain.filter(exchange);
             }
         }
+        System.out.println("SellerCheck: 处理请求:"+url);
         HttpCookie cookie = exchange.getRequest().getCookies().
                 getFirst("sellerId");
         if(cookie!=null){
