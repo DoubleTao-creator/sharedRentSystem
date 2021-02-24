@@ -6,7 +6,9 @@ import com.xyc.dto.CGoodsShowDTO;
 import com.xyc.dto.GoodsShowDTO;
 import com.xyc.mapper.CGoodsMapper;
 import com.xyc.mapper.GoodsMapper;
+import com.xyc.mapper.SellerMapper;
 import com.xyc.pojo.CGoods;
+import com.xyc.pojo.Seller;
 import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class CGoodsServiceImp implements CGoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+
+    @Autowired
+    private SellerMapper sellerMapper;
 
     @Override
     public int updateInfo(CGoodsModifyDTO cGoodsMD) {
@@ -55,6 +60,11 @@ public class CGoodsServiceImp implements CGoodsService {
 
     @Override
     public int add(CGoodsAddDTO cGoodsAD) {
+
+        Seller seller = sellerMapper.queryById(cGoodsAD.getSellerId());
+        if(seller.getStatus().equals("商家冻结中")){
+            return -100;
+        }
         CGoods cGoods = new CGoods();
         cGoods.setSellerId(cGoodsAD.getSellerId());
         cGoods.setName(cGoodsAD.getName());

@@ -45,9 +45,11 @@ public class CGoodsController {
         int i = cGoodsService.add(cGoodsAD);
         if (i>0){
             return CommonResultVO.success("商品添加成功！请耐心等待管理员审核");
-        }else {
-            return CommonResultVO.error("添加失败");
+        }else if (i==-100){
+            return CommonResultVO.error("账户还未通过审核，无法上架商品，请耐心等待管理员审核");
 
+        }else{
+            return CommonResultVO.error("添加失败");
         }
     }
 
