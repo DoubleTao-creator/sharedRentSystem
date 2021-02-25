@@ -8,8 +8,10 @@ import com.goods.service.CommentService;
 import com.goods.vo.CommentVO;
 import entity.Comment;
 import entity.FTPConstants;
+import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.PhotoUtils;
 
 import java.io.FileInputStream;
@@ -23,13 +25,14 @@ public class CommentServiceImpl implements CommentService {
     CommentMapper commentMapper;
     @Autowired
     GoodsMapper goodsMapper;
-@Autowired
+    @Autowired
     UserMapper userMapper;
     /**
      * 用户对订单添加评论
      * @param commentDTO
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer pushComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
@@ -61,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
         }
         return 0;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<CommentVO> getComment(Integer cgoodsId) {
         List<Comment> comments=commentMapper.getComment(cgoodsId);
@@ -73,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
                 CommentVO commentVO=new CommentVO();
                 commentVO.setRemark(comment.getRemark());
                 commentVO.setRemarkPic(comment.getRemarkPic());
-                com.xtt.entity.User user=userMapper.findUserById(comment.getUserId());
+                User user=userMapper.findUserById(comment.getUserId());
                 commentVO.setUserName(user.getName());
                 commentVO.setUserPic(user.getPic());
                 commentVO.setTime(comment.getTime());

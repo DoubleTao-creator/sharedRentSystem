@@ -1,7 +1,7 @@
 package com.goods.utils;
 
 import com.goods.mapper.UserMapper;
-import com.xtt.entity.User;
+import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

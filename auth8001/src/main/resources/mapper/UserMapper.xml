@@ -6,27 +6,27 @@
     </resultMap>
 
     <insert id="userRegister" parameterType="com.xtt.entity.User">
-        INSERT INTO USER (name,password,tel,email,pic,credit,balance,role)
+        INSERT INTO user (name,password,tel,email,pic,credit,balance,role)
         VALUES (#{name},#{password},#{tel},#{email},#{pic},#{credit},#{balance},#{role});
     </insert>
 
     <select id="findIdByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT id FROM USER WHERE name=#{username};
+        SELECT id FROM user WHERE name=#{username};
     </select>
 
     <select id="userLogin" parameterType="java.lang.String" resultMap="BaseResultMapper">
-        SELECT * FROM USER WHERE name=#{username} and password=#{password};
+        SELECT * FROM user WHERE name=#{username} and password=#{password};
     </select>
 
     <select id="findUserById" parameterType="java.lang.Integer" resultMap="BaseResultMapper">
-        SELECT * FROM USER WHERE id=#{id};
+        SELECT * FROM user WHERE id=#{id};
     </select>
 
     <update id="modifyUser" parameterType="com.xtt.entity.User">
-        update USER set name=#{username},tel=#{tel},pic=#{pic},email=#{email} where id=#{id};
+        update user set name=#{username},tel=#{tel},pic=#{pic},email=#{email} where id=#{id};
     </update>
     <update id="addUserBalance">
-        UPDATE USER SET balance=balance+#{balance} where id=#{userId}
+        UPDATE user SET balance=balance+#{balance} where id=#{userId}
     </update>
     <update id="modifyUserPassword" >
         UPDATE user SET password=#{password} where id=#{userId};

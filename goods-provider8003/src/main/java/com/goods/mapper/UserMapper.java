@@ -1,6 +1,7 @@
 package com.goods.mapper;
 
-import com.xtt.entity.User;
+
+import entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;

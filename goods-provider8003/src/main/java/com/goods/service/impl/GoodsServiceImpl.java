@@ -5,8 +5,8 @@ import com.goods.entity.*;
 import com.goods.mapper.*;
 import com.goods.service.GoodsService;
 import com.goods.utils.GoodsUtils;
-import com.xtt.entity.User;
 import entity.OrderRecode;
+import entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -150,7 +150,7 @@ public class GoodsServiceImpl implements
         }
         return -1;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer purchaseGoods( Integer cgoodsId,Integer userId) {
         System.out.println("cgoodsId "+cgoodsId+" "+"userId "+userId);
@@ -177,7 +177,7 @@ public class GoodsServiceImpl implements
             return -1;
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer rerentGoods(Integer goodsId, Integer userId) {
         Double balance=userMapper.findUserById(userId).getBalance();
@@ -221,7 +221,7 @@ public class GoodsServiceImpl implements
             return -1;
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer purchaseRentToBuy(Integer goodsId, Integer userId) {
         Goods goods=goodsMapper.findGoodsById(goodsId);
@@ -258,6 +258,7 @@ public class GoodsServiceImpl implements
         goodsUtils.addCredit(userId, GoodsUtils.credit_add);
         return 1;
     }
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer refundRent(Integer goodsId, Integer userId) {
         Goods goods=goodsMapper.findGoodsById(goodsId);
@@ -277,7 +278,7 @@ public class GoodsServiceImpl implements
             return 0;
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer settleShareRent(Integer goodsId, Integer userId) {
         User user=userMapper.findUserById(userId);

@@ -13,6 +13,7 @@ import entity.FTPConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.awt.geom.AreaOp;
 import utils.MD5Utils;
 import utils.PhotoUtils;
@@ -23,6 +24,7 @@ import java.io.FileInputStream;
 public class UserServiceImpl implements UserService {
     @Autowired
     public UserMapper userMapper;
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer userRegister(UserDTO userDTO) {
         //对密码进行加密
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user=userMapper.userLogin(username, MD5Utils.encode(password));
         return user;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public User modifyUser(ModifyUserDTO modifyUserDTO) {
         User modifiedUser;
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Integer id) {
         return userMapper.findUserById(id);
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer modifyUserPassword(PassWordDTO passWordDTO) {
         User user=userMapper.findUserById(passWordDTO.getUserId());

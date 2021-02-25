@@ -32,3 +32,11 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:7001/eureka/
+    healthcheck:
+      enabled: true
+    instance:
+      instance-id: cgoods-provider
+      #访问路径可以显示IP地址
+      prefer-ip-address: true
+      lease-renewal-interval-in-seconds: 30
+      lease-expiration-duration-in-seconds: 60

@@ -7,8 +7,10 @@ import com.goods.utils.GoodsUtils;
 import com.goods.vo.*;
 import entity.OrderRecode;
 import entity.Seller;
+import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class OrderServiceImpl implements OrderService{
     OrderMapper orderMapper;
     @Autowired
     GoodsUtils goodsUtils;
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<OwnedGoodsVO> findOwnedGoods(Integer userId) {
         List<Goods> goods=goodsMapper.findOwnedGoods(userId);
@@ -47,7 +50,7 @@ public class OrderServiceImpl implements OrderService{
         }
         return list;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<RecodeVO> findRecodeByUserId(Integer userId) {
         List<OrderRecode> recodes=orderMapper.findRecode(userId);
@@ -55,7 +58,7 @@ public class OrderServiceImpl implements OrderService{
         for(OrderRecode recode:recodes){
             Goods goods=goodsMapper.findGoodsById(recode.getGoodsId());
             Cgoods cgoods=cGoodsMapper.getCgoodsById(goods.getCgoodsId());
-            com.xtt.entity.User user=userMapper.findUserById(userId);
+            User user=userMapper.findUserById(userId);
             RecodeVO recodeVO=new RecodeVO();
             recodeVO.setCost(recode.getCost());
             recodeVO.setGoodsName(cgoods.getName());recodeVO.setGoodsPic(cgoods.getPic());recodeVO.setInfo(recode.getInfo());
@@ -64,7 +67,7 @@ public class OrderServiceImpl implements OrderService{
         }
         return recodeVOS;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<OrderResultVO> findOrder(Integer userId) {
         List<Goods> orders=orderMapper.findGoodsByUserId(userId);
@@ -72,7 +75,7 @@ public class OrderServiceImpl implements OrderService{
         for(Goods order:orders){
             OrderResultVO orderResultVO=new OrderResultVO();
             Cgoods cgoods=cGoodsMapper.getCgoodsById(order.getCgoodsId());
-            com.xtt.entity.User user=userMapper.findUserById(userId);
+            User user=userMapper.findUserById(userId);
             Seller seller=sellerMapper.findSellerById(cgoods.getSellerId());
             BaseInformationVO baseInformationVO=new BaseInformationVO();
             baseInformationVO.setCgoodsId(cgoods.getId());baseInformationVO.setCgoodsName(cgoods.getName());baseInformationVO.setCgoodsPic(cgoods.getPic());baseInformationVO.setCgoodsPrice(cgoods.getPrice());baseInformationVO.setModel(orderMapper.findModel(order.getSellModel()));
@@ -127,7 +130,7 @@ public class OrderServiceImpl implements OrderService{
         }
         return resultVOS;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<OrderResultVO> findOrderByModel(Integer userId, String sellModel) {
         List<OrderResultVO> resultVOS=findOrder(userId);
