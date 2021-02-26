@@ -9,6 +9,7 @@ import com.xyc.service.SellerService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import utils.MD5Utils;
 import utils.PhotoUtils;
@@ -30,6 +31,7 @@ public class SellerServiceImp implements SellerService {
      * @param sellerRD
      * @return
      */
+    @Transactional
     @Override
     public int register(SellerRegisterDTO sellerRD) {
         Seller seller = new Seller();
@@ -96,6 +98,7 @@ public class SellerServiceImp implements SellerService {
      * @param sellerMD
      * @return
      */
+    @Transactional
     @Override
     public int modifySeller(SellerModifyDTO sellerMD) {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
@@ -190,10 +193,12 @@ public class SellerServiceImp implements SellerService {
      * @return
      */
     @Override
+    @Transactional
     public int sellerAuthenticate(int id) {
         return sellerMapper.sellerAuthenticate(id);
     }
 
+    @Transactional
     @Override
     public int updateBalance(int income,int sellerId) {
         sellerMapper.updateBalance(income,sellerId);

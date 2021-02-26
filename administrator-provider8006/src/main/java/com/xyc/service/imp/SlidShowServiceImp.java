@@ -7,6 +7,7 @@ import com.xyc.service.SlidShowService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.PhotoUtils;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class SlidShowServiceImp implements SlidShowService {
     @Autowired
     private SlidShowMapper slidShowMapper;
 
+    @Transactional
     @Override
     public int add(SlidShowDTO showDTO) {
 
@@ -49,6 +51,7 @@ public class SlidShowServiceImp implements SlidShowService {
         return slidShowMapper.add(slidShow);
     }
 
+    @Transactional
     @Override
     public int delete(Integer cgoodsId) {
         //同时删除服务器上对应的轮播图

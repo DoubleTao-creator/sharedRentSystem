@@ -6,6 +6,7 @@ import com.xyc.service.RecommendService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import utils.PhotoUtils;
 
 import java.io.File;
@@ -20,12 +21,13 @@ public class RecommendServiceImp implements RecommendService {
     @Autowired
     private RecommendMapper recommendMapper;
 
-
+    @Transactional
     @Override
     public int add(Integer cGoodsId) {
         return recommendMapper.add(cGoodsId);
     }
 
+    @Transactional
     @Override
     public int delete(Integer id) {
         return recommendMapper.delete(id);

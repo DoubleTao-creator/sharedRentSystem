@@ -13,6 +13,7 @@ import com.xyc.service.CGoodsService;
 import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import utils.PhotoUtils;
 
@@ -35,6 +36,7 @@ public class CGoodsServiceImp implements CGoodsService {
     @Autowired
     private SellerMapper sellerMapper;
 
+    @Transactional
     @Override
     public int updateInfo(CGoodsModifyDTO cGoodsMD) {
         CGoods cGoods = cGoodsMapper.queryById(cGoodsMD.getId());
@@ -57,7 +59,7 @@ public class CGoodsServiceImp implements CGoodsService {
         return i;
     }
 
-
+    @Transactional
     @Override
     public int add(CGoodsAddDTO cGoodsAD) {
 
@@ -127,6 +129,7 @@ public class CGoodsServiceImp implements CGoodsService {
         return sellModel;
     }
 
+    @Transactional
     @Override
     public boolean updatePic(MultipartFile pic, Integer cGoodsId) {
         boolean flag = false;
@@ -169,6 +172,7 @@ public class CGoodsServiceImp implements CGoodsService {
         return sdList;
     }
 
+    @Transactional
     @Override
     public int changeStatus(Integer id) {
         return cGoodsMapper.changeStatus(id);
