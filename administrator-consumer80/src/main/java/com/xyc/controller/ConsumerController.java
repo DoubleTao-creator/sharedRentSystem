@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("/admin/consumer")
 public class ConsumerController {
 
-    private static final String ORDER_PREFIX = "http://localhost:8002/orderRecord";
-    private static final String CGOODS_PREFIX = "http://localhost:8008/cgoods";
-    private static final String SELLER_PREFIX = "http://localhost:8007/seller";
+    private static final String ORDER_PREFIX = "http://120.78.182.170:8002/orderRecord";
+    private static final String CGOODS_PREFIX = "http://120.78.182.170:8008/cgoods";
+    private static final String SELLER_PREFIX = "http://120.78.182.170:8007seller";
 
     @Autowired
     private RestTemplate restTemplate;
