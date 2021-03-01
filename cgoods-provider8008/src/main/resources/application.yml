@@ -19,7 +19,6 @@ spring:
         stmp:
           ssl:
             enable: ture
-    port: 587
   application:
     name: cGoodsProvider8008
   datasource:
@@ -27,7 +26,7 @@ spring:
     password: 123456
     #    password: 20001017
     url: jdbc:mysql://120.78.182.170:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
-    #    url: jdbc:mysql://localhost:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    #    url: jdbc:mysql://localhost:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
