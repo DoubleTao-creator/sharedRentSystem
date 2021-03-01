@@ -24,7 +24,7 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://120.78.182.170:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://120.78.182.170:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
