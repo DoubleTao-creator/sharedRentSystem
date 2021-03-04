@@ -40,7 +40,7 @@ public class SellerServiceImp implements SellerService {
         seller.setPassword(MD5Utils.encode(sellerRD.getPassword()));
         seller.setEmail(sellerRD.getEmail());
         seller.setTel(sellerRD.getTel());
-        seller.setPic("");
+        seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
         seller.setStatus("商家冻结中");
         seller.setLicense("");
@@ -52,8 +52,6 @@ public class SellerServiceImp implements SellerService {
             int id = sellerMapper.getId(sellerRD.getName(),sellerRD.getEmail());
             sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
                             +id+PhotoUtils.SUFFIX,id);
-            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
-                    +id+PhotoUtils.SUFFIX,id);
             try {
                 FTPConstants fc = new FTPConstants();
                 fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
@@ -120,7 +118,12 @@ public class SellerServiceImp implements SellerService {
      * @return
      */
     @Override
-    public boolean modifyPic(MultipartFile pic,Integer id) {
+    public boolean modifyPic(String oldName,MultipartFile pic,Integer id) {
+        if (oldName.equals(PhotoUtils.BASE_HEAD_PHOTO_URL)){
+            //如果还是默认头像 需要更新数据库头像
+            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
+                    +id+PhotoUtils.SELLER_PREFIX,id);
+        }
         boolean flag = false;
         try {
             FTPConstants fc = new FTPConstants();

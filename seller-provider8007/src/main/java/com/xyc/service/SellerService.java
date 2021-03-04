@@ -20,7 +20,7 @@ public interface SellerService {
 
     public int modifySeller(SellerModifyDTO sellerMD);
 
-    public boolean modifyPic(MultipartFile pic, Integer id);
+    public boolean modifyPic(String oldName,MultipartFile pic, Integer id);
 
     public boolean modifyLicense(MultipartFile license,Integer id);
 

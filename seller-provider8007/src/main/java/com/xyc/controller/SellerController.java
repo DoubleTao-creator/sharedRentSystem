@@ -73,8 +73,8 @@ public class SellerController {
      * @return
      */
     @PostMapping("/modifyPic")
-    public CommonResult modifyPic(MultipartFile pic,Integer id){
-        boolean flag = sellerService.modifyPic(pic,id);
+    public CommonResult modifyPic(String oldName,MultipartFile pic,Integer id){
+        boolean flag = sellerService.modifyPic(oldName,pic,id);
         if (flag){
             return CommonResultVO.success("商家照片更新成功");
         }else {
