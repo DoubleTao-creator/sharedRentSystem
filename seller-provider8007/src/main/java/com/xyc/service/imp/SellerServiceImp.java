@@ -6,7 +6,6 @@ import com.xyc.dto.SellerRegisterDTO;
 import com.xyc.mapper.SellerMapper;
 import com.xyc.pojo.Seller;
 import com.xyc.service.SellerService;
-import entity.FTPConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import utils.MD5Utils;
 import utils.PhotoUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -31,7 +27,7 @@ public class SellerServiceImp implements SellerService {
      * @param sellerRD
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int register(SellerRegisterDTO sellerRD) {
         Seller seller = new Seller();
@@ -54,17 +50,24 @@ public class SellerServiceImp implements SellerService {
                             +id+PhotoUtils.SUFFIX,id);
             sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
                     +id+PhotoUtils.SUFFIX,id);
+            File fileParent=new File("/photo");
+            if(fileParent.exists()){
+                fileParent.mkdir();
+            }
+            File newFile=new File("/photo/",PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
+            if(!newFile.exists()){
+                boolean flag= false;
+                try {
+                    flag = newFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(flag);
+            }else {
+                System.out.println("文件已存在"+newFile.getAbsolutePath());
+            }
             try {
-                FTPConstants fc = new FTPConstants();
-                fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
-                File file = PhotoUtils.MultipartFileToFile(sellerRD.getLicense());
-                fc.setInput(new FileInputStream(file));
-                PhotoUtils.uploadFile(fc);
-                System.out.println("营业执照已上传");
-                PhotoUtils.deleteTempFile(file);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                sellerRD.getLicense().transferTo(newFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -102,7 +105,6 @@ public class SellerServiceImp implements SellerService {
     @Override
     public int modifySeller(SellerModifyDTO sellerMD) {
         Seller seller = sellerMapper.queryById(sellerMD.getId());
-
         seller.setName(sellerMD.getName());
         seller.setPassword(MD5Utils.encode(sellerMD.getPassword()));
         seller.setTel(sellerMD.getTel());
@@ -121,20 +123,11 @@ public class SellerServiceImp implements SellerService {
      */
     @Override
     public boolean modifyPic(MultipartFile pic,Integer id) {
-        boolean flag = false;
+        boolean flag = true;
         try {
-            FTPConstants fc = new FTPConstants();
-            //删除原来的照片
-            fc.setFilename(PhotoUtils.SELLER_PREFIX+id+PhotoUtils.SUFFIX);
-            flag = PhotoUtils.deleteFile(fc);
-            //上传新的照片
-            File file = PhotoUtils.MultipartFileToFile(pic);
-            fc.setInput(new FileInputStream(file));
-            flag = PhotoUtils.uploadFile(fc);
-            //删除本地缓存Temp
-            PhotoUtils.deleteTempFile(file);
-        } catch (Exception e) {
-            e.printStackTrace();
+            PhotoUtils.uploadPic(pic, PhotoUtils.SELLER_PREFIX + id + PhotoUtils.SUFFIX);
+        }catch (Exception e){
+            return false;
         }
         return flag;
     }
@@ -148,22 +141,11 @@ public class SellerServiceImp implements SellerService {
      */
     @Override
     public boolean modifyLicense(MultipartFile license,Integer id) {
-        boolean flag = false;
+        boolean flag = true;
         try {
-            FTPConstants fc = new FTPConstants();
-            //删除原来的照片
-            fc.setFilename(PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
-            flag = PhotoUtils.deleteFile(fc);
-            //上传新的照片
-            File file = PhotoUtils.MultipartFileToFile(license);
-            fc.setInput(new FileInputStream(file));
-            flag = PhotoUtils.uploadFile(fc);
-            sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
-                    +id+PhotoUtils.SUFFIX,id);
-            //删除本地缓存Temp
-            PhotoUtils.deleteTempFile(file);
-        } catch (Exception e) {
-            e.printStackTrace();
+            PhotoUtils.uploadPic(license, PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
+        }catch (Exception e){
+            return false;
         }
         return flag;
     }
@@ -204,6 +186,4 @@ public class SellerServiceImp implements SellerService {
         sellerMapper.updateBalance(income,sellerId);
         return 0;
     }
-
-
 }

@@ -16,7 +16,7 @@ public class ConsumerController {
 
     private static final String ORDER_PREFIX = "http://120.78.182.170:8002/orderRecord";
     private static final String CGOODS_PREFIX = "http://120.78.182.170:8008/cgoods";
-    private static final String SELLER_PREFIX = "http://120.78.182.170:8007seller";
+    private static final String SELLER_PREFIX = "http://120.78.182.170:8007/seller";
 
     @Autowired
     private RestTemplate restTemplate;

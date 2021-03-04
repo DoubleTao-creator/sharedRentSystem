@@ -47,18 +47,12 @@ public class CommentServiceImpl implements CommentService {
         }else {
             //用户上传了图片
             try {
-                FTPConstants ftpConstants = new FTPConstants();
-                ftpConstants.setFilename(PhotoUtils.COMMENT_PREFIX + commentDTO.getRemarkPic().getName() + PhotoUtils.SUFFIX);
-                ftpConstants.setInput(new FileInputStream(PhotoUtils.MultipartFileToFile(commentDTO.getRemarkPic())));
-                //上传图片
-                PhotoUtils.uploadFile(ftpConstants);
+                PhotoUtils.uploadPic(commentDTO.getRemarkPic(), PhotoUtils.BASE_HEAD_PHOTO_URL + PhotoUtils.COMMENT_PREFIX + commentDTO.getRemarkPic().getName() + PhotoUtils.SUFFIX);
                 comment.setRemarkPic(PhotoUtils.BASE_HEAD_PHOTO_URL + PhotoUtils.COMMENT_PREFIX + commentDTO.getRemarkPic().getName() + PhotoUtils.SUFFIX);
                 //添加到数据库
                 commentMapper.pushComment(comment);
                 return 1;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

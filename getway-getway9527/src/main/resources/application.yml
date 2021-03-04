@@ -23,7 +23,7 @@ spring:
           predicates:
             - Path=/seller/**
         - id: admin_consumer_api
-          uri: http://${host}:80
+          uri: http://${host}:8010
           predicates:
             - Path=/admin/consumer/**
         - id: goods_api
