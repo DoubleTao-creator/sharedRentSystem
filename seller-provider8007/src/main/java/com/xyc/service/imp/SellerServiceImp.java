@@ -48,8 +48,6 @@ public class SellerServiceImp implements SellerService {
             int id = sellerMapper.getId(sellerRD.getName(),sellerRD.getEmail());
             sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
                             +id+PhotoUtils.SUFFIX,id);
-            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
-                    +id+PhotoUtils.SUFFIX,id);
             File fileParent=new File("/photo");
             if(fileParent.exists()){
                 fileParent.mkdir();
@@ -122,8 +120,13 @@ public class SellerServiceImp implements SellerService {
      * @return
      */
     @Override
-    public boolean modifyPic(MultipartFile pic,Integer id) {
+    public boolean modifyPic(String oldName,MultipartFile pic,Integer id) {
         boolean flag = true;
+        //如果照片是默认头像的话，更新数据库 商家头像字段
+        if (oldName.equals(PhotoUtils.BASE_HEAD_PHOTO_URL)){
+            sellerMapper.updatePic(PhotoUtils.BASE_PREFIX+PhotoUtils.SELLER_PREFIX
+                    +id+PhotoUtils.SUFFIX,id);
+        }
         try {
             PhotoUtils.uploadPic(pic, PhotoUtils.SELLER_PREFIX + id + PhotoUtils.SUFFIX);
         }catch (Exception e){
