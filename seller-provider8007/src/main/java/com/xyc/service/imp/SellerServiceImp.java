@@ -36,7 +36,7 @@ public class SellerServiceImp implements SellerService {
         seller.setPassword(MD5Utils.encode(sellerRD.getPassword()));
         seller.setEmail(sellerRD.getEmail());
         seller.setTel(sellerRD.getTel());
-        seller.setPic("");
+        seller.setPic(PhotoUtils.BASE_HEAD_PHOTO_URL);
         seller.setBalance(0);
         seller.setStatus("商家冻结中");
         seller.setLicense("");
