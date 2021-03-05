@@ -35,14 +35,13 @@ public class PhotoUtils {
             ftpClient.connect(ftpConstants.getHost(), ftpConstants.getPort());
             System.out.println("登录");
             ftpClient.login(ftpConstants.getUsername(), ftpConstants.getPassword());
-
             reply = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftpClient.disconnect();
                 return false;
             }
             // 解决上传文件时文件名乱码
-            ftpClient.setControlEncoding("utf-8");
+            ftpClient.setControlEncoding("UTF-8");
             // 设置上传文件的类型为二进制类型
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             System.out.println("切换到上传目录");
@@ -57,10 +56,10 @@ public class PhotoUtils {
                 }
             }
             // 设置缓存区
-            ftpClient.setBufferSize(1024);
+            ftpClient.setBufferSize(2048);
             // 开通一个端口来传输数据
             System.out.println("上传文件");
-            if (!ftpClient.storeFile(ftpConstants.getFilename(), ftpConstants.getInput())) {
+            if (!ftpClient.storeFile(new String(ftpConstants.getFilename().getBytes("UTF-8"),"iso-8859-1"), ftpConstants.getInput())) {
                 System.out.println("上传失败");
                 return false;
             }
@@ -116,31 +115,6 @@ public class PhotoUtils {
         return false;
     }
 
-    /**
-     * multipartfile转为file
-     *
-     * @param multipartFile
-     * @return
-     */
-    public static File transferToFile(MultipartFile multipartFile) {
-        File file = null;
-        try {
-            String originalFilename = multipartFile.getOriginalFilename();
-            System.out.println(originalFilename);
-            String[] filename = originalFilename.split(".");
-            for (String s : filename) {
-                System.out.println(s);
-            }
-            //这里有点问题 一直说filename数组越界
-            // 然后filename数组打印确实也打印不出东西
-            file = File.createTempFile(filename[0], filename[1]);
-            multipartFile.transferTo(file);
-            file.deleteOnExit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
 
     public static File MultipartFileToFile(MultipartFile multiFile) {
         // 获取文件名
@@ -157,8 +131,6 @@ public class PhotoUtils {
         }
         return null;
     }
-
-    //删除本地缓存 C:\UserData\AppData\Local\Temp下的文件
     public static void deleteTempFile(File file) {
         if (file != null) {
             System.out.println(file.toURI());
@@ -168,4 +140,23 @@ public class PhotoUtils {
         return;
     }
 
+    /**
+     *
+     * @param pic 图片
+     * @param picName 图片名
+     */
+    public static void uploadPic(MultipartFile pic, String picName){
+        File newFile=new File("/photo/",picName);
+        try{
+            if(!newFile.exists()){
+                newFile.createNewFile();
+            }else{
+                newFile.delete();
+                newFile.createNewFile();
+            }
+            pic.transferTo(newFile);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

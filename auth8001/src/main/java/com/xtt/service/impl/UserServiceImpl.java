@@ -55,15 +55,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public User modifyUser(ModifyUserDTO modifyUserDTO) {
-        User modifiedUser;
+        User modifiedUser=null;
         try{
-            FTPConstants ftpConstants=new FTPConstants();
-            ftpConstants.setFilename(PhotoUtils.USER_PREFIX+modifyUserDTO.getId()+PhotoUtils.SUFFIX);
-            ftpConstants.setInput(new FileInputStream(PhotoUtils.MultipartFileToFile(modifyUserDTO.getFile())));
-            //删除原来的头像
-            PhotoUtils.deleteFile(ftpConstants);
-            //上传新的头像
-            PhotoUtils.uploadFile(ftpConstants);
             User user=new User();
             user.setId(modifyUserDTO.getId());
             user.setName(modifyUserDTO.getName());
@@ -75,8 +68,10 @@ public class UserServiceImpl implements UserService {
             userMapper.modifyUser(user);
             //查询更改后的用户信息
             modifiedUser=userMapper.findUserById(modifyUserDTO.getId());
+            PhotoUtils.uploadPic(modifyUserDTO.getFile(), PhotoUtils.BASE_PREFIX+PhotoUtils.USER_PREFIX+modifyUserDTO
+                    .getId()+PhotoUtils.SUFFIX);
         }catch (Exception e){
-            return null;
+            e.printStackTrace();
         }
         //返回更改后的用户信息
         return modifiedUser;
