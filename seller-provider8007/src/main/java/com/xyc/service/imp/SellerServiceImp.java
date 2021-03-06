@@ -43,35 +43,15 @@ public class SellerServiceImp implements SellerService {
 
         int i = sellerMapper.add(seller);
 
-        if (i>0){
+        if (i > 0) {
 
-            int id = sellerMapper.getId(sellerRD.getName(),sellerRD.getEmail());
-            sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX+PhotoUtils.LICENSE_PREFIX
-                            +id+PhotoUtils.SUFFIX,id);
-            File fileParent=new File("/photo");
-            if(fileParent.exists()){
-                fileParent.mkdir();
-            }
-            File newFile=new File("/photo/",PhotoUtils.LICENSE_PREFIX+id+PhotoUtils.SUFFIX);
-            if(!newFile.exists()){
-                boolean flag= false;
-                try {
-                    flag = newFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(flag);
-            }else {
-                System.out.println("文件已存在"+newFile.getAbsolutePath());
-            }
-            try {
-                sellerRD.getLicense().transferTo(newFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            int id = sellerMapper.getId(sellerRD.getName(), sellerRD.getEmail());
+            sellerMapper.updateLicense(PhotoUtils.BASE_PREFIX + PhotoUtils.LICENSE_PREFIX
+                    + id + PhotoUtils.SUFFIX, id);
+            PhotoUtils.uploadPic(sellerRD.getLicense(), PhotoUtils.LICENSE_PREFIX + id + PhotoUtils.SUFFIX);
         }
-        return i;
-    }
+            return i;
+        }
 
     /**
      * 商家登录
