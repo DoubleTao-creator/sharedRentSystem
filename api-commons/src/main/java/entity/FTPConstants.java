@@ -20,7 +20,7 @@ public class FTPConstants {
     /**
      * 主机
      */
-    private String host="120.78.182.170";
+    private String host="8.140.3.126";
     /**
      * 端口
      */
@@ -32,7 +32,7 @@ public class FTPConstants {
     /**
      * 密码
      */
-    private String password="Xietaotao123";
+    private String password="xuyichan.1017.";
     /**
      * 文件上传路径
      */

@@ -1,4 +1,4 @@
-host: 120.78.182.170
+host: 8.140.3.126
 server:
   port: 8001
 spring:
@@ -12,6 +12,12 @@ spring:
       username: root
       #password: admin
       password: 123456
+      druid:
+        min-idle: 1
+        initial-size: 3
+        max-active: 20
+        max-wait: 60000
+        time-between-connect-error-millis: 60000
   devtools:
     restart:
       enabled: true

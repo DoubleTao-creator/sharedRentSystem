@@ -15,11 +15,11 @@ spring:
   datasource:
     username: root
     password: 20001017
-    url: jdbc:mysql://localhost:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://8.140.3.126:3306/rentsystem?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:7001/eureka/
+      defaultZone: http://8.140.3.126:7001/eureka/

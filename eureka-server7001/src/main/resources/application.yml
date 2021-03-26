@@ -1,4 +1,4 @@
-host: 120.78.182.170
+host: 8.140.3.126
 server:
   port: 7001
 eureka:

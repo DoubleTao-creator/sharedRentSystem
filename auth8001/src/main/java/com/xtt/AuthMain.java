@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableEurekaClient
 @EnableTransactionManagement
 public class AuthMain {
-    public static void main(String[] args) {
+    public static void main(String    [] args) {
         SpringApplication.run(AuthMain.class,args);
     }
 }
