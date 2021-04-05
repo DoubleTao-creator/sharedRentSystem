@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xyc.mapper.AdministratorMapper">
+
+    <update id="add" parameterType="com.xyc.dto.AdministratorRegisterDTO">
+        insert into administrator(name,password,role)
+        values(#{name},#{password},#{role})
+    </update>
+
+    <select id="query" resultType="com.xyc.pojo.Administrator" parameterType="com.xyc.dto.AdministratorLoginDTO">
+        select * from administrator
+        where name = #{name} and password = #{password}
+    </select>
+
+</mapper>
