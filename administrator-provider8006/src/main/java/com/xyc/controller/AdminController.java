@@ -4,12 +4,8 @@ package com.xyc.controller;
 import com.xyc.dto.AdministratorLoginDTO;
 import com.xyc.dto.AdministratorRegisterDTO;
 import com.xyc.dto.SlidShowDTO;
-import com.xyc.pojo.Administrator;
-import com.xyc.pojo.Recommend;
-import com.xyc.pojo.SlidShow;
-import com.xyc.service.AdministratorService;
-import com.xyc.service.RecommendService;
-import com.xyc.service.SlidShowService;
+import com.xyc.pojo.*;
+import com.xyc.service.*;
 import entity.CommonResult;
 import entity.CommonResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +28,60 @@ public class AdminController {
 
     @Autowired
     private SlidShowService slidShowService;
+
+    @Autowired
+    private OrderRecordService orderRecordService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CGoodsService cGoodsService;
+
+    @GetMapping("/frozenCGoods/{cgoodsId}")
+    public CommonResult frozenCGoods(@PathVariable("cgoodsId")Integer cgoodsId){
+        int i = cGoodsService.updateStatusToFrozen(cgoodsId);
+        if (i<0){
+            return CommonResultVO.error("商品冻结（下架）失败");
+        }
+        return CommonResultVO.success("商品成功冻结");
+    }
+
+    @GetMapping("/getCGoods/list/Seller/{sellerId}")
+    public CommonResult getCGoodsBySellerId(@PathVariable("sellerId")Integer id){
+        List<CGoods> list = cGoodsService.queryBySeller(id);
+        if (list==null){
+            CommonResultVO.error("该商家还未上传商品");
+        }
+        return CommonResultVO.success(list);
+    }
+
+    @GetMapping("/getUser/ByName/{name}")
+    public CommonResult getUserByName(@PathVariable("name") String name){
+        User user = userService.getByName(name);
+        if (user==null){
+            return CommonResultVO.error("查无此用户");
+        }
+        return CommonResultVO.success(user);
+    }
+
+    @GetMapping("/getUser/ById/{id}")
+    public CommonResult getUserByName(@PathVariable("id")Integer id){
+        User user = userService.getById(id);
+        if (user==null){
+            return CommonResultVO.error("查无此用户");
+        }
+        return CommonResultVO.success(user);
+    }
+
+    @GetMapping("/orderRecordList/SellModel/{sellModel}")
+    public CommonResult getOrderListBySellModel(@PathVariable("sellModel") String sellModel){
+        List<OrderRecord> list = orderRecordService.getRecordsBySellModel(sellModel);
+        if (list==null){
+            return CommonResultVO.success("还没有该出售模式的订单");
+        }
+        return CommonResultVO.success(list);
+    }
 
     @PostMapping("/adminRegister")
     public CommonResult register(@Validated AdministratorRegisterDTO adminRD,BindingResult result){
